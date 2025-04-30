@@ -1,0 +1,270 @@
+{
+    "annotations": {
+      "list": [
+        {
+          "builtIn": 1,
+          "datasource": {
+            "type": "grafana",
+            "uid": "-- Grafana --"
+          },
+          "enable": true,
+          "hide": true,
+          "iconColor": "rgba(0, 211, 255, 1)",
+          "name": "Annotations & Alerts",
+          "type": "dashboard"
+        }
+      ]
+    },
+    "editable": true,
+    "fiscalYearStartMonth": 0,
+    "graphTooltip": 0,
+    "id": 83,
+    "links": [],
+    "panels": [
+      {
+        "collapsed": false,
+        "gridPos": {
+          "h": 1,
+          "w": 24,
+          "x": 0,
+          "y": 0
+        },
+        "id": 3,
+        "panels": [],
+        "title": "Sandbox Login",
+        "type": "row"
+      },
+      {
+        "datasource": {
+          "type": "prometheus",
+          "uid": "prometheus"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            },
+            "custom": {
+              "axisBorderShow": false,
+              "axisCenteredZero": false,
+              "axisColorMode": "text",
+              "axisLabel": "seconds",
+              "axisPlacement": "auto",
+              "barAlignment": 0,
+              "barWidthFactor": 0.6,
+              "drawStyle": "line",
+              "fillOpacity": 25,
+              "gradientMode": "none",
+              "hideFrom": {
+                "legend": false,
+                "tooltip": false,
+                "viz": false
+              },
+              "insertNulls": false,
+              "lineInterpolation": "linear",
+              "lineWidth": 1,
+              "pointSize": 5,
+              "scaleDistribution": {
+                "type": "linear"
+              },
+              "showPoints": "auto",
+              "spanNulls": false,
+              "stacking": {
+                "group": "A",
+                "mode": "none"
+              },
+              "thresholdsStyle": {
+                "mode": "off"
+              }
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "red",
+                  "value": 10
+                }
+              ]
+            }
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 8,
+          "w": 12,
+          "x": 0,
+          "y": 1
+        },
+        "id": 2,
+        "options": {
+          "legend": {
+            "calcs": [],
+            "displayMode": "hidden",
+            "placement": "right",
+            "showLegend": false
+          },
+          "tooltip": {
+            "mode": "single",
+            "sort": "none"
+          }
+        },
+        "pluginVersion": "11.4.0",
+        "targets": [
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "prometheus"
+            },
+            "disableTextWrap": false,
+            "editorMode": "builder",
+            "expr": "playwright_docbits_login_avrg_login_time{exported_job=\"login-testing\"}",
+            "fullMetaSearch": false,
+            "includeNullMetadata": true,
+            "instant": false,
+            "legendFormat": "__auto",
+            "range": true,
+            "refId": "A",
+            "useBackend": false
+          }
+        ],
+        "title": "Averrage Login Time",
+        "transparent": true,
+        "type": "timeseries"
+      },
+      {
+        "datasource": {
+          "type": "prometheus",
+          "uid": "fe6pb0ezx0pvkc"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "custom": {
+              "hideFrom": {
+                "legend": false,
+                "tooltip": false,
+                "viz": false
+              },
+              "scaleDistribution": {
+                "type": "linear"
+              }
+            }
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 8,
+          "w": 12,
+          "x": 12,
+          "y": 1
+        },
+        "id": 1,
+        "options": {
+          "calculate": false,
+          "calculation": {
+            "xBuckets": {
+              "mode": "size",
+              "value": "6"
+            },
+            "yBuckets": {
+              "mode": "size",
+              "scale": {
+                "type": "linear"
+              },
+              "value": "6"
+            }
+          },
+          "cellGap": 0,
+          "cellValues": {
+            "unit": ""
+          },
+          "color": {
+            "exponent": 0.5,
+            "fill": "dark-orange",
+            "max": 3,
+            "min": 0,
+            "mode": "scheme",
+            "reverse": true,
+            "scale": "exponential",
+            "scheme": "Greens",
+            "steps": 6
+          },
+          "exemplars": {
+            "color": "green"
+          },
+          "filterValues": {
+            "le": 1e-9
+          },
+          "legend": {
+            "show": true
+          },
+          "rowsFrame": {
+            "layout": "unknown"
+          },
+          "tooltip": {
+            "mode": "none",
+            "showColorScale": false,
+            "yHistogram": false
+          },
+          "yAxis": {
+            "axisPlacement": "hidden",
+            "reverse": false,
+            "unit": ""
+          }
+        },
+        "pluginVersion": "11.4.0",
+        "targets": [
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "fe6pb0ezx0pvkc"
+            },
+            "disableTextWrap": false,
+            "editorMode": "builder",
+            "expr": "playwright_docbits_login_passed{exported_job=\"login-testing\"}",
+            "fullMetaSearch": false,
+            "includeNullMetadata": true,
+            "instant": false,
+            "legendFormat": "__auto",
+            "range": true,
+            "refId": "A",
+            "useBackend": false
+          }
+        ],
+        "title": "Login Tests Passed",
+        "transparent": true,
+        "type": "heatmap"
+      }
+    ],
+    "preload": false,
+    "refresh": "",
+    "schemaVersion": 40,
+    "tags": [],
+    "templating": {
+      "list": []
+    },
+    "time": {
+      "from": "now-6h",
+      "to": "now"
+    },
+    "timepicker": {
+      "refresh_intervals": [
+        "1m",
+        "5m",
+        "15m",
+        "30m",
+        "1h",
+        "2h",
+        "1d"
+      ]
+    },
+    "timezone": "browser",
+    "title": "Login Testing Dashboard",
+    "uid": "aebkc6gzovo5ce",
+    "version": 12,
+    "weekStart": ""
+  }

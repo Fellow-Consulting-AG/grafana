@@ -1,0 +1,924 @@
+{
+    "annotations": {
+      "list": [
+        {
+          "builtIn": 1,
+          "datasource": {
+            "type": "grafana",
+            "uid": "-- Grafana --"
+          },
+          "enable": true,
+          "hide": true,
+          "iconColor": "rgba(0, 211, 255, 1)",
+          "name": "Annotations & Alerts",
+          "type": "dashboard"
+        }
+      ]
+    },
+    "editable": true,
+    "fiscalYearStartMonth": 0,
+    "graphTooltip": 0,
+    "id": 87,
+    "links": [],
+    "panels": [
+      {
+        "collapsed": false,
+        "gridPos": {
+          "h": 1,
+          "w": 24,
+          "x": 0,
+          "y": 0
+        },
+        "id": 5,
+        "panels": [],
+        "title": "DocBits Testing",
+        "type": "row"
+      },
+      {
+        "datasource": {
+          "type": "prometheus",
+          "uid": "prometheus"
+        },
+        "description": "",
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "dark-red",
+                  "value": null
+                },
+                {
+                  "color": "red",
+                  "value": 25
+                },
+                {
+                  "color": "semi-dark-orange",
+                  "value": 50
+                },
+                {
+                  "color": "yellow",
+                  "value": 75
+                },
+                {
+                  "color": "super-light-green",
+                  "value": 90
+                },
+                {
+                  "color": "green",
+                  "value": 100
+                }
+              ]
+            },
+            "unit": "percent"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 8,
+          "w": 12,
+          "x": 0,
+          "y": 1
+        },
+        "id": 2,
+        "options": {
+          "minVizHeight": 75,
+          "minVizWidth": 75,
+          "orientation": "auto",
+          "reduceOptions": {
+            "calcs": [
+              "lastNotNull"
+            ],
+            "fields": "",
+            "values": false
+          },
+          "showThresholdLabels": false,
+          "showThresholdMarkers": true,
+          "sizing": "auto"
+        },
+        "pluginVersion": "11.4.0",
+        "targets": [
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "prometheus"
+            },
+            "disableTextWrap": false,
+            "editorMode": "code",
+            "expr": "global_test_result{exported_job=\"$Environment\"}",
+            "fullMetaSearch": false,
+            "includeNullMetadata": true,
+            "instant": false,
+            "legendFormat": "__auto",
+            "range": true,
+            "refId": "A",
+            "useBackend": false
+          }
+        ],
+        "title": "Global Test",
+        "type": "gauge"
+      },
+      {
+        "datasource": {
+          "type": "prometheus",
+          "uid": "prometheus"
+        },
+        "description": "",
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "dark-red",
+                  "value": null
+                },
+                {
+                  "color": "red",
+                  "value": 25
+                },
+                {
+                  "color": "semi-dark-orange",
+                  "value": 50
+                },
+                {
+                  "color": "yellow",
+                  "value": 75
+                },
+                {
+                  "color": "super-light-green",
+                  "value": 90
+                },
+                {
+                  "color": "green",
+                  "value": 100
+                }
+              ]
+            },
+            "unit": "percent"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 8,
+          "w": 12,
+          "x": 12,
+          "y": 1
+        },
+        "id": 3,
+        "options": {
+          "minVizHeight": 75,
+          "minVizWidth": 75,
+          "orientation": "auto",
+          "reduceOptions": {
+            "calcs": [
+              "lastNotNull"
+            ],
+            "fields": "",
+            "values": false
+          },
+          "showThresholdLabels": false,
+          "showThresholdMarkers": true,
+          "sizing": "auto"
+        },
+        "pluginVersion": "11.4.0",
+        "targets": [
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "prometheus"
+            },
+            "disableTextWrap": false,
+            "editorMode": "code",
+            "expr": "process_test_result{exported_job=\"$Environment\"}",
+            "fullMetaSearch": false,
+            "includeNullMetadata": true,
+            "instant": false,
+            "legendFormat": "__auto",
+            "range": true,
+            "refId": "A",
+            "useBackend": false
+          }
+        ],
+        "title": "Process Test",
+        "type": "gauge"
+      },
+      {
+        "datasource": {
+          "type": "prometheus",
+          "uid": "prometheus"
+        },
+        "description": "",
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "dark-red",
+                  "value": null
+                },
+                {
+                  "color": "red",
+                  "value": 25
+                },
+                {
+                  "color": "semi-dark-orange",
+                  "value": 50
+                },
+                {
+                  "color": "yellow",
+                  "value": 75
+                },
+                {
+                  "color": "super-light-green",
+                  "value": 90
+                },
+                {
+                  "color": "green",
+                  "value": 100
+                }
+              ]
+            },
+            "unit": "percent"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 8,
+          "w": 12,
+          "x": 0,
+          "y": 9
+        },
+        "id": 1,
+        "options": {
+          "minVizHeight": 75,
+          "minVizWidth": 75,
+          "orientation": "auto",
+          "reduceOptions": {
+            "calcs": [
+              "lastNotNull"
+            ],
+            "fields": "",
+            "values": false
+          },
+          "showThresholdLabels": false,
+          "showThresholdMarkers": true,
+          "sizing": "auto"
+        },
+        "pluginVersion": "11.4.0",
+        "targets": [
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "prometheus"
+            },
+            "disableTextWrap": false,
+            "editorMode": "code",
+            "expr": "email_test_result{exported_job=\"$Environment\"}",
+            "fullMetaSearch": false,
+            "includeNullMetadata": true,
+            "instant": false,
+            "legendFormat": "__auto",
+            "range": true,
+            "refId": "A",
+            "useBackend": false
+          }
+        ],
+        "title": "Email Test",
+        "type": "gauge"
+      },
+      {
+        "datasource": {
+          "type": "prometheus",
+          "uid": "prometheus"
+        },
+        "description": "",
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "dark-red",
+                  "value": null
+                },
+                {
+                  "color": "red",
+                  "value": 25
+                },
+                {
+                  "color": "semi-dark-orange",
+                  "value": 50
+                },
+                {
+                  "color": "yellow",
+                  "value": 75
+                },
+                {
+                  "color": "super-light-green",
+                  "value": 90
+                },
+                {
+                  "color": "green",
+                  "value": 100
+                }
+              ]
+            },
+            "unit": "percent"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 8,
+          "w": 12,
+          "x": 12,
+          "y": 9
+        },
+        "id": 4,
+        "options": {
+          "minVizHeight": 75,
+          "minVizWidth": 75,
+          "orientation": "auto",
+          "reduceOptions": {
+            "calcs": [
+              "lastNotNull"
+            ],
+            "fields": "",
+            "values": false
+          },
+          "showThresholdLabels": false,
+          "showThresholdMarkers": true,
+          "sizing": "auto"
+        },
+        "pluginVersion": "11.4.0",
+        "targets": [
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "prometheus"
+            },
+            "disableTextWrap": false,
+            "editorMode": "code",
+            "expr": "ftp_test_result{exported_job=\"$Environment\"}",
+            "fullMetaSearch": false,
+            "includeNullMetadata": true,
+            "instant": false,
+            "legendFormat": "__auto",
+            "range": true,
+            "refId": "A",
+            "useBackend": false
+          }
+        ],
+        "title": "FTP Test",
+        "type": "gauge"
+      },
+      {
+        "collapsed": false,
+        "gridPos": {
+          "h": 1,
+          "w": 24,
+          "x": 0,
+          "y": 17
+        },
+        "id": 6,
+        "panels": [],
+        "title": "Customer Testing",
+        "type": "row"
+      },
+      {
+        "datasource": {
+          "type": "prometheus",
+          "uid": "prometheus"
+        },
+        "description": "",
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "dark-red",
+                  "value": null
+                },
+                {
+                  "color": "red",
+                  "value": 25
+                },
+                {
+                  "color": "semi-dark-orange",
+                  "value": 50
+                },
+                {
+                  "color": "yellow",
+                  "value": 75
+                },
+                {
+                  "color": "super-light-green",
+                  "value": 90
+                },
+                {
+                  "color": "green",
+                  "value": 100
+                }
+              ]
+            },
+            "unit": "percent"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 8,
+          "w": 12,
+          "x": 0,
+          "y": 18
+        },
+        "id": 7,
+        "options": {
+          "minVizHeight": 75,
+          "minVizWidth": 75,
+          "orientation": "auto",
+          "reduceOptions": {
+            "calcs": [
+              "lastNotNull"
+            ],
+            "fields": "",
+            "values": false
+          },
+          "showThresholdLabels": false,
+          "showThresholdMarkers": true,
+          "sizing": "auto"
+        },
+        "pluginVersion": "11.4.0",
+        "targets": [
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "prometheus"
+            },
+            "disableTextWrap": false,
+            "editorMode": "code",
+            "expr": "elexis_test_result{exported_job=\"$Environment\"}",
+            "fullMetaSearch": false,
+            "includeNullMetadata": true,
+            "instant": false,
+            "legendFormat": "__auto",
+            "range": true,
+            "refId": "A",
+            "useBackend": false
+          }
+        ],
+        "title": "Elexis Test",
+        "type": "gauge"
+      },
+      {
+        "datasource": {
+          "type": "prometheus",
+          "uid": "prometheus"
+        },
+        "description": "",
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "dark-red",
+                  "value": null
+                },
+                {
+                  "color": "red",
+                  "value": 25
+                },
+                {
+                  "color": "semi-dark-orange",
+                  "value": 50
+                },
+                {
+                  "color": "yellow",
+                  "value": 75
+                },
+                {
+                  "color": "super-light-green",
+                  "value": 90
+                },
+                {
+                  "color": "green",
+                  "value": 100
+                }
+              ]
+            },
+            "unit": "percent"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 8,
+          "w": 12,
+          "x": 12,
+          "y": 18
+        },
+        "id": 8,
+        "options": {
+          "minVizHeight": 75,
+          "minVizWidth": 75,
+          "orientation": "auto",
+          "reduceOptions": {
+            "calcs": [
+              "lastNotNull"
+            ],
+            "fields": "",
+            "values": false
+          },
+          "showThresholdLabels": false,
+          "showThresholdMarkers": true,
+          "sizing": "auto"
+        },
+        "pluginVersion": "11.4.0",
+        "targets": [
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "prometheus"
+            },
+            "disableTextWrap": false,
+            "editorMode": "code",
+            "expr": "medi_test_result{exported_job=\"$Environment\"}",
+            "fullMetaSearch": false,
+            "includeNullMetadata": true,
+            "instant": false,
+            "legendFormat": "__auto",
+            "range": true,
+            "refId": "A",
+            "useBackend": false
+          }
+        ],
+        "title": "Medi Test",
+        "type": "gauge"
+      },
+      {
+        "collapsed": false,
+        "gridPos": {
+          "h": 1,
+          "w": 24,
+          "x": 0,
+          "y": 26
+        },
+        "id": 9,
+        "panels": [],
+        "title": "Sefar",
+        "type": "row"
+      },
+      {
+        "datasource": {
+          "type": "prometheus",
+          "uid": "prometheus"
+        },
+        "description": "",
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "dark-red"
+                },
+                {
+                  "color": "red",
+                  "value": 25
+                },
+                {
+                  "color": "semi-dark-orange",
+                  "value": 50
+                },
+                {
+                  "color": "yellow",
+                  "value": 75
+                },
+                {
+                  "color": "super-light-green",
+                  "value": 90
+                },
+                {
+                  "color": "green",
+                  "value": 100
+                }
+              ]
+            },
+            "unit": "percent"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 8,
+          "w": 12,
+          "x": 0,
+          "y": 27
+        },
+        "id": 10,
+        "options": {
+          "minVizHeight": 75,
+          "minVizWidth": 75,
+          "orientation": "auto",
+          "reduceOptions": {
+            "calcs": [
+              "lastNotNull"
+            ],
+            "fields": "",
+            "values": false
+          },
+          "showThresholdLabels": false,
+          "showThresholdMarkers": true,
+          "sizing": "auto"
+        },
+        "pluginVersion": "11.1.0",
+        "targets": [
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "prometheus"
+            },
+            "disableTextWrap": false,
+            "editorMode": "code",
+            "expr": "sefar_cost_invoice_test_result{exported_job=\"$Environment\"}",
+            "fullMetaSearch": false,
+            "includeNullMetadata": true,
+            "instant": false,
+            "legendFormat": "__auto",
+            "range": true,
+            "refId": "A",
+            "useBackend": false
+          }
+        ],
+        "title": "Cost Invoice",
+        "type": "gauge"
+      },
+      {
+        "datasource": {
+          "type": "prometheus",
+          "uid": "prometheus"
+        },
+        "description": "",
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "dark-red"
+                },
+                {
+                  "color": "red",
+                  "value": 25
+                },
+                {
+                  "color": "semi-dark-orange",
+                  "value": 50
+                },
+                {
+                  "color": "yellow",
+                  "value": 75
+                },
+                {
+                  "color": "super-light-green",
+                  "value": 90
+                },
+                {
+                  "color": "green",
+                  "value": 100
+                }
+              ]
+            },
+            "unit": "percent"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 8,
+          "w": 12,
+          "x": 12,
+          "y": 27
+        },
+        "id": 11,
+        "options": {
+          "minVizHeight": 75,
+          "minVizWidth": 75,
+          "orientation": "auto",
+          "reduceOptions": {
+            "calcs": [
+              "lastNotNull"
+            ],
+            "fields": "",
+            "values": false
+          },
+          "showThresholdLabels": false,
+          "showThresholdMarkers": true,
+          "sizing": "auto"
+        },
+        "pluginVersion": "11.1.0",
+        "targets": [
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "prometheus"
+            },
+            "disableTextWrap": false,
+            "editorMode": "code",
+            "expr": "sefar_purchase_invoice_test_result{exported_job=\"$Environment\"}",
+            "fullMetaSearch": false,
+            "includeNullMetadata": true,
+            "instant": false,
+            "legendFormat": "__auto",
+            "range": true,
+            "refId": "A",
+            "useBackend": false
+          }
+        ],
+        "title": "Purchase Invoice",
+        "type": "gauge"
+      },
+      {
+        "datasource": {
+          "type": "prometheus",
+          "uid": "prometheus"
+        },
+        "description": "",
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "dark-red"
+                },
+                {
+                  "color": "red",
+                  "value": 25
+                },
+                {
+                  "color": "semi-dark-orange",
+                  "value": 50
+                },
+                {
+                  "color": "yellow",
+                  "value": 75
+                },
+                {
+                  "color": "super-light-green",
+                  "value": 90
+                },
+                {
+                  "color": "green",
+                  "value": 100
+                }
+              ]
+            },
+            "unit": "percent"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 8,
+          "w": 12,
+          "x": 0,
+          "y": 35
+        },
+        "id": 12,
+        "options": {
+          "minVizHeight": 75,
+          "minVizWidth": 75,
+          "orientation": "auto",
+          "reduceOptions": {
+            "calcs": [
+              "lastNotNull"
+            ],
+            "fields": "",
+            "values": false
+          },
+          "showThresholdLabels": false,
+          "showThresholdMarkers": true,
+          "sizing": "auto"
+        },
+        "pluginVersion": "11.1.0",
+        "targets": [
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "prometheus"
+            },
+            "disableTextWrap": false,
+            "editorMode": "code",
+            "expr": "sefar_project_invoice_test_result{exported_job=\"$Environment\"}",
+            "fullMetaSearch": false,
+            "includeNullMetadata": true,
+            "instant": false,
+            "legendFormat": "__auto",
+            "range": true,
+            "refId": "A",
+            "useBackend": false
+          }
+        ],
+        "title": "Project Invoice",
+        "type": "gauge"
+      }
+    ],
+    "preload": false,
+    "refresh": "",
+    "schemaVersion": 40,
+    "tags": [],
+    "templating": {
+      "list": [
+        {
+          "current": {
+            "text": "sandbox_testing",
+            "value": "sandbox_testing"
+          },
+          "description": "In which env to display results",
+          "includeAll": false,
+          "label": "Env",
+          "name": "Environment",
+          "options": [
+            {
+              "selected": false,
+              "text": "development_testing",
+              "value": "development_testing"
+            },
+            {
+              "selected": false,
+              "text": "stage_testing",
+              "value": "stage_testing"
+            },
+            {
+              "selected": true,
+              "text": "sandbox_testing",
+              "value": "sandbox_testing"
+            },
+            {
+              "selected": false,
+              "text": "production_testing",
+              "value": "production_testing"
+            }
+          ],
+          "query": "development_testing, stage_testing, sandbox_testing, production_testing",
+          "type": "custom"
+        }
+      ]
+    },
+    "time": {
+      "from": "now-6h",
+      "to": "now"
+    },
+    "timepicker": {
+      "refresh_intervals": [
+        "1m",
+        "5m",
+        "15m",
+        "30m",
+        "1h",
+        "2h",
+        "1d"
+      ]
+    },
+    "timezone": "browser",
+    "title": "Automated Testing-Dashboard",
+    "uid": "cdsw9ty7caeio8",
+    "version": 1,
+    "weekStart": ""
+  }

@@ -1,0 +1,2159 @@
+{
+    "annotations": {
+      "list": [
+        {
+          "builtIn": 1,
+          "datasource": {
+            "type": "grafana",
+            "uid": "-- Grafana --"
+          },
+          "enable": true,
+          "hide": true,
+          "iconColor": "rgba(0, 211, 255, 1)",
+          "name": "Annotations & Alerts",
+          "type": "dashboard"
+        }
+      ]
+    },
+    "editable": true,
+    "fiscalYearStartMonth": 0,
+    "graphTooltip": 0,
+    "id": 15,
+    "links": [],
+    "panels": [
+      {
+        "datasource": {
+          "type": "grafana-clickhouse-datasource",
+          "uid": "edv0la8qpou80d"
+        },
+        "description": "Queries/second\n",
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            },
+            "custom": {
+              "axisBorderShow": false,
+              "axisCenteredZero": false,
+              "axisColorMode": "text",
+              "axisLabel": "",
+              "axisPlacement": "auto",
+              "barAlignment": 0,
+              "barWidthFactor": 0.6,
+              "drawStyle": "line",
+              "fillOpacity": 0,
+              "gradientMode": "none",
+              "hideFrom": {
+                "legend": false,
+                "tooltip": false,
+                "viz": false
+              },
+              "insertNulls": false,
+              "lineInterpolation": "linear",
+              "lineWidth": 1,
+              "pointSize": 5,
+              "scaleDistribution": {
+                "type": "linear"
+              },
+              "showPoints": "auto",
+              "spanNulls": false,
+              "stacking": {
+                "group": "A",
+                "mode": "none"
+              },
+              "thresholdsStyle": {
+                "mode": "off"
+              }
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            }
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 8,
+          "w": 12,
+          "x": 0,
+          "y": 0
+        },
+        "id": 1,
+        "options": {
+          "legend": {
+            "calcs": [],
+            "displayMode": "list",
+            "placement": "bottom",
+            "showLegend": true
+          },
+          "tooltip": {
+            "mode": "single",
+            "sort": "none"
+          }
+        },
+        "pluginVersion": "11.4.0",
+        "targets": [
+          {
+            "datasource": {
+              "type": "grafana-clickhouse-datasource",
+              "uid": "edv0la8qpou80d"
+            },
+            "editorType": "sql",
+            "format": 0,
+            "meta": {
+              "builderOptions": {
+                "columns": [],
+                "database": "",
+                "limit": 1000,
+                "mode": "list",
+                "queryType": "table",
+                "table": ""
+              }
+            },
+            "pluginVersion": "4.3.2",
+            "queryType": "timeseries",
+            "rawSql": "SELECT \n  toStartOfInterval(event_time, INTERVAL 60 SECOND) AS time,  -- Rounding to 60 seconds (modify as needed)\n  avg(metric) AS value\nFROM (\n  SELECT \n    event_time, \n    sum(ProfileEvent_Query) AS metric \n  FROM \n    clusterAllReplicas(default, merge('system', '^metric_log'))\n  WHERE \n    event_date >= toDate(now() - 3600)  -- Filter to the last 3600 seconds (adjust as needed)\n    AND event_time >= now() - 3600\n  GROUP BY \n    event_time\n)\nGROUP BY \n  time\nORDER BY \n  time WITH FILL STEP 60  -- Fill in missing intervals with a step size of 60 seconds\nSETTINGS \n  skip_unavailable_shards = 1\n",
+            "refId": "A"
+          }
+        ],
+        "title": "Queries/second",
+        "type": "timeseries"
+      },
+      {
+        "datasource": {
+          "type": "grafana-clickhouse-datasource",
+          "uid": "edv0la8qpou80d"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            },
+            "custom": {
+              "axisBorderShow": false,
+              "axisCenteredZero": false,
+              "axisColorMode": "text",
+              "axisLabel": "",
+              "axisPlacement": "auto",
+              "barAlignment": 0,
+              "barWidthFactor": 0.6,
+              "drawStyle": "line",
+              "fillOpacity": 0,
+              "gradientMode": "none",
+              "hideFrom": {
+                "legend": false,
+                "tooltip": false,
+                "viz": false
+              },
+              "insertNulls": false,
+              "lineInterpolation": "linear",
+              "lineWidth": 1,
+              "pointSize": 5,
+              "scaleDistribution": {
+                "type": "linear"
+              },
+              "showPoints": "auto",
+              "spanNulls": false,
+              "stacking": {
+                "group": "A",
+                "mode": "none"
+              },
+              "thresholdsStyle": {
+                "mode": "off"
+              }
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            }
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 8,
+          "w": 12,
+          "x": 12,
+          "y": 0
+        },
+        "id": 2,
+        "options": {
+          "legend": {
+            "calcs": [],
+            "displayMode": "list",
+            "placement": "bottom",
+            "showLegend": true
+          },
+          "tooltip": {
+            "mode": "single",
+            "sort": "none"
+          }
+        },
+        "pluginVersion": "11.4.0",
+        "targets": [
+          {
+            "datasource": {
+              "type": "grafana-clickhouse-datasource",
+              "uid": "edv0la8qpou80d"
+            },
+            "editorType": "sql",
+            "format": 1,
+            "meta": {
+              "builderOptions": {
+                "columns": [],
+                "database": "",
+                "limit": 1000,
+                "mode": "list",
+                "queryType": "table",
+                "table": ""
+              }
+            },
+            "pluginVersion": "4.3.2",
+            "queryType": "table",
+            "rawSql": "SELECT \n  toStartOfInterval(event_time, INTERVAL 60 SECOND) AS time,  -- Replace 60 with your desired rounding interval\n  avg(metric) / 1000000 AS value\nFROM (\n  SELECT \n    event_time, \n    sum(ProfileEvent_OSCPUVirtualTimeMicroseconds) AS metric \n  FROM \n    clusterAllReplicas(default, merge('system', '^metric_log'))\n  WHERE \n    event_date >= toDate(now() - 3600)  -- Replace 3600 with your desired time range in seconds\n    AND event_time >= now() - 3600\n  GROUP BY \n    event_time\n)\nGROUP BY \n  time\nORDER BY \n  time WITH FILL STEP 60  -- Replace 60 with your rounding interval\nSETTINGS \n  skip_unavailable_shards = 1\n",
+            "refId": "A"
+          }
+        ],
+        "title": "CPU Usage (cores)",
+        "type": "timeseries"
+      },
+      {
+        "datasource": {
+          "type": "grafana-clickhouse-datasource",
+          "uid": "edv0la8qpou80d"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            },
+            "custom": {
+              "axisBorderShow": false,
+              "axisCenteredZero": false,
+              "axisColorMode": "text",
+              "axisLabel": "",
+              "axisPlacement": "auto",
+              "barAlignment": 0,
+              "barWidthFactor": 0.6,
+              "drawStyle": "line",
+              "fillOpacity": 0,
+              "gradientMode": "none",
+              "hideFrom": {
+                "legend": false,
+                "tooltip": false,
+                "viz": false
+              },
+              "insertNulls": false,
+              "lineInterpolation": "linear",
+              "lineWidth": 1,
+              "pointSize": 5,
+              "scaleDistribution": {
+                "type": "linear"
+              },
+              "showPoints": "auto",
+              "spanNulls": false,
+              "stacking": {
+                "group": "A",
+                "mode": "none"
+              },
+              "thresholdsStyle": {
+                "mode": "off"
+              }
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            }
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 8,
+          "w": 12,
+          "x": 0,
+          "y": 8
+        },
+        "id": 3,
+        "options": {
+          "legend": {
+            "calcs": [],
+            "displayMode": "list",
+            "placement": "bottom",
+            "showLegend": true
+          },
+          "tooltip": {
+            "mode": "single",
+            "sort": "none"
+          }
+        },
+        "pluginVersion": "11.4.0",
+        "targets": [
+          {
+            "datasource": {
+              "type": "grafana-clickhouse-datasource",
+              "uid": "edv0la8qpou80d"
+            },
+            "editorType": "sql",
+            "format": 1,
+            "meta": {
+              "builderOptions": {
+                "columns": [],
+                "database": "",
+                "limit": 1000,
+                "mode": "list",
+                "queryType": "table",
+                "table": ""
+              }
+            },
+            "pluginVersion": "4.3.2",
+            "queryType": "table",
+            "rawSql": "SELECT \n  toStartOfInterval(event_time, INTERVAL 60 SECOND) AS time,  -- Replace 60 with your desired rounding interval\n  avg(metric) AS value\nFROM (\n  SELECT \n    event_time, \n    sum(CurrentMetric_Query) AS metric \n  FROM \n    clusterAllReplicas(default, merge('system', '^metric_log'))\n  WHERE \n    event_date >= toDate(now() - 3600)  -- Replace 3600 with your desired time range in seconds\n    AND event_time >= now() - 3600\n  GROUP BY \n    event_time\n)\nGROUP BY \n  time\nORDER BY \n  time WITH FILL STEP 60  -- Replace 60 with your rounding interval\nSETTINGS \n  skip_unavailable_shards = 1\n",
+            "refId": "A"
+          }
+        ],
+        "title": "Queries Running",
+        "type": "timeseries"
+      },
+      {
+        "datasource": {
+          "type": "grafana-clickhouse-datasource",
+          "uid": "edv0la8qpou80d"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            },
+            "custom": {
+              "axisBorderShow": false,
+              "axisCenteredZero": false,
+              "axisColorMode": "text",
+              "axisLabel": "",
+              "axisPlacement": "auto",
+              "barAlignment": 0,
+              "barWidthFactor": 0.6,
+              "drawStyle": "line",
+              "fillOpacity": 0,
+              "gradientMode": "none",
+              "hideFrom": {
+                "legend": false,
+                "tooltip": false,
+                "viz": false
+              },
+              "insertNulls": false,
+              "lineInterpolation": "linear",
+              "lineWidth": 1,
+              "pointSize": 5,
+              "scaleDistribution": {
+                "type": "linear"
+              },
+              "showPoints": "auto",
+              "spanNulls": false,
+              "stacking": {
+                "group": "A",
+                "mode": "none"
+              },
+              "thresholdsStyle": {
+                "mode": "off"
+              }
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            }
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 8,
+          "w": 12,
+          "x": 12,
+          "y": 8
+        },
+        "id": 4,
+        "options": {
+          "legend": {
+            "calcs": [],
+            "displayMode": "list",
+            "placement": "bottom",
+            "showLegend": true
+          },
+          "tooltip": {
+            "mode": "single",
+            "sort": "none"
+          }
+        },
+        "pluginVersion": "11.4.0",
+        "targets": [
+          {
+            "datasource": {
+              "type": "grafana-clickhouse-datasource",
+              "uid": "edv0la8qpou80d"
+            },
+            "editorType": "sql",
+            "format": 1,
+            "meta": {
+              "builderOptions": {
+                "columns": [],
+                "database": "",
+                "limit": 1000,
+                "mode": "list",
+                "queryType": "table",
+                "table": ""
+              }
+            },
+            "pluginVersion": "4.3.2",
+            "queryType": "table",
+            "rawSql": "SELECT \n  toStartOfInterval(event_time, INTERVAL 60 SECOND) AS time,  -- Replace 60 with your desired rounding interval\n  avg(metric) AS value\nFROM (\n  SELECT \n    event_time, \n    sum(CurrentMetric_Merge) AS metric \n  FROM \n    clusterAllReplicas(default, merge('system', '^metric_log'))\n  WHERE \n    event_date >= toDate(now() - 3600)  -- Replace 3600 with your desired time range in seconds\n    AND event_time >= now() - 3600\n  GROUP BY \n    event_time\n)\nGROUP BY \n  time\nORDER BY \n  time WITH FILL STEP 60  -- Replace 60 with your rounding interval\nSETTINGS \n  skip_unavailable_shards = 1\n",
+            "refId": "A"
+          }
+        ],
+        "title": "Merges Running",
+        "type": "timeseries"
+      },
+      {
+        "datasource": {
+          "type": "grafana-clickhouse-datasource",
+          "uid": "edv0la8qpou80d"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            },
+            "custom": {
+              "axisBorderShow": false,
+              "axisCenteredZero": false,
+              "axisColorMode": "text",
+              "axisLabel": "",
+              "axisPlacement": "auto",
+              "barAlignment": 0,
+              "barWidthFactor": 0.6,
+              "drawStyle": "line",
+              "fillOpacity": 0,
+              "gradientMode": "none",
+              "hideFrom": {
+                "legend": false,
+                "tooltip": false,
+                "viz": false
+              },
+              "insertNulls": false,
+              "lineInterpolation": "linear",
+              "lineWidth": 1,
+              "pointSize": 5,
+              "scaleDistribution": {
+                "type": "linear"
+              },
+              "showPoints": "auto",
+              "spanNulls": false,
+              "stacking": {
+                "group": "A",
+                "mode": "none"
+              },
+              "thresholdsStyle": {
+                "mode": "off"
+              }
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            }
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 8,
+          "w": 12,
+          "x": 0,
+          "y": 16
+        },
+        "id": 5,
+        "options": {
+          "legend": {
+            "calcs": [],
+            "displayMode": "list",
+            "placement": "bottom",
+            "showLegend": true
+          },
+          "tooltip": {
+            "mode": "single",
+            "sort": "none"
+          }
+        },
+        "pluginVersion": "11.4.0",
+        "targets": [
+          {
+            "datasource": {
+              "type": "grafana-clickhouse-datasource",
+              "uid": "edv0la8qpou80d"
+            },
+            "editorType": "sql",
+            "format": 1,
+            "meta": {
+              "builderOptions": {
+                "columns": [],
+                "database": "",
+                "limit": 1000,
+                "mode": "list",
+                "queryType": "table",
+                "table": ""
+              }
+            },
+            "pluginVersion": "4.3.2",
+            "queryType": "table",
+            "rawSql": "SELECT \n  toStartOfInterval(event_time, INTERVAL 60 SECOND) AS time,  -- Replace 60 with your desired rounding interval\n  avg(metric) AS value\nFROM (\n  SELECT \n    event_time, \n    sum(ProfileEvent_SelectedBytes) AS metric \n  FROM \n    clusterAllReplicas(default, merge('system', '^metric_log'))\n  WHERE \n    event_date >= toDate(now() - 3600)  -- Replace 3600 with your desired time range in seconds\n    AND event_time >= now() - 3600\n  GROUP BY \n    event_time\n)\nGROUP BY \n  time\nORDER BY \n  time WITH FILL STEP 60  -- Replace 60 with your rounding interval\nSETTINGS \n  skip_unavailable_shards = 1\n",
+            "refId": "A"
+          }
+        ],
+        "title": "Selected Bytes/second",
+        "type": "timeseries"
+      },
+      {
+        "datasource": {
+          "type": "grafana-clickhouse-datasource",
+          "uid": "edv0la8qpou80d"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            },
+            "custom": {
+              "axisBorderShow": false,
+              "axisCenteredZero": false,
+              "axisColorMode": "text",
+              "axisLabel": "",
+              "axisPlacement": "auto",
+              "barAlignment": 0,
+              "barWidthFactor": 0.6,
+              "drawStyle": "line",
+              "fillOpacity": 0,
+              "gradientMode": "none",
+              "hideFrom": {
+                "legend": false,
+                "tooltip": false,
+                "viz": false
+              },
+              "insertNulls": false,
+              "lineInterpolation": "linear",
+              "lineWidth": 1,
+              "pointSize": 5,
+              "scaleDistribution": {
+                "type": "linear"
+              },
+              "showPoints": "auto",
+              "spanNulls": false,
+              "stacking": {
+                "group": "A",
+                "mode": "none"
+              },
+              "thresholdsStyle": {
+                "mode": "off"
+              }
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            }
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 8,
+          "w": 12,
+          "x": 12,
+          "y": 16
+        },
+        "id": 6,
+        "options": {
+          "legend": {
+            "calcs": [],
+            "displayMode": "list",
+            "placement": "bottom",
+            "showLegend": true
+          },
+          "tooltip": {
+            "mode": "single",
+            "sort": "none"
+          }
+        },
+        "pluginVersion": "11.4.0",
+        "targets": [
+          {
+            "datasource": {
+              "type": "grafana-clickhouse-datasource",
+              "uid": "edv0la8qpou80d"
+            },
+            "editorType": "sql",
+            "format": 1,
+            "meta": {
+              "builderOptions": {
+                "columns": [],
+                "database": "",
+                "limit": 1000,
+                "mode": "list",
+                "queryType": "table",
+                "table": ""
+              }
+            },
+            "pluginVersion": "4.3.2",
+            "queryType": "table",
+            "rawSql": "SELECT \n  toStartOfInterval(event_time, INTERVAL 60 SECOND) AS time,  -- Replace 60 with your desired rounding interval\n  avg(metric) AS value\nFROM (\n  SELECT \n    event_time, \n    sum(ProfileEvent_OSIOWaitMicroseconds) / 1000000 AS metric  -- Convert microseconds to seconds\n  FROM \n    clusterAllReplicas(default, merge('system', '^metric_log'))\n  WHERE \n    event_date >= toDate(now() - 3600)  -- Replace 3600 with your desired time range in seconds\n    AND event_time >= now() - 3600\n  GROUP BY \n    event_time\n)\nGROUP BY \n  time\nORDER BY \n  time WITH FILL STEP 60  -- Replace 60 with your rounding interval\nSETTINGS \n  skip_unavailable_shards = 1\n",
+            "refId": "A"
+          }
+        ],
+        "title": "IO Wait (local fs)",
+        "type": "timeseries"
+      },
+      {
+        "datasource": {
+          "type": "grafana-clickhouse-datasource",
+          "uid": "edv0la8qpou80d"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            },
+            "custom": {
+              "axisBorderShow": false,
+              "axisCenteredZero": false,
+              "axisColorMode": "text",
+              "axisLabel": "",
+              "axisPlacement": "auto",
+              "barAlignment": 0,
+              "barWidthFactor": 0.6,
+              "drawStyle": "line",
+              "fillOpacity": 0,
+              "gradientMode": "none",
+              "hideFrom": {
+                "legend": false,
+                "tooltip": false,
+                "viz": false
+              },
+              "insertNulls": false,
+              "lineInterpolation": "linear",
+              "lineWidth": 1,
+              "pointSize": 5,
+              "scaleDistribution": {
+                "type": "linear"
+              },
+              "showPoints": "auto",
+              "spanNulls": false,
+              "stacking": {
+                "group": "A",
+                "mode": "none"
+              },
+              "thresholdsStyle": {
+                "mode": "off"
+              }
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            }
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 8,
+          "w": 12,
+          "x": 0,
+          "y": 24
+        },
+        "id": 7,
+        "options": {
+          "legend": {
+            "calcs": [],
+            "displayMode": "list",
+            "placement": "bottom",
+            "showLegend": true
+          },
+          "tooltip": {
+            "mode": "single",
+            "sort": "none"
+          }
+        },
+        "pluginVersion": "11.4.0",
+        "targets": [
+          {
+            "datasource": {
+              "type": "grafana-clickhouse-datasource",
+              "uid": "edv0la8qpou80d"
+            },
+            "editorType": "sql",
+            "format": 1,
+            "meta": {
+              "builderOptions": {
+                "columns": [],
+                "database": "",
+                "limit": 1000,
+                "mode": "list",
+                "queryType": "table",
+                "table": ""
+              }
+            },
+            "pluginVersion": "4.3.2",
+            "queryType": "table",
+            "rawSql": "SELECT \n  toStartOfInterval(event_time, INTERVAL 60 SECOND) AS time,  -- Replace 60 with your desired rounding interval\n  avg(metric) AS value\nFROM (\n  SELECT \n    event_time, \n    sum(ProfileEvent_ReadBufferFromS3Microseconds) / 1000000 AS metric  -- Convert microseconds to seconds\n  FROM \n    clusterAllReplicas(default, merge('system', '^metric_log'))\n  WHERE \n    event_date >= toDate(now() - 3600)  -- Replace 3600 with your desired time range in seconds\n    AND event_time >= now() - 3600\n  GROUP BY \n    event_time\n)\nGROUP BY \n  time\nORDER BY \n  time WITH FILL STEP 60  -- Replace 60 with your rounding interval\nSETTINGS \n  skip_unavailable_shards = 1\n",
+            "refId": "A"
+          }
+        ],
+        "title": "S3 read wait",
+        "type": "timeseries"
+      },
+      {
+        "datasource": {
+          "type": "grafana-clickhouse-datasource",
+          "uid": "edv0la8qpou80d"
+        },
+        "description": "",
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            },
+            "custom": {
+              "axisBorderShow": false,
+              "axisCenteredZero": false,
+              "axisColorMode": "text",
+              "axisLabel": "",
+              "axisPlacement": "auto",
+              "barAlignment": 0,
+              "barWidthFactor": 0.6,
+              "drawStyle": "line",
+              "fillOpacity": 0,
+              "gradientMode": "none",
+              "hideFrom": {
+                "legend": false,
+                "tooltip": false,
+                "viz": false
+              },
+              "insertNulls": false,
+              "lineInterpolation": "linear",
+              "lineWidth": 1,
+              "pointSize": 5,
+              "scaleDistribution": {
+                "type": "linear"
+              },
+              "showPoints": "auto",
+              "spanNulls": false,
+              "stacking": {
+                "group": "A",
+                "mode": "none"
+              },
+              "thresholdsStyle": {
+                "mode": "off"
+              }
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            }
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 8,
+          "w": 12,
+          "x": 12,
+          "y": 24
+        },
+        "id": 8,
+        "options": {
+          "legend": {
+            "calcs": [],
+            "displayMode": "list",
+            "placement": "bottom",
+            "showLegend": true
+          },
+          "tooltip": {
+            "mode": "single",
+            "sort": "none"
+          }
+        },
+        "pluginVersion": "11.4.0",
+        "targets": [
+          {
+            "datasource": {
+              "type": "grafana-clickhouse-datasource",
+              "uid": "edv0la8qpou80d"
+            },
+            "editorType": "sql",
+            "format": 1,
+            "meta": {
+              "builderOptions": {
+                "columns": [],
+                "database": "",
+                "limit": 1000,
+                "mode": "list",
+                "queryType": "table",
+                "table": ""
+              }
+            },
+            "pluginVersion": "4.3.2",
+            "queryType": "table",
+            "rawSql": "SELECT \n  toStartOfInterval(event_time, INTERVAL 60 SECOND) AS time,  -- Replace 60 with your desired rounding interval\n  avg(metric) AS value\nFROM (\n  SELECT \n    event_time, \n    sum(ProfileEvent_ReadBufferFromS3RequestsErrors) AS metric \n  FROM \n    clusterAllReplicas(default, merge('system', '^metric_log'))\n  WHERE \n    event_date >= toDate(now() - 3600)  -- Replace 3600 with your desired time range in seconds\n    AND event_time >= now() - 3600\n  GROUP BY \n    event_time\n)\nGROUP BY \n  time\nORDER BY \n  time WITH FILL STEP 60  -- Replace 60 with your rounding interval\nSETTINGS \n  skip_unavailable_shards = 1\n",
+            "refId": "A"
+          }
+        ],
+        "title": "S3 read errors/sec",
+        "type": "timeseries"
+      },
+      {
+        "datasource": {
+          "type": "grafana-clickhouse-datasource",
+          "uid": "edv0la8qpou80d"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            },
+            "custom": {
+              "axisBorderShow": false,
+              "axisCenteredZero": false,
+              "axisColorMode": "text",
+              "axisLabel": "",
+              "axisPlacement": "auto",
+              "barAlignment": 0,
+              "drawStyle": "line",
+              "fillOpacity": 0,
+              "gradientMode": "none",
+              "hideFrom": {
+                "legend": false,
+                "tooltip": false,
+                "viz": false
+              },
+              "insertNulls": false,
+              "lineInterpolation": "linear",
+              "lineWidth": 1,
+              "pointSize": 5,
+              "scaleDistribution": {
+                "type": "linear"
+              },
+              "showPoints": "auto",
+              "spanNulls": false,
+              "stacking": {
+                "group": "A",
+                "mode": "none"
+              },
+              "thresholdsStyle": {
+                "mode": "off"
+              }
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green"
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            }
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 8,
+          "w": 12,
+          "x": 0,
+          "y": 32
+        },
+        "id": 9,
+        "options": {
+          "legend": {
+            "calcs": [],
+            "displayMode": "list",
+            "placement": "bottom",
+            "showLegend": true
+          },
+          "tooltip": {
+            "mode": "single",
+            "sort": "none"
+          }
+        },
+        "targets": [
+          {
+            "datasource": {
+              "type": "grafana-clickhouse-datasource",
+              "uid": "edv0la8qpou80d"
+            },
+            "editorType": "sql",
+            "format": 1,
+            "meta": {
+              "builderOptions": {
+                "columns": [],
+                "database": "",
+                "limit": 1000,
+                "mode": "list",
+                "queryType": "table",
+                "table": ""
+              }
+            },
+            "pluginVersion": "4.3.2",
+            "queryType": "table",
+            "rawSql": "SELECT \n  toStartOfInterval(event_time, INTERVAL 60 SECOND) AS time,  -- Replace 60 with your desired rounding interval\n  avg(metric) AS value\nFROM (\n  SELECT \n    event_time, \n    sum(ProfileEvent_OSCPUWaitMicroseconds) / 1000000 AS metric  -- Convert microseconds to seconds\n  FROM \n    clusterAllReplicas(default, merge('system', '^metric_log'))\n  WHERE \n    event_date >= toDate(now() - 3600)  -- Replace 3600 with your desired time range in seconds\n    AND event_time >= now() - 3600\n  GROUP BY \n    event_time\n)\nGROUP BY \n  time\nORDER BY \n  time WITH FILL STEP 60  -- Replace 60 with your rounding interval\nSETTINGS \n  skip_unavailable_shards = 1\n",
+            "refId": "A"
+          }
+        ],
+        "title": "CPU Wait",
+        "type": "timeseries"
+      },
+      {
+        "datasource": {
+          "type": "grafana-clickhouse-datasource",
+          "uid": "edv0la8qpou80d"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            },
+            "custom": {
+              "axisBorderShow": false,
+              "axisCenteredZero": false,
+              "axisColorMode": "text",
+              "axisLabel": "",
+              "axisPlacement": "auto",
+              "barAlignment": 0,
+              "drawStyle": "line",
+              "fillOpacity": 0,
+              "gradientMode": "none",
+              "hideFrom": {
+                "legend": false,
+                "tooltip": false,
+                "viz": false
+              },
+              "insertNulls": false,
+              "lineInterpolation": "linear",
+              "lineWidth": 1,
+              "pointSize": 5,
+              "scaleDistribution": {
+                "type": "linear"
+              },
+              "showPoints": "auto",
+              "spanNulls": false,
+              "stacking": {
+                "group": "A",
+                "mode": "none"
+              },
+              "thresholdsStyle": {
+                "mode": "off"
+              }
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green"
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            }
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 8,
+          "w": 12,
+          "x": 12,
+          "y": 32
+        },
+        "id": 10,
+        "options": {
+          "legend": {
+            "calcs": [],
+            "displayMode": "list",
+            "placement": "bottom",
+            "showLegend": true
+          },
+          "tooltip": {
+            "mode": "single",
+            "sort": "none"
+          }
+        },
+        "targets": [
+          {
+            "datasource": {
+              "type": "grafana-clickhouse-datasource",
+              "uid": "edv0la8qpou80d"
+            },
+            "editorType": "sql",
+            "format": 1,
+            "meta": {
+              "builderOptions": {
+                "columns": [],
+                "database": "",
+                "limit": 1000,
+                "mode": "list",
+                "queryType": "table",
+                "table": ""
+              }
+            },
+            "pluginVersion": "4.3.2",
+            "queryType": "table",
+            "rawSql": "SELECT \n  toStartOfInterval(event_time, INTERVAL 60 SECOND) AS time,  -- Replace 60 with your desired rounding interval\n  avg(value) AS avg_value\nFROM \n  clusterAllReplicas(default, merge('system', '^asynchronous_metric_log'))\nWHERE \n  event_date >= toDate(now() - 3600)  -- Replace 3600 with your desired time range in seconds\n  AND event_time >= now() - 3600\n  AND metric = 'OSUserTimeNormalized'\nGROUP BY \n  time\nORDER BY \n  time WITH FILL STEP 60  -- Replace 60 with your rounding interval\nSETTINGS \n  skip_unavailable_shards = 1\n",
+            "refId": "A"
+          }
+        ],
+        "title": "OS CPU Usage (Userspace, normalized)",
+        "type": "timeseries"
+      },
+      {
+        "datasource": {
+          "type": "grafana-clickhouse-datasource",
+          "uid": "edv0la8qpou80d"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            },
+            "custom": {
+              "axisBorderShow": false,
+              "axisCenteredZero": false,
+              "axisColorMode": "text",
+              "axisLabel": "",
+              "axisPlacement": "auto",
+              "barAlignment": 0,
+              "drawStyle": "line",
+              "fillOpacity": 0,
+              "gradientMode": "none",
+              "hideFrom": {
+                "legend": false,
+                "tooltip": false,
+                "viz": false
+              },
+              "insertNulls": false,
+              "lineInterpolation": "linear",
+              "lineWidth": 1,
+              "pointSize": 5,
+              "scaleDistribution": {
+                "type": "linear"
+              },
+              "showPoints": "auto",
+              "spanNulls": false,
+              "stacking": {
+                "group": "A",
+                "mode": "none"
+              },
+              "thresholdsStyle": {
+                "mode": "off"
+              }
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green"
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            }
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 8,
+          "w": 12,
+          "x": 0,
+          "y": 40
+        },
+        "id": 19,
+        "options": {
+          "legend": {
+            "calcs": [],
+            "displayMode": "list",
+            "placement": "bottom",
+            "showLegend": true
+          },
+          "tooltip": {
+            "mode": "single",
+            "sort": "none"
+          }
+        },
+        "targets": [
+          {
+            "datasource": {
+              "type": "grafana-clickhouse-datasource",
+              "uid": "edv0la8qpou80d"
+            },
+            "editorType": "sql",
+            "format": 1,
+            "meta": {
+              "builderOptions": {
+                "columns": [],
+                "database": "",
+                "limit": 1000,
+                "mode": "list",
+                "queryType": "table",
+                "table": ""
+              }
+            },
+            "pluginVersion": "4.3.2",
+            "queryType": "table",
+            "rawSql": "SELECT \n  toStartOfInterval(event_time, INTERVAL 60 SECOND) AS time,  -- Replace 60 with your desired rounding interval\n  max(value) AS max_value\nFROM \n  clusterAllReplicas(default, merge('system', '^asynchronous_metric_log'))\nWHERE \n  event_date >= toDate(now() - 3600)  -- Replace 3600 with your desired time range in seconds\n  AND event_time >= now() - 3600\n  AND metric = 'MaxPartCountForPartition'\nGROUP BY \n  time\nORDER BY \n  time WITH FILL STEP 60  -- Replace 60 with your rounding interval\nSETTINGS \n  skip_unavailable_shards = 1",
+            "refId": "A"
+          }
+        ],
+        "title": "Max Parts For Partition",
+        "type": "timeseries"
+      },
+      {
+        "datasource": {
+          "type": "grafana-clickhouse-datasource",
+          "uid": "edv0la8qpou80d"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            },
+            "custom": {
+              "axisBorderShow": false,
+              "axisCenteredZero": false,
+              "axisColorMode": "text",
+              "axisLabel": "",
+              "axisPlacement": "auto",
+              "barAlignment": 0,
+              "drawStyle": "line",
+              "fillOpacity": 0,
+              "gradientMode": "none",
+              "hideFrom": {
+                "legend": false,
+                "tooltip": false,
+                "viz": false
+              },
+              "insertNulls": false,
+              "lineInterpolation": "linear",
+              "lineWidth": 1,
+              "pointSize": 5,
+              "scaleDistribution": {
+                "type": "linear"
+              },
+              "showPoints": "auto",
+              "spanNulls": false,
+              "stacking": {
+                "group": "A",
+                "mode": "none"
+              },
+              "thresholdsStyle": {
+                "mode": "off"
+              }
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green"
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            }
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 8,
+          "w": 12,
+          "x": 12,
+          "y": 40
+        },
+        "id": 12,
+        "options": {
+          "legend": {
+            "calcs": [],
+            "displayMode": "list",
+            "placement": "bottom",
+            "showLegend": true
+          },
+          "tooltip": {
+            "mode": "single",
+            "sort": "none"
+          }
+        },
+        "targets": [
+          {
+            "datasource": {
+              "type": "grafana-clickhouse-datasource",
+              "uid": "edv0la8qpou80d"
+            },
+            "editorType": "sql",
+            "format": 1,
+            "meta": {
+              "builderOptions": {
+                "columns": [],
+                "database": "",
+                "limit": 1000,
+                "mode": "list",
+                "queryType": "table",
+                "table": ""
+              }
+            },
+            "pluginVersion": "4.3.2",
+            "queryType": "table",
+            "rawSql": "SELECT \n  toStartOfInterval(event_time, INTERVAL 60 SECOND) AS time,  -- Replace 60 with your desired rounding interval\n  avg(metric) AS avg_metric\nFROM (\n  SELECT \n    event_time, \n    sum(ProfileEvent_OSReadBytes) AS metric \n  FROM \n    clusterAllReplicas(default, merge('system', '^metric_log'))\n  WHERE \n    event_date >= toDate(now() - 3600)  -- Replace 3600 with your desired time range in seconds\n    AND event_time >= now() - 3600\n  GROUP BY \n    event_time\n)\nGROUP BY \n  time\nORDER BY \n  time WITH FILL STEP 60  -- Replace 60 with your rounding interval\nSETTINGS \n  skip_unavailable_shards = 1\n",
+            "refId": "A"
+          }
+        ],
+        "title": "Read From Disk (bytes/sec)",
+        "type": "timeseries"
+      },
+      {
+        "datasource": {
+          "type": "grafana-clickhouse-datasource",
+          "uid": "edv0la8qpou80d"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            },
+            "custom": {
+              "axisBorderShow": false,
+              "axisCenteredZero": false,
+              "axisColorMode": "text",
+              "axisLabel": "",
+              "axisPlacement": "auto",
+              "barAlignment": 0,
+              "drawStyle": "line",
+              "fillOpacity": 0,
+              "gradientMode": "none",
+              "hideFrom": {
+                "legend": false,
+                "tooltip": false,
+                "viz": false
+              },
+              "insertNulls": false,
+              "lineInterpolation": "linear",
+              "lineWidth": 1,
+              "pointSize": 5,
+              "scaleDistribution": {
+                "type": "linear"
+              },
+              "showPoints": "auto",
+              "spanNulls": false,
+              "stacking": {
+                "group": "A",
+                "mode": "none"
+              },
+              "thresholdsStyle": {
+                "mode": "off"
+              }
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green"
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            }
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 8,
+          "w": 12,
+          "x": 0,
+          "y": 48
+        },
+        "id": 18,
+        "options": {
+          "legend": {
+            "calcs": [],
+            "displayMode": "list",
+            "placement": "bottom",
+            "showLegend": true
+          },
+          "tooltip": {
+            "mode": "single",
+            "sort": "none"
+          }
+        },
+        "targets": [
+          {
+            "datasource": {
+              "type": "grafana-clickhouse-datasource",
+              "uid": "edv0la8qpou80d"
+            },
+            "editorType": "sql",
+            "format": 1,
+            "meta": {
+              "builderOptions": {
+                "columns": [],
+                "database": "",
+                "limit": 1000,
+                "mode": "list",
+                "queryType": "table",
+                "table": ""
+              }
+            },
+            "pluginVersion": "4.3.2",
+            "queryType": "table",
+            "rawSql": "SELECT \n  toStartOfInterval(event_time, INTERVAL 60 SECOND) AS time,  -- Replace 60 with your desired rounding interval\n  max(value) AS max_value\nFROM \n  clusterAllReplicas(default, merge('system', '^asynchronous_metric_log'))\nWHERE \n  event_date >= toDate(now() - 3600)  -- Replace 3600 with your desired time range in seconds\n  AND event_time >= now() - 3600\n  AND metric = 'TotalPartsOfMergeTreeTables'\nGROUP BY \n  time\nORDER BY \n  time WITH FILL STEP 60  -- Replace 60 with your rounding interval\nSETTINGS \n  skip_unavailable_shards = 1\n",
+            "refId": "A"
+          }
+        ],
+        "title": "Total MergeTree Parts",
+        "type": "timeseries"
+      },
+      {
+        "datasource": {
+          "type": "grafana-clickhouse-datasource",
+          "uid": "edv0la8qpou80d"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            },
+            "custom": {
+              "axisBorderShow": false,
+              "axisCenteredZero": false,
+              "axisColorMode": "text",
+              "axisLabel": "",
+              "axisPlacement": "auto",
+              "barAlignment": 0,
+              "drawStyle": "line",
+              "fillOpacity": 0,
+              "gradientMode": "none",
+              "hideFrom": {
+                "legend": false,
+                "tooltip": false,
+                "viz": false
+              },
+              "insertNulls": false,
+              "lineInterpolation": "linear",
+              "lineWidth": 1,
+              "pointSize": 5,
+              "scaleDistribution": {
+                "type": "linear"
+              },
+              "showPoints": "auto",
+              "spanNulls": false,
+              "stacking": {
+                "group": "A",
+                "mode": "none"
+              },
+              "thresholdsStyle": {
+                "mode": "off"
+              }
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green"
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            }
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 8,
+          "w": 12,
+          "x": 12,
+          "y": 48
+        },
+        "id": 14,
+        "options": {
+          "legend": {
+            "calcs": [],
+            "displayMode": "list",
+            "placement": "bottom",
+            "showLegend": true
+          },
+          "tooltip": {
+            "mode": "single",
+            "sort": "none"
+          }
+        },
+        "targets": [
+          {
+            "datasource": {
+              "type": "grafana-clickhouse-datasource",
+              "uid": "edv0la8qpou80d"
+            },
+            "editorType": "sql",
+            "format": 1,
+            "meta": {
+              "builderOptions": {
+                "columns": [],
+                "database": "",
+                "limit": 1000,
+                "mode": "list",
+                "queryType": "table",
+                "table": ""
+              }
+            },
+            "pluginVersion": "4.3.2",
+            "queryType": "table",
+            "rawSql": "SELECT \n  toStartOfInterval(event_time, INTERVAL 60 SECOND) AS time,  -- Replace 60 with your desired rounding interval\n  avg(metric) AS avg_metric\nFROM (\n  SELECT \n    event_time, \n    sum(CurrentMetric_MemoryTracking) AS metric \n  FROM \n    clusterAllReplicas(default, merge('system', '^metric_log'))\n  WHERE \n    event_date >= toDate(now() - 3600)  -- Replace 3600 with your desired time range in seconds\n    AND event_time >= now() - 3600\n  GROUP BY \n    event_time\n)\nGROUP BY \n  time\nORDER BY \n  time WITH FILL STEP 60  -- Replace 60 with your rounding interval\nSETTINGS \n  skip_unavailable_shards = 1\n",
+            "refId": "A"
+          }
+        ],
+        "title": "Memory (tracked, bytes)",
+        "type": "timeseries"
+      },
+      {
+        "datasource": {
+          "type": "grafana-clickhouse-datasource",
+          "uid": "edv0la8qpou80d"
+        },
+        "description": "Inserted Rows/sec",
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            },
+            "custom": {
+              "axisBorderShow": false,
+              "axisCenteredZero": false,
+              "axisColorMode": "text",
+              "axisLabel": "",
+              "axisPlacement": "auto",
+              "barAlignment": 0,
+              "drawStyle": "line",
+              "fillOpacity": 0,
+              "gradientMode": "none",
+              "hideFrom": {
+                "legend": false,
+                "tooltip": false,
+                "viz": false
+              },
+              "insertNulls": false,
+              "lineInterpolation": "linear",
+              "lineWidth": 1,
+              "pointSize": 5,
+              "scaleDistribution": {
+                "type": "linear"
+              },
+              "showPoints": "auto",
+              "spanNulls": false,
+              "stacking": {
+                "group": "A",
+                "mode": "none"
+              },
+              "thresholdsStyle": {
+                "mode": "off"
+              }
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green"
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            }
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 8,
+          "w": 12,
+          "x": 0,
+          "y": 56
+        },
+        "id": 17,
+        "options": {
+          "legend": {
+            "calcs": [],
+            "displayMode": "list",
+            "placement": "bottom",
+            "showLegend": true
+          },
+          "tooltip": {
+            "mode": "single",
+            "sort": "none"
+          }
+        },
+        "targets": [
+          {
+            "datasource": {
+              "type": "grafana-clickhouse-datasource",
+              "uid": "edv0la8qpou80d"
+            },
+            "editorType": "sql",
+            "format": 1,
+            "meta": {
+              "builderOptions": {
+                "columns": [],
+                "database": "",
+                "limit": 1000,
+                "mode": "list",
+                "queryType": "table",
+                "table": ""
+              }
+            },
+            "pluginVersion": "4.3.2",
+            "queryType": "table",
+            "rawSql": "SELECT \n  toStartOfInterval(event_time, INTERVAL 60 SECOND) AS time,  -- Replace 60 with your desired rounding interval\n  avg(metric) AS avg_metric\nFROM (\n  SELECT \n    event_time, \n    sum(ProfileEvent_InsertedRows) AS metric \n  FROM \n    clusterAllReplicas(default, merge('system', '^metric_log'))\n  WHERE \n    event_date >= toDate(now() - 3600)  -- Replace 3600 with your desired time range in seconds\n    AND event_time >= now() - 3600\n  GROUP BY \n    event_time\n)\nGROUP BY \n  time\nORDER BY \n  time WITH FILL STEP 60  -- Replace 60 with your rounding interval\nSETTINGS \n  skip_unavailable_shards = 1\n",
+            "refId": "A"
+          }
+        ],
+        "title": "Inserted Rows/sec",
+        "type": "timeseries"
+      },
+      {
+        "datasource": {
+          "type": "grafana-clickhouse-datasource",
+          "uid": "edv0la8qpou80d"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            },
+            "custom": {
+              "axisBorderShow": false,
+              "axisCenteredZero": false,
+              "axisColorMode": "text",
+              "axisLabel": "",
+              "axisPlacement": "auto",
+              "barAlignment": 0,
+              "drawStyle": "line",
+              "fillOpacity": 0,
+              "gradientMode": "none",
+              "hideFrom": {
+                "legend": false,
+                "tooltip": false,
+                "viz": false
+              },
+              "insertNulls": false,
+              "lineInterpolation": "linear",
+              "lineWidth": 1,
+              "pointSize": 5,
+              "scaleDistribution": {
+                "type": "linear"
+              },
+              "showPoints": "auto",
+              "spanNulls": false,
+              "stacking": {
+                "group": "A",
+                "mode": "none"
+              },
+              "thresholdsStyle": {
+                "mode": "off"
+              }
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green"
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            }
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 8,
+          "w": 12,
+          "x": 12,
+          "y": 56
+        },
+        "id": 16,
+        "options": {
+          "legend": {
+            "calcs": [],
+            "displayMode": "list",
+            "placement": "bottom",
+            "showLegend": true
+          },
+          "tooltip": {
+            "mode": "single",
+            "sort": "none"
+          }
+        },
+        "targets": [
+          {
+            "datasource": {
+              "type": "grafana-clickhouse-datasource",
+              "uid": "edv0la8qpou80d"
+            },
+            "editorType": "sql",
+            "format": 1,
+            "meta": {
+              "builderOptions": {
+                "columns": [],
+                "database": "",
+                "limit": 1000,
+                "mode": "list",
+                "queryType": "table",
+                "table": ""
+              }
+            },
+            "pluginVersion": "4.3.2",
+            "queryType": "table",
+            "rawSql": "SELECT \n  toStartOfInterval(event_time, INTERVAL 60 SECOND) AS time,  -- Replace 60 with your desired rounding interval\n  avg(metric) AS avg_metric\nFROM (\n  SELECT \n    event_time, \n    sum(ProfileEvent_SelectedRows) AS metric \n  FROM \n    clusterAllReplicas(default, merge('system', '^metric_log'))\n  WHERE \n    event_date >= toDate(now() - 3600)  -- Replace 3600 with your desired time range in seconds\n    AND event_time >= now() - 3600\n  GROUP BY \n    event_time\n)\nGROUP BY \n  time\nORDER BY \n  time WITH FILL STEP 60  -- Replace 60 with your rounding interval\nSETTINGS \n  skip_unavailable_shards = 1\n",
+            "refId": "A"
+          }
+        ],
+        "title": "Selected Rows/sec",
+        "type": "timeseries"
+      },
+      {
+        "datasource": {
+          "type": "grafana-clickhouse-datasource",
+          "uid": "edv0la8qpou80d"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            },
+            "custom": {
+              "axisBorderShow": false,
+              "axisCenteredZero": false,
+              "axisColorMode": "text",
+              "axisLabel": "",
+              "axisPlacement": "auto",
+              "barAlignment": 0,
+              "drawStyle": "line",
+              "fillOpacity": 0,
+              "gradientMode": "none",
+              "hideFrom": {
+                "legend": false,
+                "tooltip": false,
+                "viz": false
+              },
+              "insertNulls": false,
+              "lineInterpolation": "linear",
+              "lineWidth": 1,
+              "pointSize": 5,
+              "scaleDistribution": {
+                "type": "linear"
+              },
+              "showPoints": "auto",
+              "spanNulls": false,
+              "stacking": {
+                "group": "A",
+                "mode": "none"
+              },
+              "thresholdsStyle": {
+                "mode": "off"
+              }
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green"
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            }
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 8,
+          "w": 12,
+          "x": 0,
+          "y": 64
+        },
+        "id": 15,
+        "options": {
+          "legend": {
+            "calcs": [],
+            "displayMode": "list",
+            "placement": "bottom",
+            "showLegend": true
+          },
+          "tooltip": {
+            "mode": "single",
+            "sort": "none"
+          }
+        },
+        "targets": [
+          {
+            "datasource": {
+              "type": "grafana-clickhouse-datasource",
+              "uid": "edv0la8qpou80d"
+            },
+            "editorType": "sql",
+            "format": 1,
+            "meta": {
+              "builderOptions": {
+                "columns": [],
+                "database": "",
+                "limit": 1000,
+                "mode": "list",
+                "queryType": "table",
+                "table": ""
+              }
+            },
+            "pluginVersion": "4.3.2",
+            "queryType": "table",
+            "rawSql": "SELECT \n  toStartOfInterval(event_time, INTERVAL 60 SECOND) AS time,  -- Replace 60 with your desired rounding interval\n  avg(value) AS avg_value\nFROM (\n  SELECT \n    event_time, \n    sum(value) AS value\n  FROM \n    clusterAllReplicas(default, merge('system', '^asynchronous_metric_log'))\n  WHERE \n    event_date >= toDate(now() - 3600)  -- Replace 3600 with your desired time range in seconds\n    AND event_time >= now() - 3600\n    AND metric = 'LoadAverage15'\n  GROUP BY \n    event_time\n)\nGROUP BY \n  time\nORDER BY \n  time WITH FILL STEP 60  -- Replace 60 with your rounding interval\nSETTINGS \n  skip_unavailable_shards = 1\n",
+            "refId": "A"
+          }
+        ],
+        "title": "Load Average (15 minutes)",
+        "type": "timeseries"
+      },
+      {
+        "datasource": {
+          "type": "grafana-clickhouse-datasource",
+          "uid": "edv0la8qpou80d"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            },
+            "custom": {
+              "axisBorderShow": false,
+              "axisCenteredZero": false,
+              "axisColorMode": "text",
+              "axisLabel": "",
+              "axisPlacement": "auto",
+              "barAlignment": 0,
+              "drawStyle": "line",
+              "fillOpacity": 0,
+              "gradientMode": "none",
+              "hideFrom": {
+                "legend": false,
+                "tooltip": false,
+                "viz": false
+              },
+              "insertNulls": false,
+              "lineInterpolation": "linear",
+              "lineWidth": 1,
+              "pointSize": 5,
+              "scaleDistribution": {
+                "type": "linear"
+              },
+              "showPoints": "auto",
+              "spanNulls": false,
+              "stacking": {
+                "group": "A",
+                "mode": "none"
+              },
+              "thresholdsStyle": {
+                "mode": "off"
+              }
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green"
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            }
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 8,
+          "w": 12,
+          "x": 12,
+          "y": 64
+        },
+        "id": 11,
+        "options": {
+          "legend": {
+            "calcs": [],
+            "displayMode": "list",
+            "placement": "bottom",
+            "showLegend": true
+          },
+          "tooltip": {
+            "mode": "single",
+            "sort": "none"
+          }
+        },
+        "targets": [
+          {
+            "datasource": {
+              "type": "grafana-clickhouse-datasource",
+              "uid": "edv0la8qpou80d"
+            },
+            "editorType": "sql",
+            "format": 1,
+            "meta": {
+              "builderOptions": {
+                "columns": [],
+                "database": "",
+                "limit": 1000,
+                "mode": "list",
+                "queryType": "table",
+                "table": ""
+              }
+            },
+            "pluginVersion": "4.3.2",
+            "queryType": "table",
+            "rawSql": "SELECT \n  toStartOfInterval(event_time, INTERVAL 60 SECOND) AS time,  -- Replace 60 with your desired rounding interval\n  avg(value) AS avg_value\nFROM \n  clusterAllReplicas(default, merge('system', '^asynchronous_metric_log'))\nWHERE \n  event_date >= toDate(now() - 3600)  -- Replace 3600 with your desired time range in seconds\n  AND event_time >= now() - 3600\n  AND metric = 'OSSystemTimeNormalized'\nGROUP BY \n  time\nORDER BY \n  time WITH FILL STEP 60  -- Replace 60 with your rounding interval\nSETTINGS \n  skip_unavailable_shards = 1\n\n",
+            "refId": "A"
+          }
+        ],
+        "title": "OS CPU Usage (Kernel, normalized)",
+        "type": "timeseries"
+      },
+      {
+        "datasource": {
+          "type": "grafana-clickhouse-datasource",
+          "uid": "edv0la8qpou80d"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            },
+            "custom": {
+              "axisBorderShow": false,
+              "axisCenteredZero": false,
+              "axisColorMode": "text",
+              "axisLabel": "",
+              "axisPlacement": "auto",
+              "barAlignment": 0,
+              "drawStyle": "line",
+              "fillOpacity": 0,
+              "gradientMode": "none",
+              "hideFrom": {
+                "legend": false,
+                "tooltip": false,
+                "viz": false
+              },
+              "insertNulls": false,
+              "lineInterpolation": "linear",
+              "lineWidth": 1,
+              "pointSize": 5,
+              "scaleDistribution": {
+                "type": "linear"
+              },
+              "showPoints": "auto",
+              "spanNulls": false,
+              "stacking": {
+                "group": "A",
+                "mode": "none"
+              },
+              "thresholdsStyle": {
+                "mode": "off"
+              }
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green"
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            }
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 8,
+          "w": 12,
+          "x": 0,
+          "y": 72
+        },
+        "id": 13,
+        "options": {
+          "legend": {
+            "calcs": [],
+            "displayMode": "list",
+            "placement": "bottom",
+            "showLegend": true
+          },
+          "tooltip": {
+            "mode": "single",
+            "sort": "none"
+          }
+        },
+        "targets": [
+          {
+            "datasource": {
+              "type": "grafana-clickhouse-datasource",
+              "uid": "edv0la8qpou80d"
+            },
+            "editorType": "sql",
+            "format": 1,
+            "meta": {
+              "builderOptions": {
+                "columns": [],
+                "database": "",
+                "limit": 1000,
+                "mode": "list",
+                "queryType": "table",
+                "table": ""
+              }
+            },
+            "pluginVersion": "4.3.2",
+            "queryType": "table",
+            "rawSql": "SELECT \n  toStartOfInterval(event_time, INTERVAL 60 SECOND) AS time,  -- Replace 60 with your desired rounding interval\n  avg(metric) AS avg_metric\nFROM (\n  SELECT \n    event_time, \n    sum(ProfileEvent_OSReadChars) AS metric \n  FROM \n    clusterAllReplicas(default, merge('system', '^metric_log'))\n  WHERE \n    event_date >= toDate(now() - 3600)  -- Replace 3600 with your desired time range in seconds\n    AND event_time >= now() - 3600\n  GROUP BY \n    event_time\n)\nGROUP BY \n  time\nORDER BY \n  time WITH FILL STEP 60  -- Replace 60 with your rounding interval\nSETTINGS \n  skip_unavailable_shards = 1\n",
+            "refId": "A"
+          }
+        ],
+        "title": "Read From Filesystem (bytes/sec)",
+        "type": "timeseries"
+      },
+      {
+        "datasource": {
+          "type": "grafana-clickhouse-datasource",
+          "uid": "edv0la8qpou80d"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            },
+            "custom": {
+              "axisBorderShow": false,
+              "axisCenteredZero": false,
+              "axisColorMode": "text",
+              "axisLabel": "",
+              "axisPlacement": "auto",
+              "barAlignment": 0,
+              "drawStyle": "line",
+              "fillOpacity": 0,
+              "gradientMode": "none",
+              "hideFrom": {
+                "legend": false,
+                "tooltip": false,
+                "viz": false
+              },
+              "insertNulls": false,
+              "lineInterpolation": "linear",
+              "lineWidth": 1,
+              "pointSize": 5,
+              "scaleDistribution": {
+                "type": "linear"
+              },
+              "showPoints": "auto",
+              "spanNulls": false,
+              "stacking": {
+                "group": "A",
+                "mode": "none"
+              },
+              "thresholdsStyle": {
+                "mode": "off"
+              }
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green"
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            }
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 8,
+          "w": 12,
+          "x": 12,
+          "y": 72
+        },
+        "id": 20,
+        "options": {
+          "legend": {
+            "calcs": [],
+            "displayMode": "list",
+            "placement": "bottom",
+            "showLegend": true
+          },
+          "tooltip": {
+            "mode": "single",
+            "sort": "none"
+          }
+        },
+        "targets": [
+          {
+            "datasource": {
+              "type": "grafana-clickhouse-datasource",
+              "uid": "edv0la8qpou80d"
+            },
+            "editorType": "sql",
+            "format": 1,
+            "meta": {
+              "builderOptions": {
+                "columns": [],
+                "database": "",
+                "limit": 1000,
+                "mode": "list",
+                "queryType": "table",
+                "table": ""
+              }
+            },
+            "pluginVersion": "4.3.2",
+            "queryType": "table",
+            "rawSql": "SELECT \n  toStartOfInterval(event_time, INTERVAL 60 SECOND) AS time,  -- Replace 60 with your desired rounding interval\n  avg(value) AS avg_value\nFROM (\n  SELECT \n    event_time, \n    sum(value) AS value\n  FROM \n    clusterAllReplicas(default, merge('system', '^asynchronous_metric_log'))\n  WHERE \n    event_date >= toDate(now() - 3600)  -- Replace 3600 with your desired time range in seconds\n    AND event_time >= now() - 3600\n    AND metric LIKE 'NetworkSendBytes%'\n  GROUP BY \n    event_time\n)\nGROUP BY \n  time\nORDER BY \n  time WITH FILL STEP 60  -- Replace 60 with your rounding interval\nSETTINGS \n  skip_unavailable_shards = 1\n",
+            "refId": "A"
+          }
+        ],
+        "title": "Network send bytes/sec",
+        "type": "timeseries"
+      }
+    ],
+    "preload": false,
+    "refresh": "",
+    "schemaVersion": 40,
+    "tags": [],
+    "templating": {
+      "list": []
+    },
+    "time": {
+      "from": "now-1h",
+      "to": "now"
+    },
+    "timepicker": {
+      "refresh_intervals": [
+        "1m",
+        "5m",
+        "15m",
+        "30m",
+        "1h",
+        "2h",
+        "1d"
+      ]
+    },
+    "timezone": "browser",
+    "title": "Click House",
+    "uid": "cdvh9us5q7dvkb",
+    "version": 19,
+    "weekStart": ""
+  }

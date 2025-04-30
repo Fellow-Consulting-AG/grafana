@@ -1,0 +1,333 @@
+{
+    "annotations": {
+      "list": [
+        {
+          "builtIn": 1,
+          "datasource": {
+            "type": "grafana",
+            "uid": "-- Grafana --"
+          },
+          "enable": true,
+          "hide": true,
+          "iconColor": "rgba(0, 211, 255, 1)",
+          "name": "Annotations & Alerts",
+          "type": "dashboard"
+        }
+      ]
+    },
+    "editable": true,
+    "fiscalYearStartMonth": 0,
+    "graphTooltip": 0,
+    "id": 51,
+    "links": [],
+    "panels": [
+      {
+        "datasource": {
+          "type": "grafana-postgresql-datasource",
+          "uid": "adteym6l9r20wc"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            }
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 9,
+          "w": 24,
+          "x": 0,
+          "y": 0
+        },
+        "id": 2,
+        "options": {
+          "colorMode": "value",
+          "graphMode": "area",
+          "justifyMode": "auto",
+          "orientation": "auto",
+          "percentChangeColorMode": "standard",
+          "reduceOptions": {
+            "calcs": [
+              "sum"
+            ],
+            "fields": "",
+            "values": false
+          },
+          "showPercentChange": false,
+          "textMode": "value",
+          "wideLayout": true
+        },
+        "pluginVersion": "11.4.0",
+        "targets": [
+          {
+            "datasource": {
+              "type": "grafana-postgresql-datasource",
+              "uid": "adteym6l9r20wc"
+            },
+            "editorMode": "code",
+            "format": "table",
+            "rawQuery": true,
+            "rawSql": "SELECT\n  SUM(credit.credit_used) AS total_credit_used\nFROM\n  app_usage_log credit\nWHERE\ncredit.method_used IN ('FELLOW_KV2', 'AI') and\n  $__timeFilter(credit.created_on);",
+            "refId": "A",
+            "sql": {
+              "columns": [
+                {
+                  "parameters": [],
+                  "type": "function"
+                }
+              ],
+              "groupBy": [
+                {
+                  "property": {
+                    "type": "string"
+                  },
+                  "type": "groupBy"
+                }
+              ],
+              "limit": 50
+            }
+          }
+        ],
+        "title": "Total Count",
+        "type": "stat"
+      },
+      {
+        "datasource": {
+          "type": "grafana-postgresql-datasource",
+          "uid": "adteym6l9r20wc"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            },
+            "custom": {
+              "hideFrom": {
+                "legend": false,
+                "tooltip": false,
+                "viz": false
+              }
+            },
+            "links": [
+              {
+                "title": "Filter by Organization",
+                "url": "https://grafana.docbits.com/d/fdtl7ryk03c3kf/credit-used-by-companies?orgId=1"
+              }
+            ],
+            "mappings": []
+          },
+          "overrides": [
+            {
+              "__systemRef": "hideSeriesFrom",
+              "matcher": {
+                "id": "byNames",
+                "options": {
+                  "mode": "exclude",
+                  "names": [
+                    "total_credit_used"
+                  ],
+                  "prefix": "All except:",
+                  "readOnly": true
+                }
+              },
+              "properties": [
+                {
+                  "id": "custom.hideFrom",
+                  "value": {
+                    "legend": false,
+                    "tooltip": false,
+                    "viz": true
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        "gridPos": {
+          "h": 22,
+          "w": 10,
+          "x": 0,
+          "y": 9
+        },
+        "id": 1,
+        "options": {
+          "displayLabels": [
+            "name"
+          ],
+          "legend": {
+            "displayMode": "list",
+            "placement": "bottom",
+            "showLegend": true
+          },
+          "pieType": "pie",
+          "reduceOptions": {
+            "calcs": [
+              "count"
+            ],
+            "fields": "/^total_credit_used$/",
+            "values": true
+          },
+          "tooltip": {
+            "mode": "single",
+            "sort": "none"
+          }
+        },
+        "pluginVersion": "11.4.0",
+        "targets": [
+          {
+            "datasource": {
+              "type": "grafana-postgresql-datasource",
+              "uid": "adteym6l9r20wc"
+            },
+            "editorMode": "code",
+            "format": "table",
+            "rawQuery": true,
+            "rawSql": "SELECT\n  org.name AS organisation_name,\n  SUM(credit.credit_used) AS total_credit_used\nFROM\n  app_usage_log credit\nJOIN\n  organisations org ON credit.org_id = org.id\nWHERE\n  $__timeFilter(credit.created_on)\nGROUP BY\n  org.name\nORDER BY\n  total_credit_used DESC;",
+            "refId": "A",
+            "sql": {
+              "columns": [
+                {
+                  "parameters": [],
+                  "type": "function"
+                }
+              ],
+              "groupBy": [
+                {
+                  "property": {
+                    "type": "string"
+                  },
+                  "type": "groupBy"
+                }
+              ],
+              "limit": 50
+            }
+          }
+        ],
+        "title": "PI Chart",
+        "type": "piechart"
+      },
+      {
+        "datasource": {
+          "type": "grafana-postgresql-datasource",
+          "uid": "adteym6l9r20wc"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            },
+            "custom": {
+              "hideFrom": {
+                "legend": false,
+                "tooltip": false,
+                "viz": false
+              }
+            },
+            "mappings": []
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 22,
+          "w": 14,
+          "x": 10,
+          "y": 9
+        },
+        "id": 3,
+        "options": {
+          "legend": {
+            "displayMode": "list",
+            "placement": "bottom",
+            "showLegend": true
+          },
+          "pieType": "pie",
+          "reduceOptions": {
+            "calcs": [
+              "lastNotNull"
+            ],
+            "fields": "",
+            "values": true
+          },
+          "tooltip": {
+            "mode": "single",
+            "sort": "none"
+          }
+        },
+        "pluginVersion": "11.4.0",
+        "targets": [
+          {
+            "datasource": {
+              "type": "grafana-postgresql-datasource",
+              "uid": "adteym6l9r20wc"
+            },
+            "editorMode": "code",
+            "format": "table",
+            "rawQuery": true,
+            "rawSql": "SELECT\n    org.name AS organisation_name,\n    DATE_TRUNC('month', credit.created_on) AS month,\n    SUM(credit.credit_used) AS total_credit_used\nFROM\n    app_usage_log credit\nJOIN\n    organisations org ON credit.org_id = org.id\nWHERE\n    credit.method_used IN ('FELLOW_KV2', 'AI')\n    AND $__timeFilter(credit.created_on)\nGROUP BY\n    org.name,\n    DATE_TRUNC('month', credit.created_on)\nORDER BY\n    month ASC,\n    organisation_name ASC;",
+            "refId": "A",
+            "sql": {
+              "columns": [
+                {
+                  "parameters": [],
+                  "type": "function"
+                }
+              ],
+              "groupBy": [
+                {
+                  "property": {
+                    "type": "string"
+                  },
+                  "type": "groupBy"
+                }
+              ],
+              "limit": 50
+            }
+          }
+        ],
+        "title": "Pages Only",
+        "type": "piechart"
+      }
+    ],
+    "preload": false,
+    "refresh": "",
+    "schemaVersion": 40,
+    "tags": [],
+    "templating": {
+      "list": []
+    },
+    "time": {
+      "from": "now-2d",
+      "to": "now"
+    },
+    "timepicker": {
+      "refresh_intervals": [
+        "1m",
+        "5m",
+        "15m",
+        "30m",
+        "1h",
+        "2h",
+        "1d"
+      ]
+    },
+    "timezone": "browser",
+    "title": "Credit Used by Companies with Pages",
+    "uid": "fdtl7ryk03c3kfpages",
+    "version": 1,
+    "weekStart": ""
+  }

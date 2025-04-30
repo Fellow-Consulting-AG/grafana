@@ -1,0 +1,1840 @@
+{
+    "annotations": {
+      "list": [
+        {
+          "builtIn": 1,
+          "datasource": {
+            "type": "datasource",
+            "uid": "grafana"
+          },
+          "enable": true,
+          "hide": true,
+          "iconColor": "rgba(0, 211, 255, 1)",
+          "name": "Annotations & Alerts",
+          "type": "dashboard"
+        }
+      ]
+    },
+    "description": "Linkerd DaemonSet",
+    "editable": true,
+    "fiscalYearStartMonth": 0,
+    "graphTooltip": 1,
+    "id": 78,
+    "links": [],
+    "panels": [
+      {
+        "fieldConfig": {
+          "defaults": {},
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 2,
+          "w": 24,
+          "x": 0,
+          "y": 0
+        },
+        "id": 20,
+        "options": {
+          "code": {
+            "language": "plaintext",
+            "showLineNumbers": false,
+            "showMiniMap": false
+          },
+          "content": "<div style=\"display: flex; align-items: center\">\n  <img src=\"https://linkerd.io/images/identity/favicon/linkerd-favicon.png\" style=\"height:32px;\"/>&nbsp;\n  <span style=\"font-size: 32px\">ds/$daemonset</span>\n</div>",
+          "mode": "html"
+        },
+        "pluginVersion": "11.4.0",
+        "title": "",
+        "transparent": true,
+        "type": "text"
+      },
+      {
+        "datasource": {
+          "type": "prometheus",
+          "uid": "prometheus-linkerd"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "fixedColor": "rgb(31, 120, 193)",
+              "mode": "fixed"
+            },
+            "mappings": [
+              {
+                "options": {
+                  "match": "null",
+                  "result": {
+                    "text": "N/A"
+                  }
+                },
+                "type": "special"
+              }
+            ],
+            "max": 1,
+            "min": 0,
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "#d44a3a",
+                  "value": null
+                },
+                {
+                  "color": "rgba(237, 129, 40, 0.89)",
+                  "value": 0.9
+                },
+                {
+                  "color": "#299c46",
+                  "value": 0.99
+                }
+              ]
+            },
+            "unit": "percentunit"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 4,
+          "w": 8,
+          "x": 0,
+          "y": 2
+        },
+        "id": 5,
+        "maxDataPoints": 100,
+        "options": {
+          "colorMode": "none",
+          "graphMode": "area",
+          "justifyMode": "auto",
+          "orientation": "horizontal",
+          "percentChangeColorMode": "standard",
+          "reduceOptions": {
+            "calcs": [
+              "lastNotNull"
+            ],
+            "fields": "",
+            "values": false
+          },
+          "showPercentChange": false,
+          "textMode": "auto",
+          "wideLayout": true
+        },
+        "pluginVersion": "11.4.0",
+        "targets": [
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "prometheus-linkerd"
+            },
+            "expr": "sum(irate(response_total{classification=\"success\", namespace=\"$namespace\", daemonset=\"$daemonset\", direction=\"inbound\"}[30s])) / sum(irate(response_total{namespace=\"$namespace\", daemonset=\"$daemonset\", direction=\"inbound\"}[30s]))",
+            "format": "time_series",
+            "instant": false,
+            "intervalFactor": 1,
+            "legendFormat": "",
+            "refId": "A"
+          }
+        ],
+        "title": "SUCCESS RATE",
+        "transparent": true,
+        "type": "stat"
+      },
+      {
+        "datasource": {
+          "type": "prometheus",
+          "uid": "prometheus-linkerd"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "fixedColor": "rgb(31, 120, 193)",
+              "mode": "fixed"
+            },
+            "mappings": [
+              {
+                "options": {
+                  "match": "null",
+                  "result": {
+                    "text": "N/A"
+                  }
+                },
+                "type": "special"
+              }
+            ],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            },
+            "unit": "none"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 4,
+          "w": 8,
+          "x": 8,
+          "y": 2
+        },
+        "id": 4,
+        "maxDataPoints": 100,
+        "options": {
+          "colorMode": "none",
+          "graphMode": "area",
+          "justifyMode": "auto",
+          "orientation": "horizontal",
+          "percentChangeColorMode": "standard",
+          "reduceOptions": {
+            "calcs": [
+              "lastNotNull"
+            ],
+            "fields": "",
+            "values": false
+          },
+          "showPercentChange": false,
+          "textMode": "auto",
+          "wideLayout": true
+        },
+        "pluginVersion": "11.4.0",
+        "targets": [
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "prometheus-linkerd"
+            },
+            "expr": "sum(irate(request_total{namespace=\"$namespace\", daemonset=\"$daemonset\", direction=\"inbound\"}[30s]))",
+            "format": "time_series",
+            "instant": false,
+            "intervalFactor": 1,
+            "legendFormat": "",
+            "refId": "A"
+          }
+        ],
+        "title": "REQUEST RATE",
+        "transparent": true,
+        "type": "stat"
+      },
+      {
+        "datasource": {
+          "type": "prometheus",
+          "uid": "prometheus-linkerd"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "mappings": [
+              {
+                "options": {
+                  "match": "null",
+                  "result": {
+                    "text": "N/A"
+                  }
+                },
+                "type": "special"
+              }
+            ],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            },
+            "unit": "none"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 4,
+          "w": 4,
+          "x": 16,
+          "y": 2
+        },
+        "id": 11,
+        "maxDataPoints": 100,
+        "options": {
+          "colorMode": "none",
+          "graphMode": "none",
+          "justifyMode": "auto",
+          "orientation": "horizontal",
+          "percentChangeColorMode": "standard",
+          "reduceOptions": {
+            "calcs": [
+              "lastNotNull"
+            ],
+            "fields": "",
+            "values": false
+          },
+          "showPercentChange": false,
+          "textMode": "auto",
+          "wideLayout": true
+        },
+        "pluginVersion": "11.4.0",
+        "targets": [
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "prometheus-linkerd"
+            },
+            "expr": "count(count(request_total{dst_namespace=\"$namespace\", daemonset!=\"\", dst_daemonset!=\"\", dst_daemonset=\"$daemonset\", direction=\"outbound\"}) by (namespace, daemonset))",
+            "format": "time_series",
+            "intervalFactor": 1,
+            "legendFormat": "",
+            "refId": "A"
+          }
+        ],
+        "title": "INBOUND DAEMONSETS",
+        "transparent": true,
+        "type": "stat"
+      },
+      {
+        "datasource": {
+          "type": "prometheus",
+          "uid": "prometheus-linkerd"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "mappings": [
+              {
+                "options": {
+                  "match": "null",
+                  "result": {
+                    "text": "N/A"
+                  }
+                },
+                "type": "special"
+              }
+            ],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            },
+            "unit": "none"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 4,
+          "w": 4,
+          "x": 20,
+          "y": 2
+        },
+        "id": 15,
+        "maxDataPoints": 100,
+        "options": {
+          "colorMode": "none",
+          "graphMode": "none",
+          "justifyMode": "auto",
+          "orientation": "horizontal",
+          "percentChangeColorMode": "standard",
+          "reduceOptions": {
+            "calcs": [
+              "lastNotNull"
+            ],
+            "fields": "",
+            "values": false
+          },
+          "showPercentChange": false,
+          "textMode": "auto",
+          "wideLayout": true
+        },
+        "pluginVersion": "11.4.0",
+        "targets": [
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "prometheus-linkerd"
+            },
+            "expr": "count(count(request_total{namespace=\"$namespace\", daemonset=\"$daemonset\", direction=\"outbound\"}) by (namespace, dst_daemonset))",
+            "format": "time_series",
+            "intervalFactor": 1,
+            "legendFormat": "",
+            "refId": "A"
+          }
+        ],
+        "title": "OUTBOUND DAEMONSETS",
+        "transparent": true,
+        "type": "stat"
+      },
+      {
+        "fieldConfig": {
+          "defaults": {},
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 2,
+          "w": 24,
+          "x": 0,
+          "y": 6
+        },
+        "id": 17,
+        "options": {
+          "code": {
+            "language": "plaintext",
+            "showLineNumbers": false,
+            "showMiniMap": false
+          },
+          "content": "<div class=\"text-center dashboard-header\">\n  <span>INBOUND TRAFFIC</span>\n</div>",
+          "mode": "html"
+        },
+        "pluginVersion": "11.4.0",
+        "title": "",
+        "transparent": true,
+        "type": "text"
+      },
+      {
+        "datasource": {
+          "type": "prometheus",
+          "uid": "prometheus-linkerd"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            },
+            "custom": {
+              "axisBorderShow": false,
+              "axisCenteredZero": false,
+              "axisColorMode": "text",
+              "axisLabel": "",
+              "axisPlacement": "auto",
+              "barAlignment": 0,
+              "barWidthFactor": 0.6,
+              "drawStyle": "line",
+              "fillOpacity": 10,
+              "gradientMode": "none",
+              "hideFrom": {
+                "legend": false,
+                "tooltip": false,
+                "viz": false
+              },
+              "insertNulls": false,
+              "lineInterpolation": "linear",
+              "lineWidth": 2,
+              "pointSize": 5,
+              "scaleDistribution": {
+                "type": "linear"
+              },
+              "showPoints": "never",
+              "spanNulls": false,
+              "stacking": {
+                "group": "A",
+                "mode": "none"
+              },
+              "thresholdsStyle": {
+                "mode": "off"
+              }
+            },
+            "mappings": [],
+            "max": 1,
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            },
+            "unit": "percentunit"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 7,
+          "w": 8,
+          "x": 0,
+          "y": 8
+        },
+        "id": 67,
+        "options": {
+          "alertThreshold": true,
+          "legend": {
+            "calcs": [],
+            "displayMode": "list",
+            "placement": "bottom",
+            "showLegend": false
+          },
+          "tooltip": {
+            "mode": "multi",
+            "sort": "desc"
+          }
+        },
+        "pluginVersion": "11.4.0",
+        "targets": [
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "prometheus-linkerd"
+            },
+            "expr": "sum(irate(response_total{classification=\"success\", namespace=\"$namespace\", daemonset=\"$daemonset\", direction=\"inbound\"}[30s])) by (daemonset) / sum(irate(response_total{namespace=\"$namespace\", daemonset=\"$daemonset\", direction=\"inbound\"}[30s])) by (daemonset)",
+            "format": "time_series",
+            "intervalFactor": 1,
+            "legendFormat": "ds/{{daemonset}}",
+            "refId": "A"
+          }
+        ],
+        "title": "SUCCESS RATE",
+        "type": "timeseries"
+      },
+      {
+        "datasource": {
+          "type": "prometheus",
+          "uid": "prometheus-linkerd"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            },
+            "custom": {
+              "axisBorderShow": false,
+              "axisCenteredZero": false,
+              "axisColorMode": "text",
+              "axisLabel": "",
+              "axisPlacement": "auto",
+              "barAlignment": 0,
+              "barWidthFactor": 0.6,
+              "drawStyle": "line",
+              "fillOpacity": 0,
+              "gradientMode": "none",
+              "hideFrom": {
+                "legend": false,
+                "tooltip": false,
+                "viz": false
+              },
+              "insertNulls": false,
+              "lineInterpolation": "linear",
+              "lineWidth": 2,
+              "pointSize": 5,
+              "scaleDistribution": {
+                "type": "linear"
+              },
+              "showPoints": "never",
+              "spanNulls": false,
+              "stacking": {
+                "group": "A",
+                "mode": "none"
+              },
+              "thresholdsStyle": {
+                "mode": "off"
+              }
+            },
+            "mappings": [],
+            "min": 0,
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            },
+            "unit": "rps"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 7,
+          "w": 8,
+          "x": 8,
+          "y": 8
+        },
+        "id": 2,
+        "options": {
+          "alertThreshold": true,
+          "legend": {
+            "calcs": [],
+            "displayMode": "list",
+            "placement": "bottom",
+            "showLegend": false
+          },
+          "tooltip": {
+            "mode": "multi",
+            "sort": "desc"
+          }
+        },
+        "pluginVersion": "11.4.0",
+        "targets": [
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "prometheus-linkerd"
+            },
+            "expr": "sum(irate(request_total{namespace=\"$namespace\", daemonset=\"$daemonset\", direction=\"inbound\", tls=\"true\"}[30s])) by (daemonset)",
+            "format": "time_series",
+            "intervalFactor": 1,
+            "legendFormat": "?ds/{{daemonset}}",
+            "refId": "A"
+          },
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "prometheus-linkerd"
+            },
+            "expr": "sum(irate(request_total{namespace=\"$namespace\", daemonset=\"$daemonset\", direction=\"inbound\", tls!=\"true\"}[30s])) by (daemonset)",
+            "format": "time_series",
+            "intervalFactor": 1,
+            "legendFormat": "ds/{{daemonset}}",
+            "refId": "B"
+          }
+        ],
+        "title": "REQUEST RATE",
+        "type": "timeseries"
+      },
+      {
+        "datasource": {
+          "type": "prometheus",
+          "uid": "prometheus-linkerd"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            },
+            "custom": {
+              "axisBorderShow": false,
+              "axisCenteredZero": false,
+              "axisColorMode": "text",
+              "axisLabel": "",
+              "axisPlacement": "auto",
+              "barAlignment": 0,
+              "barWidthFactor": 0.6,
+              "drawStyle": "line",
+              "fillOpacity": 10,
+              "gradientMode": "none",
+              "hideFrom": {
+                "legend": false,
+                "tooltip": false,
+                "viz": false
+              },
+              "insertNulls": false,
+              "lineInterpolation": "linear",
+              "lineWidth": 2,
+              "pointSize": 5,
+              "scaleDistribution": {
+                "type": "linear"
+              },
+              "showPoints": "never",
+              "spanNulls": false,
+              "stacking": {
+                "group": "A",
+                "mode": "none"
+              },
+              "thresholdsStyle": {
+                "mode": "off"
+              }
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            },
+            "unit": "ms"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 7,
+          "w": 8,
+          "x": 16,
+          "y": 8
+        },
+        "id": 68,
+        "options": {
+          "alertThreshold": true,
+          "legend": {
+            "calcs": [],
+            "displayMode": "list",
+            "placement": "bottom",
+            "showLegend": false
+          },
+          "tooltip": {
+            "mode": "multi",
+            "sort": "desc"
+          }
+        },
+        "pluginVersion": "11.4.0",
+        "targets": [
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "prometheus-linkerd"
+            },
+            "expr": "histogram_quantile(0.5, sum(irate(response_latency_ms_bucket{namespace=\"$namespace\", daemonset=\"$daemonset\", direction=\"inbound\"}[30s])) by (le, daemonset))",
+            "format": "time_series",
+            "intervalFactor": 1,
+            "legendFormat": "p50 ds/{{daemonset}}",
+            "refId": "A"
+          },
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "prometheus-linkerd"
+            },
+            "expr": "histogram_quantile(0.95, sum(irate(response_latency_ms_bucket{namespace=\"$namespace\", daemonset=\"$daemonset\", direction=\"inbound\"}[30s])) by (le, daemonset))",
+            "format": "time_series",
+            "hide": false,
+            "intervalFactor": 1,
+            "legendFormat": "p95 ds/{{daemonset}}",
+            "refId": "B"
+          },
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "prometheus-linkerd"
+            },
+            "expr": "histogram_quantile(0.99, sum(irate(response_latency_ms_bucket{namespace=\"$namespace\", daemonset=\"$daemonset\", direction=\"inbound\"}[30s])) by (le, daemonset))",
+            "format": "time_series",
+            "intervalFactor": 1,
+            "legendFormat": "p99 ds/{{daemonset}}",
+            "refId": "C"
+          }
+        ],
+        "title": "LATENCY",
+        "type": "timeseries"
+      },
+      {
+        "collapsed": true,
+        "gridPos": {
+          "h": 1,
+          "w": 24,
+          "x": 0,
+          "y": 15
+        },
+        "id": 148,
+        "panels": [
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "prometheus-linkerd"
+            },
+            "fieldConfig": {
+              "defaults": {},
+              "overrides": []
+            },
+            "gridPos": {
+              "h": 7,
+              "w": 8,
+              "x": 0,
+              "y": 16
+            },
+            "id": 167,
+            "options": {},
+            "targets": [
+              {
+                "datasource": {
+                  "type": "prometheus",
+                  "uid": "prometheus-linkerd"
+                },
+                "expr": "tcp_close_total{namespace=\"$namespace\", daemonset=\"$daemonset\", direction=\"inbound\",errno!=\"\"}",
+                "format": "time_series",
+                "intervalFactor": 1,
+                "legendFormat": "{{peer}} {{errno}}",
+                "refId": "A"
+              }
+            ],
+            "title": "TCP CONNECTION FAILURES",
+            "type": "timeseries"
+          },
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "prometheus-linkerd"
+            },
+            "fieldConfig": {
+              "defaults": {},
+              "overrides": []
+            },
+            "gridPos": {
+              "h": 7,
+              "w": 8,
+              "x": 8,
+              "y": 16
+            },
+            "id": 168,
+            "options": {},
+            "targets": [
+              {
+                "datasource": {
+                  "type": "prometheus",
+                  "uid": "prometheus-linkerd"
+                },
+                "expr": "tcp_open_connections{namespace=\"$namespace\", daemonset=\"$daemonset\", direction=\"inbound\"}",
+                "format": "time_series",
+                "intervalFactor": 1,
+                "legendFormat": "{{peer}}",
+                "refId": "A"
+              }
+            ],
+            "title": "TCP CONNECTIONS OPEN",
+            "type": "timeseries"
+          },
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "prometheus-linkerd"
+            },
+            "fieldConfig": {
+              "defaults": {},
+              "overrides": []
+            },
+            "gridPos": {
+              "h": 7,
+              "w": 8,
+              "x": 16,
+              "y": 16
+            },
+            "id": 169,
+            "options": {},
+            "targets": [
+              {
+                "datasource": {
+                  "type": "prometheus",
+                  "uid": "prometheus-linkerd"
+                },
+                "expr": "tcp_connection_duration_ms_bucket{namespace=\"$namespace\", daemonset=\"$daemonset\", direction=\"inbound\"}",
+                "format": "time_series",
+                "intervalFactor": 1,
+                "refId": "A"
+              }
+            ],
+            "title": "TCP CONNECTION DURATION",
+            "type": "heatmap"
+          }
+        ],
+        "title": "Inbound TCP Metrics",
+        "type": "row"
+      },
+      {
+        "collapsed": false,
+        "gridPos": {
+          "h": 1,
+          "w": 24,
+          "x": 0,
+          "y": 16
+        },
+        "id": 152,
+        "panels": [],
+        "title": "",
+        "type": "row"
+      },
+      {
+        "fieldConfig": {
+          "defaults": {},
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 2,
+          "w": 24,
+          "x": 0,
+          "y": 17
+        },
+        "id": 76,
+        "options": {
+          "code": {
+            "language": "plaintext",
+            "showLineNumbers": false,
+            "showMiniMap": false
+          },
+          "content": "<div class=\"text-center dashboard-header\">\n  <span>INBOUND DAEMONSETS</span>\n</div>",
+          "mode": "html"
+        },
+        "pluginVersion": "11.4.0",
+        "title": "",
+        "transparent": true,
+        "type": "text"
+      },
+      {
+        "collapsed": true,
+        "gridPos": {
+          "h": 1,
+          "w": 24,
+          "x": 0,
+          "y": 19
+        },
+        "id": 59,
+        "panels": [
+          {
+            "fieldConfig": {
+              "defaults": {},
+              "overrides": []
+            },
+            "gridPos": {
+              "h": 2,
+              "w": 24,
+              "x": 0,
+              "y": 22.2
+            },
+            "id": 39,
+            "options": {},
+            "title": "",
+            "transparent": true,
+            "type": "text"
+          },
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "prometheus-linkerd"
+            },
+            "fieldConfig": {
+              "defaults": {},
+              "overrides": []
+            },
+            "gridPos": {
+              "h": 7,
+              "w": 8,
+              "x": 0,
+              "y": 24.2
+            },
+            "id": 36,
+            "options": {},
+            "targets": [
+              {
+                "datasource": {
+                  "type": "prometheus",
+                  "uid": "prometheus-linkerd"
+                },
+                "expr": "sum(irate(response_total{classification=\"success\", daemonset!=\"\", daemonset=\"$inbound\", dst_namespace=\"$namespace\", dst_daemonset=\"$daemonset\", direction=\"outbound\"}[30s])) by (daemonset, pod) / sum(irate(response_total{daemonset!=\"\", daemonset=\"$inbound\", dst_namespace=\"$namespace\", dst_daemonset=\"$daemonset\", direction=\"outbound\"}[30s])) by (daemonset, pod)",
+                "format": "time_series",
+                "instant": false,
+                "intervalFactor": 1,
+                "legendFormat": "po/{{pod}}",
+                "refId": "A"
+              }
+            ],
+            "title": "SUCCESS RATE",
+            "type": "timeseries"
+          },
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "prometheus-linkerd"
+            },
+            "fieldConfig": {
+              "defaults": {},
+              "overrides": []
+            },
+            "gridPos": {
+              "h": 7,
+              "w": 8,
+              "x": 8,
+              "y": 24.2
+            },
+            "id": 22,
+            "options": {},
+            "targets": [
+              {
+                "datasource": {
+                  "type": "prometheus",
+                  "uid": "prometheus-linkerd"
+                },
+                "expr": "sum(irate(request_total{daemonset!=\"\", daemonset=\"$inbound\", dst_namespace=\"$namespace\", dst_daemonset=\"$daemonset\", direction=\"outbound\", tls=\"true\"}[30s])) by (daemonset, pod)",
+                "format": "time_series",
+                "intervalFactor": 1,
+                "legendFormat": "?po/{{pod}}",
+                "refId": "A"
+              },
+              {
+                "datasource": {
+                  "type": "prometheus",
+                  "uid": "prometheus-linkerd"
+                },
+                "expr": "sum(irate(request_total{daemonset!=\"\", daemonset=\"$inbound\", dst_namespace=\"$namespace\", dst_daemonset=\"$daemonset\", direction=\"outbound\", tls!=\"true\"}[30s])) by (daemonset, pod)",
+                "format": "time_series",
+                "intervalFactor": 1,
+                "legendFormat": "po/{{pod}}",
+                "refId": "B"
+              }
+            ],
+            "title": "REQUEST RATE",
+            "type": "timeseries"
+          },
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "prometheus-linkerd"
+            },
+            "fieldConfig": {
+              "defaults": {},
+              "overrides": []
+            },
+            "gridPos": {
+              "h": 7,
+              "w": 8,
+              "x": 16,
+              "y": 24.2
+            },
+            "id": 29,
+            "options": {},
+            "targets": [
+              {
+                "datasource": {
+                  "type": "prometheus",
+                  "uid": "prometheus-linkerd"
+                },
+                "expr": "histogram_quantile(0.5, sum(rate(response_latency_ms_bucket{daemonset!=\"\", daemonset=\"$inbound\", dst_namespace=\"$namespace\", dst_daemonset=\"$daemonset\", direction=\"outbound\"}[30s])) by (le, daemonset))",
+                "format": "time_series",
+                "intervalFactor": 1,
+                "legendFormat": "P50 ds/{{daemonset}}",
+                "refId": "A"
+              },
+              {
+                "datasource": {
+                  "type": "prometheus",
+                  "uid": "prometheus-linkerd"
+                },
+                "expr": "histogram_quantile(0.95, sum(rate(response_latency_ms_bucket{daemonset!=\"\", daemonset=\"$inbound\", dst_namespace=\"$namespace\", dst_daemonset=\"$daemonset\", direction=\"outbound\"}[30s])) by (le, daemonset))",
+                "format": "time_series",
+                "intervalFactor": 1,
+                "legendFormat": "P95 ds/{{daemonset}}",
+                "refId": "B"
+              },
+              {
+                "datasource": {
+                  "type": "prometheus",
+                  "uid": "prometheus-linkerd"
+                },
+                "expr": "histogram_quantile(0.99, sum(rate(response_latency_ms_bucket{daemonset!=\"\", daemonset=\"$inbound\", dst_namespace=\"$namespace\", dst_daemonset=\"$daemonset\", direction=\"outbound\"}[30s])) by (le, daemonset))",
+                "format": "time_series",
+                "intervalFactor": 1,
+                "legendFormat": "P99 ds/{{daemonset}}",
+                "refId": "C"
+              }
+            ],
+            "title": "LATENCY",
+            "type": "timeseries"
+          }
+        ],
+        "repeat": "inbound",
+        "title": "ds/$inbound",
+        "type": "row"
+      },
+      {
+        "collapsed": false,
+        "gridPos": {
+          "h": 1,
+          "w": 24,
+          "x": 0,
+          "y": 20
+        },
+        "id": 34,
+        "panels": [],
+        "title": "",
+        "type": "row"
+      },
+      {
+        "fieldConfig": {
+          "defaults": {},
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 2,
+          "w": 24,
+          "x": 0,
+          "y": 21
+        },
+        "id": 32,
+        "options": {
+          "code": {
+            "language": "plaintext",
+            "showLineNumbers": false,
+            "showMiniMap": false
+          },
+          "content": "<div class=\"text-center dashboard-header\">\n  <span>OUTBOUND TRAFFIC</span>\n</div>",
+          "mode": "html"
+        },
+        "pluginVersion": "11.4.0",
+        "title": "",
+        "transparent": true,
+        "type": "text"
+      },
+      {
+        "datasource": {
+          "type": "prometheus",
+          "uid": "prometheus-linkerd"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            },
+            "custom": {
+              "axisBorderShow": false,
+              "axisCenteredZero": false,
+              "axisColorMode": "text",
+              "axisLabel": "",
+              "axisPlacement": "auto",
+              "barAlignment": 0,
+              "barWidthFactor": 0.6,
+              "drawStyle": "line",
+              "fillOpacity": 10,
+              "gradientMode": "none",
+              "hideFrom": {
+                "legend": false,
+                "tooltip": false,
+                "viz": false
+              },
+              "insertNulls": false,
+              "lineInterpolation": "linear",
+              "lineWidth": 2,
+              "pointSize": 5,
+              "scaleDistribution": {
+                "type": "linear"
+              },
+              "showPoints": "never",
+              "spanNulls": false,
+              "stacking": {
+                "group": "A",
+                "mode": "none"
+              },
+              "thresholdsStyle": {
+                "mode": "off"
+              }
+            },
+            "mappings": [],
+            "max": 1,
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            },
+            "unit": "percentunit"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 7,
+          "w": 8,
+          "x": 0,
+          "y": 23
+        },
+        "id": 77,
+        "options": {
+          "legend": {
+            "calcs": [],
+            "displayMode": "list",
+            "placement": "bottom",
+            "showLegend": false
+          },
+          "tooltip": {
+            "mode": "multi",
+            "sort": "desc"
+          }
+        },
+        "pluginVersion": "11.4.0",
+        "targets": [
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "prometheus-linkerd"
+            },
+            "expr": "sum(irate(response_total{classification=\"success\", namespace=\"$namespace\", daemonset=\"$daemonset\", direction=\"outbound\"}[30s])) by (dst_daemonset) / sum(irate(response_total{namespace=\"$namespace\", daemonset=\"$daemonset\", direction=\"outbound\"}[30s])) by (dst_daemonset)",
+            "format": "time_series",
+            "intervalFactor": 1,
+            "legendFormat": "ds/{{dst_daemonset}}",
+            "refId": "A"
+          }
+        ],
+        "title": "SUCCESS RATE",
+        "type": "timeseries"
+      },
+      {
+        "datasource": {
+          "type": "prometheus",
+          "uid": "prometheus-linkerd"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            },
+            "custom": {
+              "axisBorderShow": false,
+              "axisCenteredZero": false,
+              "axisColorMode": "text",
+              "axisLabel": "",
+              "axisPlacement": "auto",
+              "barAlignment": 0,
+              "barWidthFactor": 0.6,
+              "drawStyle": "line",
+              "fillOpacity": 0,
+              "gradientMode": "none",
+              "hideFrom": {
+                "legend": false,
+                "tooltip": false,
+                "viz": false
+              },
+              "insertNulls": false,
+              "lineInterpolation": "linear",
+              "lineWidth": 2,
+              "pointSize": 5,
+              "scaleDistribution": {
+                "type": "linear"
+              },
+              "showPoints": "never",
+              "spanNulls": false,
+              "stacking": {
+                "group": "A",
+                "mode": "none"
+              },
+              "thresholdsStyle": {
+                "mode": "off"
+              }
+            },
+            "mappings": [],
+            "min": 0,
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            },
+            "unit": "rps"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 7,
+          "w": 8,
+          "x": 8,
+          "y": 23
+        },
+        "id": 78,
+        "options": {
+          "legend": {
+            "calcs": [],
+            "displayMode": "list",
+            "placement": "bottom",
+            "showLegend": false
+          },
+          "tooltip": {
+            "mode": "multi",
+            "sort": "desc"
+          }
+        },
+        "pluginVersion": "11.4.0",
+        "targets": [
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "prometheus-linkerd"
+            },
+            "expr": "sum(irate(request_total{namespace=\"$namespace\", daemonset=\"$daemonset\", direction=\"outbound\", tls=\"true\"}[30s])) by (dst_daemonset)",
+            "format": "time_series",
+            "intervalFactor": 1,
+            "legendFormat": "?ds/{{dst_daemonset}}",
+            "refId": "A"
+          },
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "prometheus-linkerd"
+            },
+            "expr": "sum(irate(request_total{namespace=\"$namespace\", daemonset=\"$daemonset\", direction=\"outbound\", tls!=\"true\"}[30s])) by (dst_daemonset)",
+            "format": "time_series",
+            "intervalFactor": 1,
+            "legendFormat": "ds/{{dst_daemonset}}",
+            "refId": "B"
+          }
+        ],
+        "title": "REQUEST RATE",
+        "type": "timeseries"
+      },
+      {
+        "datasource": {
+          "type": "prometheus",
+          "uid": "prometheus-linkerd"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            },
+            "custom": {
+              "axisBorderShow": false,
+              "axisCenteredZero": false,
+              "axisColorMode": "text",
+              "axisLabel": "",
+              "axisPlacement": "auto",
+              "barAlignment": 0,
+              "barWidthFactor": 0.6,
+              "drawStyle": "line",
+              "fillOpacity": 10,
+              "gradientMode": "none",
+              "hideFrom": {
+                "legend": false,
+                "tooltip": false,
+                "viz": false
+              },
+              "insertNulls": false,
+              "lineInterpolation": "linear",
+              "lineWidth": 2,
+              "pointSize": 5,
+              "scaleDistribution": {
+                "type": "linear"
+              },
+              "showPoints": "never",
+              "spanNulls": false,
+              "stacking": {
+                "group": "A",
+                "mode": "none"
+              },
+              "thresholdsStyle": {
+                "mode": "off"
+              }
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            },
+            "unit": "ms"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 7,
+          "w": 8,
+          "x": 16,
+          "y": 23
+        },
+        "id": 79,
+        "options": {
+          "legend": {
+            "calcs": [],
+            "displayMode": "list",
+            "placement": "bottom",
+            "showLegend": false
+          },
+          "tooltip": {
+            "mode": "multi",
+            "sort": "desc"
+          }
+        },
+        "pluginVersion": "11.4.0",
+        "targets": [
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "prometheus-linkerd"
+            },
+            "expr": "histogram_quantile(0.95, sum(rate(response_latency_ms_bucket{namespace=\"$namespace\", daemonset=\"$daemonset\", direction=\"outbound\"}[30s])) by (le, dst_daemonset))",
+            "format": "time_series",
+            "intervalFactor": 1,
+            "legendFormat": "P95 ds/{{dst_daemonset}}",
+            "refId": "A"
+          }
+        ],
+        "title": "P95 LATENCY",
+        "type": "timeseries"
+      },
+      {
+        "collapsed": true,
+        "gridPos": {
+          "h": 1,
+          "w": 24,
+          "x": 0,
+          "y": 30
+        },
+        "id": 154,
+        "panels": [
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "prometheus-linkerd"
+            },
+            "fieldConfig": {
+              "defaults": {},
+              "overrides": []
+            },
+            "gridPos": {
+              "h": 7,
+              "w": 8,
+              "x": 0,
+              "y": 40.2
+            },
+            "id": 157,
+            "options": {},
+            "targets": [
+              {
+                "datasource": {
+                  "type": "prometheus",
+                  "uid": "prometheus-linkerd"
+                },
+                "expr": "tcp_close_total{namespace=\"$namespace\", daemonset=\"$daemonset\", direction=\"outbound\",errno!=\"\"}",
+                "format": "time_series",
+                "intervalFactor": 1,
+                "legendFormat": "{{peer}} {{errno}}",
+                "refId": "A"
+              }
+            ],
+            "title": "TCP CONNECTION FAILURES",
+            "type": "timeseries"
+          },
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "prometheus-linkerd"
+            },
+            "fieldConfig": {
+              "defaults": {},
+              "overrides": []
+            },
+            "gridPos": {
+              "h": 7,
+              "w": 8,
+              "x": 8,
+              "y": 40.2
+            },
+            "id": 166,
+            "options": {},
+            "targets": [
+              {
+                "datasource": {
+                  "type": "prometheus",
+                  "uid": "prometheus-linkerd"
+                },
+                "expr": "tcp_open_connections{namespace=\"$namespace\", daemonset=\"$daemonset\", direction=\"outbound\"}",
+                "format": "time_series",
+                "intervalFactor": 1,
+                "legendFormat": "{{peer}}",
+                "refId": "A"
+              }
+            ],
+            "title": "TCP CONNECTIONS OPEN",
+            "type": "timeseries"
+          },
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "prometheus-linkerd"
+            },
+            "fieldConfig": {
+              "defaults": {},
+              "overrides": []
+            },
+            "gridPos": {
+              "h": 7,
+              "w": 8,
+              "x": 16,
+              "y": 40.2
+            },
+            "id": 160,
+            "options": {},
+            "targets": [
+              {
+                "datasource": {
+                  "type": "prometheus",
+                  "uid": "prometheus-linkerd"
+                },
+                "expr": "tcp_connection_duration_ms_bucket{namespace=\"$namespace\", daemonset=\"$daemonset\", direction=\"outbound\"}",
+                "format": "time_series",
+                "intervalFactor": 1,
+                "refId": "A"
+              }
+            ],
+            "title": "TCP CONNECTION DURATION",
+            "type": "heatmap"
+          }
+        ],
+        "title": "Outbound TCP Metrics",
+        "type": "row"
+      },
+      {
+        "collapsed": false,
+        "gridPos": {
+          "h": 1,
+          "w": 24,
+          "x": 0,
+          "y": 31
+        },
+        "id": 156,
+        "panels": [],
+        "title": "",
+        "type": "row"
+      },
+      {
+        "fieldConfig": {
+          "defaults": {},
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 2,
+          "w": 24,
+          "x": 0,
+          "y": 32
+        },
+        "id": 80,
+        "options": {
+          "content": "<div class=\"text-center dashboard-header\">\n  <span>OUTBOUND DAEMONSETS</span>\n</div>",
+          "mode": "html"
+        },
+        "pluginVersion": "7.5.3",
+        "title": "",
+        "transparent": true,
+        "type": "text"
+      },
+      {
+        "collapsed": true,
+        "gridPos": {
+          "h": 1,
+          "w": 24,
+          "x": 0,
+          "y": 34
+        },
+        "id": 27,
+        "panels": [
+          {
+            "fieldConfig": {
+              "defaults": {},
+              "overrides": []
+            },
+            "gridPos": {
+              "h": 2,
+              "w": 24,
+              "x": 0,
+              "y": 47.2
+            },
+            "id": 40,
+            "options": {},
+            "title": "",
+            "transparent": true,
+            "type": "text"
+          },
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "prometheus-linkerd"
+            },
+            "fieldConfig": {
+              "defaults": {},
+              "overrides": []
+            },
+            "gridPos": {
+              "h": 7,
+              "w": 8,
+              "x": 0,
+              "y": 49.2
+            },
+            "id": 28,
+            "options": {},
+            "targets": [
+              {
+                "datasource": {
+                  "type": "prometheus",
+                  "uid": "prometheus-linkerd"
+                },
+                "expr": "sum(irate(response_total{classification=\"success\", namespace=\"$namespace\", daemonset=\"$daemonset\", dst_daemonset=\"$outbound\", direction=\"outbound\"}[30s])) by (dst_daemonset) / sum(irate(response_total{namespace=\"$namespace\", daemonset=\"$daemonset\", dst_daemonset=\"$outbound\", direction=\"outbound\"}[30s])) by (dst_daemonset)",
+                "format": "time_series",
+                "intervalFactor": 1,
+                "legendFormat": "ds/{{dst_daemonset}}",
+                "refId": "A"
+              }
+            ],
+            "title": "SUCCESS RATE",
+            "type": "timeseries"
+          },
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "prometheus-linkerd"
+            },
+            "fieldConfig": {
+              "defaults": {},
+              "overrides": []
+            },
+            "gridPos": {
+              "h": 7,
+              "w": 8,
+              "x": 8,
+              "y": 49.2
+            },
+            "id": 35,
+            "options": {},
+            "targets": [
+              {
+                "datasource": {
+                  "type": "prometheus",
+                  "uid": "prometheus-linkerd"
+                },
+                "expr": "sum(irate(request_total{namespace=\"$namespace\", daemonset=\"$daemonset\", dst_daemonset=\"$outbound\", direction=\"outbound\", tls=\"true\"}[30s])) by (dst_daemonset)",
+                "format": "time_series",
+                "intervalFactor": 1,
+                "legendFormat": "?ds/{{dst_daemonset}}",
+                "refId": "A"
+              },
+              {
+                "datasource": {
+                  "type": "prometheus",
+                  "uid": "prometheus-linkerd"
+                },
+                "expr": "sum(irate(request_total{namespace=\"$namespace\", daemonset=\"$daemonset\", dst_daemonset=\"$outbound\", direction=\"outbound\", tls!=\"true\"}[30s])) by (dst_daemonset)",
+                "format": "time_series",
+                "intervalFactor": 1,
+                "legendFormat": "ds/{{dst_daemonset}}",
+                "refId": "B"
+              }
+            ],
+            "title": "REQUEST RATE",
+            "type": "timeseries"
+          },
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "prometheus-linkerd"
+            },
+            "fieldConfig": {
+              "defaults": {},
+              "overrides": []
+            },
+            "gridPos": {
+              "h": 7,
+              "w": 8,
+              "x": 16,
+              "y": 49.2
+            },
+            "id": 41,
+            "options": {},
+            "targets": [
+              {
+                "datasource": {
+                  "type": "prometheus",
+                  "uid": "prometheus-linkerd"
+                },
+                "expr": "histogram_quantile(0.5, sum(rate(response_latency_ms_bucket{namespace=\"$namespace\", daemonset=\"$daemonset\", dst_daemonset=\"$outbound\", direction=\"outbound\"}[30s])) by (le, dst_daemonset))",
+                "format": "time_series",
+                "intervalFactor": 1,
+                "legendFormat": "P50 ds/{{dst_daemonset}}",
+                "refId": "A"
+              },
+              {
+                "datasource": {
+                  "type": "prometheus",
+                  "uid": "prometheus-linkerd"
+                },
+                "expr": "histogram_quantile(0.95, sum(rate(response_latency_ms_bucket{namespace=\"$namespace\", daemonset=\"$daemonset\", dst_daemonset=\"$outbound\", direction=\"outbound\"}[30s])) by (le, dst_daemonset))",
+                "format": "time_series",
+                "intervalFactor": 1,
+                "legendFormat": "P95 ds/{{dst_daemonset}}",
+                "refId": "B"
+              },
+              {
+                "datasource": {
+                  "type": "prometheus",
+                  "uid": "prometheus-linkerd"
+                },
+                "expr": "histogram_quantile(0.99, sum(rate(response_latency_ms_bucket{namespace=\"$namespace\", daemonset=\"$daemonset\", dst_daemonset=\"$outbound\", direction=\"outbound\"}[30s])) by (le, dst_daemonset))",
+                "format": "time_series",
+                "intervalFactor": 1,
+                "legendFormat": "P99 ds/{{dst_daemonset}}",
+                "refId": "C"
+              }
+            ],
+            "title": "LATENCY",
+            "type": "timeseries"
+          }
+        ],
+        "repeat": "outbound",
+        "title": "ds/$outbound",
+        "type": "row"
+      },
+      {
+        "fieldConfig": {
+          "defaults": {},
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 3,
+          "w": 24,
+          "x": 0,
+          "y": 35
+        },
+        "id": 171,
+        "options": {
+          "content": "<div>\n  <div style=\"position: absolute; top: 0, left: 0\">\n    <a href=\"https://linkerd.io\" target=\"_blank\"><img src=\"https://linkerd.io/images/identity/svg/linkerd_primary_color_white.svg\" style=\"height: 30px;\"></a>\n  </div>\n  <div id=\"version\" style=\"position: absolute; top: 0; right: 0; font-size: 15px\">\n  </div>\n</div>",
+          "mode": "html"
+        },
+        "pluginVersion": "7.5.3",
+        "title": "",
+        "transparent": true,
+        "type": "text"
+      }
+    ],
+    "preload": false,
+    "refresh": "1m",
+    "schemaVersion": 40,
+    "tags": [
+      "linkerd"
+    ],
+    "templating": {
+      "list": [
+        {
+          "allValue": ".*",
+          "current": {
+            "text": "",
+            "value": ""
+          },
+          "datasource": "prometheus-linkerd",
+          "definition": "",
+          "includeAll": false,
+          "label": "Namespace",
+          "name": "namespace",
+          "options": [],
+          "query": {
+            "query": "label_values(process_start_time_seconds{daemonset!=\"\"}, namespace)",
+            "refId": "prometheus-namespace-Variable-Query"
+          },
+          "refresh": 2,
+          "regex": "",
+          "sort": 1,
+          "type": "query"
+        },
+        {
+          "allValue": ".*",
+          "current": {
+            "text": "",
+            "value": ""
+          },
+          "datasource": "prometheus-linkerd",
+          "definition": "",
+          "includeAll": false,
+          "label": "DaemonSet",
+          "name": "daemonset",
+          "options": [],
+          "query": {
+            "query": "label_values(process_start_time_seconds{namespace=\"$namespace\"}, daemonset)",
+            "refId": "prometheus-daemonset-Variable-Query"
+          },
+          "refresh": 2,
+          "regex": "",
+          "sort": 1,
+          "type": "query"
+        },
+        {
+          "allValue": ".*",
+          "current": {
+            "text": "All",
+            "value": "$__all"
+          },
+          "datasource": "prometheus-linkerd",
+          "definition": "",
+          "hide": 2,
+          "includeAll": true,
+          "name": "inbound",
+          "options": [],
+          "query": {
+            "query": "label_values(request_total{dst_namespace=\"$namespace\", dst_daemonset=\"$daemonset\"}, daemonset)",
+            "refId": "prometheus-inbound-Variable-Query"
+          },
+          "refresh": 2,
+          "regex": "",
+          "sort": 1,
+          "type": "query"
+        },
+        {
+          "allValue": ".*",
+          "current": {
+            "text": "All",
+            "value": "$__all"
+          },
+          "datasource": "prometheus-linkerd",
+          "definition": "",
+          "hide": 2,
+          "includeAll": true,
+          "name": "outbound",
+          "options": [],
+          "query": {
+            "query": "label_values(request_total{namespace=\"$namespace\", daemonset=\"$daemonset\"}, dst_daemonset)",
+            "refId": "prometheus-outbound-Variable-Query"
+          },
+          "refresh": 2,
+          "regex": "",
+          "sort": 1,
+          "type": "query"
+        }
+      ]
+    },
+    "time": {
+      "from": "now-5m",
+      "to": "now"
+    },
+    "timepicker": {
+      "refresh_intervals": [
+        "1m",
+        "5m",
+        "15m",
+        "30m",
+        "1h",
+        "2h",
+        "1d"
+      ]
+    },
+    "timezone": "",
+    "title": "Linkerd DaemonSet",
+    "uid": "daemonset",
+    "version": 1,
+    "weekStart": ""
+  }

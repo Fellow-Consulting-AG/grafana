@@ -1,0 +1,155 @@
+
+{
+    "annotations": {
+      "list": [
+        {
+          "builtIn": 1,
+          "datasource": {
+            "type": "grafana",
+            "uid": "-- Grafana --"
+          },
+          "enable": true,
+          "hide": true,
+          "iconColor": "rgba(0, 211, 255, 1)",
+          "name": "Annotations & Alerts",
+          "type": "dashboard"
+        }
+      ]
+    },
+    "editable": true,
+    "fiscalYearStartMonth": 0,
+    "graphTooltip": 0,
+    "id": 99,
+    "links": [],
+    "panels": [
+      {
+        "datasource": {
+          "type": "prometheus",
+          "uid": "fe6pb0ezx0pvkc"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "custom": {
+              "hideFrom": {
+                "legend": false,
+                "tooltip": false,
+                "viz": false
+              },
+              "scaleDistribution": {
+                "type": "linear"
+              }
+            }
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 8,
+          "w": 12,
+          "x": 0,
+          "y": 0
+        },
+        "id": 1,
+        "options": {
+          "calculate": false,
+          "calculation": {
+            "xBuckets": {
+              "mode": "size",
+              "value": "6"
+            },
+            "yBuckets": {
+              "mode": "size",
+              "scale": {
+                "type": "linear"
+              },
+              "value": "6"
+            }
+          },
+          "cellGap": 0,
+          "cellValues": {
+            "unit": ""
+          },
+          "color": {
+            "exponent": 0.5,
+            "fill": "dark-orange",
+            "max": 3,
+            "min": 0,
+            "mode": "scheme",
+            "reverse": true,
+            "scale": "exponential",
+            "scheme": "Greens",
+            "steps": 6
+          },
+          "exemplars": {
+            "color": "green"
+          },
+          "filterValues": {
+            "le": 1e-9
+          },
+          "legend": {
+            "show": true
+          },
+          "rowsFrame": {
+            "layout": "unknown"
+          },
+          "tooltip": {
+            "mode": "none",
+            "showColorScale": false,
+            "yHistogram": false
+          },
+          "yAxis": {
+            "axisPlacement": "hidden",
+            "reverse": false,
+            "unit": ""
+          }
+        },
+        "pluginVersion": "11.4.0",
+        "targets": [
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "fe6pb0ezx0pvkc"
+            },
+            "disableTextWrap": false,
+            "editorMode": "builder",
+            "expr": "playwright_docbits_dashboard_save_document_passed",
+            "fullMetaSearch": false,
+            "includeNullMetadata": true,
+            "instant": false,
+            "legendFormat": "__auto",
+            "range": true,
+            "refId": "A",
+            "useBackend": false
+          }
+        ],
+        "title": "Login Tests Passed",
+        "transparent": true,
+        "type": "heatmap"
+      }
+    ],
+    "preload": false,
+    "schemaVersion": 40,
+    "tags": [],
+    "templating": {
+      "list": []
+    },
+    "time": {
+      "from": "now-6h",
+      "to": "now"
+    },
+    "timepicker": {
+      "refresh_intervals": [
+        "1m",
+        "5m",
+        "15m",
+        "30m",
+        "1h",
+        "2h",
+        "1d"
+      ]
+    },
+    "timezone": "browser",
+    "title": "Automated Testing Save Document Test (WIP)",
+    "uid": "beetp8uqjiadca",
+    "version": 3,
+    "weekStart": ""
+  }

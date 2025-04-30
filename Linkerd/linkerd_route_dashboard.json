@@ -1,0 +1,454 @@
+{
+    "annotations": {
+      "list": [
+        {
+          "builtIn": 1,
+          "datasource": {
+            "type": "datasource",
+            "uid": "grafana"
+          },
+          "enable": true,
+          "hide": true,
+          "iconColor": "rgba(0, 211, 255, 1)",
+          "name": "Annotations & Alerts",
+          "type": "dashboard"
+        }
+      ]
+    },
+    "description": "Latency, success rate, rate per second, by app, status_code, destination, and route",
+    "editable": true,
+    "fiscalYearStartMonth": 0,
+    "graphTooltip": 0,
+    "id": 79,
+    "links": [],
+    "panels": [
+      {
+        "datasource": {
+          "type": "prometheus",
+          "uid": "prometheus-linkerd"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            },
+            "custom": {
+              "axisBorderShow": false,
+              "axisCenteredZero": false,
+              "axisColorMode": "text",
+              "axisLabel": "",
+              "axisPlacement": "auto",
+              "barAlignment": 0,
+              "barWidthFactor": 0.6,
+              "drawStyle": "line",
+              "fillOpacity": 10,
+              "gradientMode": "none",
+              "hideFrom": {
+                "legend": false,
+                "tooltip": false,
+                "viz": false
+              },
+              "insertNulls": false,
+              "lineInterpolation": "linear",
+              "lineWidth": 1,
+              "pointSize": 5,
+              "scaleDistribution": {
+                "type": "linear"
+              },
+              "showPoints": "never",
+              "spanNulls": false,
+              "stacking": {
+                "group": "A",
+                "mode": "none"
+              },
+              "thresholdsStyle": {
+                "mode": "off"
+              }
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            },
+            "unit": "ms"
+          },
+          "overrides": [
+            {
+              "matcher": {
+                "id": "byValue",
+                "options": {
+                  "op": "gte",
+                  "reducer": "allIsNull",
+                  "value": 0
+                }
+              },
+              "properties": [
+                {
+                  "id": "custom.hideFrom",
+                  "value": {
+                    "legend": true,
+                    "tooltip": true,
+                    "viz": false
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        "gridPos": {
+          "h": 17,
+          "w": 24,
+          "x": 0,
+          "y": 0
+        },
+        "id": 4,
+        "links": [
+          {
+            "url": "/"
+          }
+        ],
+        "options": {
+          "dataLinks": [],
+          "legend": {
+            "calcs": [
+              "mean",
+              "lastNotNull",
+              "max"
+            ],
+            "displayMode": "table",
+            "placement": "bottom",
+            "showLegend": true
+          },
+          "tooltip": {
+            "mode": "multi",
+            "sort": "none"
+          }
+        },
+        "pluginVersion": "11.4.0",
+        "targets": [
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "prometheus-linkerd"
+            },
+            "expr": "histogram_quantile(0.$percentile, sum(irate(route_response_latency_ms_bucket{namespace=~\"$namespace\", app=~\"$app\", rt_route=~\"$route\", dst=~\"$dst\", status_code=~\"$status_code\"}[1m])) by (le, rt_route, dst, app, status_code))",
+            "format": "time_series",
+            "hide": false,
+            "instant": false,
+            "intervalFactor": 1,
+            "legendFormat": "src={{app}}, {{status_code}}, {{rt_route}}, dst={{dst}}",
+            "refId": "A"
+          }
+        ],
+        "title": "Latency",
+        "type": "timeseries"
+      },
+      {
+        "datasource": {
+          "type": "prometheus",
+          "uid": "prometheus-linkerd"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            },
+            "custom": {
+              "axisBorderShow": false,
+              "axisCenteredZero": false,
+              "axisColorMode": "text",
+              "axisLabel": "",
+              "axisPlacement": "auto",
+              "barAlignment": 0,
+              "barWidthFactor": 0.6,
+              "drawStyle": "line",
+              "fillOpacity": 0,
+              "gradientMode": "none",
+              "hideFrom": {
+                "legend": false,
+                "tooltip": false,
+                "viz": false
+              },
+              "insertNulls": false,
+              "lineInterpolation": "linear",
+              "lineWidth": 2,
+              "pointSize": 5,
+              "scaleDistribution": {
+                "type": "linear"
+              },
+              "showPoints": "never",
+              "spanNulls": false,
+              "stacking": {
+                "group": "A",
+                "mode": "none"
+              },
+              "thresholdsStyle": {
+                "mode": "off"
+              }
+            },
+            "mappings": [],
+            "max": 1,
+            "min": 0,
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            },
+            "unit": "percentunit"
+          },
+          "overrides": [
+            {
+              "matcher": {
+                "id": "byValue",
+                "options": {
+                  "op": "gte",
+                  "reducer": "allIsNull",
+                  "value": 0
+                }
+              },
+              "properties": [
+                {
+                  "id": "custom.hideFrom",
+                  "value": {
+                    "legend": true,
+                    "tooltip": true,
+                    "viz": false
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        "gridPos": {
+          "h": 17,
+          "w": 24,
+          "x": 0,
+          "y": 17
+        },
+        "id": 6,
+        "options": {
+          "dataLinks": [],
+          "legend": {
+            "calcs": [
+              "mean",
+              "lastNotNull",
+              "min"
+            ],
+            "displayMode": "table",
+            "placement": "bottom",
+            "showLegend": true
+          },
+          "tooltip": {
+            "mode": "multi",
+            "sort": "none"
+          }
+        },
+        "pluginVersion": "11.4.0",
+        "targets": [
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "prometheus-linkerd"
+            },
+            "expr": "sum(irate(route_response_total{classification=\"success\", namespace=~\"$namespace\", app=~\"$app\", rt_route=~\"$route\", dst=~\"$dst\"}[1m])) by (rt_route, dst, app) / sum(irate(route_response_total{namespace=~\"$namespace\", app=~\"$app\", rt_route=~\"$route\", dst=~\"$dst\"}[1m])) by (rt_route, dst, app)",
+            "format": "time_series",
+            "intervalFactor": 1,
+            "legendFormat": "src={{app}}, {{rt_route}}, dst={{dst}}",
+            "refId": "A"
+          }
+        ],
+        "title": "Success Rate",
+        "type": "timeseries"
+      },
+      {
+        "datasource": {
+          "type": "prometheus",
+          "uid": "prometheus-linkerd"
+        },
+        "fieldConfig": {
+          "defaults": {},
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 19,
+          "w": 24,
+          "x": 0,
+          "y": 34
+        },
+        "id": 8,
+        "options": {
+          "dataLinks": []
+        },
+        "targets": [
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "prometheus-linkerd"
+            },
+            "expr": "sum(irate(route_response_total{app=~\"$app\", namespace=~\"$namespace\", rt_route=~\"$route\", dst=~\"$dst\", status_code=~\"$status_code\"}[1m])) by (rt_route, dst, app, status_code)",
+            "format": "time_series",
+            "instant": false,
+            "intervalFactor": 1,
+            "legendFormat": "src={{app}}, {{status_code}}, {{rt_route}}, dst={{dst}}",
+            "refId": "A"
+          }
+        ],
+        "title": "Requests Per Second",
+        "type": "timeseries"
+      }
+    ],
+    "preload": false,
+    "refresh": "",
+    "schemaVersion": 40,
+    "tags": [],
+    "templating": {
+      "list": [
+        {
+          "current": {
+            "text": "All",
+            "value": "$__all"
+          },
+          "datasource": "prometheus-linkerd",
+          "definition": "label_values(route_response_total, namespace)",
+          "includeAll": true,
+          "multi": true,
+          "name": "namespace",
+          "options": [],
+          "query": "label_values(route_response_total, namespace)",
+          "refresh": 2,
+          "regex": "",
+          "sort": 1,
+          "type": "query"
+        },
+        {
+          "current": {
+            "text": "All",
+            "value": "$__all"
+          },
+          "datasource": "prometheus-linkerd",
+          "definition": "label_values(route_response_total{namespace=~\"$namespace\"}, dst)",
+          "includeAll": true,
+          "multi": true,
+          "name": "dst",
+          "options": [],
+          "query": "label_values(route_response_total{namespace=~\"$namespace\"}, dst)",
+          "refresh": 2,
+          "regex": ".*\\..*\\..*\\..*\\..*",
+          "sort": 1,
+          "type": "query"
+        },
+        {
+          "current": {
+            "text": "All",
+            "value": "$__all"
+          },
+          "datasource": "prometheus-linkerd",
+          "definition": "label_values(route_response_total{namespace=~\"$namespace\", dst=~\"$dst\"}, app)",
+          "includeAll": true,
+          "multi": true,
+          "name": "app",
+          "options": [],
+          "query": "label_values(route_response_total{namespace=~\"$namespace\", dst=~\"$dst\"}, app)",
+          "refresh": 2,
+          "regex": "",
+          "sort": 1,
+          "type": "query"
+        },
+        {
+          "current": {
+            "text": "All",
+            "value": "$__all"
+          },
+          "datasource": "prometheus-linkerd",
+          "definition": "label_values(route_response_total{app=~\"$app\", namespace=~\"$namespace\", dst=~\"$dst\"}, rt_route)",
+          "includeAll": true,
+          "multi": true,
+          "name": "route",
+          "options": [],
+          "query": "label_values(route_response_total{app=~\"$app\", namespace=~\"$namespace\", dst=~\"$dst\"}, rt_route)",
+          "refresh": 2,
+          "regex": "",
+          "sort": 1,
+          "type": "query"
+        },
+        {
+          "current": {
+            "text": "All",
+            "value": "$__all"
+          },
+          "datasource": "prometheus-linkerd",
+          "definition": "label_values(route_response_total{app=~\"$app\", namespace=~\"$namespace\", rt_route=~\"$route\", dst=~\"$dst\"}, status_code)",
+          "includeAll": true,
+          "multi": true,
+          "name": "status_code",
+          "options": [],
+          "query": "label_values(route_response_total{app=~\"$app\", namespace=~\"$namespace\", rt_route=~\"$route\", dst=~\"$dst\"}, status_code)",
+          "refresh": 2,
+          "regex": "",
+          "sort": 1,
+          "type": "query"
+        },
+        {
+          "current": {
+            "text": [
+              "50"
+            ],
+            "value": [
+              "50"
+            ]
+          },
+          "includeAll": true,
+          "multi": true,
+          "name": "percentile",
+          "options": [
+            {
+              "selected": true,
+              "text": "50",
+              "value": "50"
+            },
+            {
+              "selected": false,
+              "text": "95",
+              "value": "95"
+            },
+            {
+              "selected": false,
+              "text": "99",
+              "value": "99"
+            }
+          ],
+          "query": "50,95,99",
+          "type": "custom"
+        }
+      ]
+    },
+    "time": {
+      "from": "2020-03-08T07:40:22.931Z",
+      "to": "2020-03-08T10:02:06.404Z"
+    },
+    "timepicker": {
+      "refresh_intervals": []
+    },
+    "timezone": "",
+    "title": "Linkerd Route Dashboard",
+    "uid": "3MJhqTQZz",
+    "version": 1,
+    "weekStart": ""
+  }
