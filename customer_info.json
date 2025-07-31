@@ -18,7 +18,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 15,
+  "id": 62,
   "links": [],
   "panels": [
     {
@@ -26,7 +26,7 @@
         "type": "grafana-postgresql-datasource",
         "uid": "dega8v6bs6mm8d"
       },
-      "description": "Documents that got stuck in a status\n[new, restarted, running, restart_in_progress, validating, validated_pending_export, approved_pending_export, pending_watcher_export] for more then 5 Minutes",
+      "description": "Documents that got stuck in a status\n[new, restarted, running, restart_in_progress, validating, validated_pending_export, approved_pending_export] for more then 5 Minutes",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -90,7 +90,7 @@
           "editorMode": "code",
           "format": "table",
           "rawQuery": true,
-          "rawSql": "SELECT \n  count(d.id), \n  SUBSTRING(oc.name FROM 1 FOR 7) AS org_short_name, \n  d.status \nFROM documents d\nJOIN organisation_cache oc ON d.org_id = oc.id\nWHERE d.status IN (\n    'new',\n    'restarted',\n    'running',\n    'restart_in_progress',\n    'validating',\n    'validated_pending_export',\n    'approved_pending_export',\n    'pending_watcher_export'\n)\nAND d.is_deleted = false\nAND d.last_modified_on < NOW() - INTERVAL '5 minutes'\nAND d.created_on BETWEEN $__timeFrom() AND $__timeTo()\nGROUP BY org_short_name, d.status\nORDER BY org_short_name ASC;\n",
+          "rawSql": "SELECT \n  count(d.id), \n  SUBSTRING(oc.name FROM 1 FOR 7) AS org_short_name, \n  d.status \nFROM documents d\nJOIN organisation_cache oc ON d.org_id = oc.id\nWHERE d.status IN (\n    'new',\n    'restarted',\n    'running',\n    'restart_in_progress',\n    'validating',\n    'validated_pending_export',\n    'approved_pending_export'\n)\nAND d.is_deleted = false\nAND d.last_modified_on < NOW() - INTERVAL '5 minutes'\nAND d.created_on BETWEEN $__timeFrom() AND $__timeTo()\nGROUP BY org_short_name, d.status\nORDER BY org_short_name ASC;\n",
           "refId": "A",
           "sql": {
             "columns": [
@@ -148,5 +148,5 @@
   "timezone": "browser",
   "title": "Customer-Info",
   "uid": "5c02668c-e1c1-41fe-90bb-6d79d9f1250a",
-  "version": 4
+  "version": 1
 }
