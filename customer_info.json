@@ -50,8 +50,8 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 8,
-        "w": 12,
+        "h": 14,
+        "w": 24,
         "x": 0,
         "y": 0
       },
@@ -68,7 +68,7 @@
         "minVizHeight": 16,
         "minVizWidth": 8,
         "namePlacement": "auto",
-        "orientation": "auto",
+        "orientation": "horizontal",
         "reduceOptions": {
           "calcs": [
             "lastNotNull"
@@ -90,7 +90,7 @@
           "editorMode": "code",
           "format": "table",
           "rawQuery": true,
-          "rawSql": "SELECT COUNT(d.id), oc.name FROM documents d\nJOIN organisation_cache oc on d.org_id = oc.id\nWHERE d.status IN (\n    'new',\n    'restarted',\n    'running',\n    'restart_in_progress',\n    'validating',\n    'validated_pending_export',\n    'approved_pending_export',\n    'pending_watcher_export'\n)\nand d.is_deleted = false \nAND d.last_modified_on < NOW() - INTERVAL '5 minutes'\nAND d.created_on BETWEEN $__timeFrom() AND $__timeTo()\ngroup by oc.name;",
+          "rawSql": "SELECT \n  count(d.id), \n  SUBSTRING(oc.name FROM 1 FOR 7) AS org_short_name, \n  d.status \nFROM documents d\nJOIN organisation_cache oc ON d.org_id = oc.id\nWHERE d.status IN (\n    'new',\n    'restarted',\n    'running',\n    'restart_in_progress',\n    'validating',\n    'validated_pending_export',\n    'approved_pending_export',\n    'pending_watcher_export'\n)\nAND d.is_deleted = false\nAND d.last_modified_on < NOW() - INTERVAL '5 minutes'\nAND d.created_on BETWEEN $__timeFrom() AND $__timeTo()\nGROUP BY org_short_name, d.status\nORDER BY org_short_name ASC;\n",
           "refId": "A",
           "sql": {
             "columns": [
@@ -146,5 +146,5 @@
   "timezone": "browser",
   "title": "Customer-Info",
   "uid": "5c02668c-e1c1-41fe-90bb-6d79d9f1250a",
-  "version": 1
+  "version": 2
 }
