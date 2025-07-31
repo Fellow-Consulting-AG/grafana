@@ -26,7 +26,7 @@
         "type": "grafana-postgresql-datasource",
         "uid": "dega8v6bs6mm8d"
       },
-      "description": "Documents that got stuck in a status\n[new, restarted, running, restart_in_progress, validating, validated_pending_export, approved_pending_export, pending_watcher_export]",
+      "description": "Documents that got stuck in a status\n[new, restarted, running, restart_in_progress, validating, validated_pending_export, approved_pending_export, pending_watcher_export] for more then 5 Minutes",
       "fieldConfig": {
         "defaults": {
           "color": {
