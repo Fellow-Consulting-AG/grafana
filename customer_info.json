@@ -124,7 +124,9 @@
   ],
   "preload": false,
   "schemaVersion": 41,
-  "tags": [],
+  "tags": [
+    "TV"
+  ],
   "templating": {
     "list": []
   },
@@ -146,5 +148,5 @@
   "timezone": "browser",
   "title": "Customer-Info",
   "uid": "5c02668c-e1c1-41fe-90bb-6d79d9f1250a",
-  "version": 2
+  "version": 4
 }
