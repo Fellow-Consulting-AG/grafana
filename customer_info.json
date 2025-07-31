@@ -18,7 +18,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 62,
+  "id": 97,
   "links": [],
   "panels": [
     {
@@ -30,7 +30,30 @@
       "fieldConfig": {
         "defaults": {
           "color": {
-            "mode": "thresholds"
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "series",
+            "axisGridShow": false,
+            "axisLabel": "",
+            "axisPlacement": "left",
+            "axisWidth": 0,
+            "fillOpacity": 50,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineWidth": 2,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
           },
           "mappings": [],
           "thresholds": {
@@ -42,7 +65,7 @@
               },
               {
                 "color": "red",
-                "value": 80
+                "value": 10
               }
             ]
           }
@@ -57,28 +80,29 @@
       },
       "id": 1,
       "options": {
-        "displayMode": "gradient",
+        "barRadius": 0.2,
+        "barWidth": 0.9,
+        "colorByField": "value",
+        "fullHighlight": false,
+        "groupWidth": 0.7,
         "legend": {
           "calcs": [],
           "displayMode": "list",
           "placement": "bottom",
           "showLegend": false
         },
-        "maxVizHeight": 300,
-        "minVizHeight": 16,
-        "minVizWidth": 8,
-        "namePlacement": "auto",
         "orientation": "horizontal",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": true
+        "showValue": "auto",
+        "stacking": "none",
+        "text": {},
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
         },
-        "showUnfilled": true,
-        "sizing": "auto",
-        "valueMode": "color"
+        "xField": "metric",
+        "xTickLabelRotation": 0,
+        "xTickLabelSpacing": 0
       },
       "pluginVersion": "12.1.0",
       "targets": [
@@ -90,7 +114,7 @@
           "editorMode": "code",
           "format": "table",
           "rawQuery": true,
-          "rawSql": "SELECT \n  count(d.id), \n  SUBSTRING(oc.name FROM 1 FOR 7) AS org_short_name, \n  d.status \nFROM documents d\nJOIN organisation_cache oc ON d.org_id = oc.id\nWHERE d.status IN (\n    'new',\n    'restarted',\n    'running',\n    'restart_in_progress',\n    'validating',\n    'validated_pending_export',\n    'approved_pending_export'\n)\nAND d.is_deleted = false\nAND d.last_modified_on < NOW() - INTERVAL '5 minutes'\nAND d.created_on BETWEEN $__timeFrom() AND $__timeTo()\nGROUP BY org_short_name, d.status\nORDER BY org_short_name ASC;\n",
+          "rawSql": "SELECT \n  count(d.id) AS value, \n  SUBSTRING(oc.name FROM 1 FOR 5) || ' - ' || d.status AS metric\nFROM documents d\nJOIN organisation_cache oc ON d.org_id = oc.id\nWHERE d.status IN (\n    'new',\n    'restarted',\n    'running',\n    'restart_in_progress',\n    'validating',\n    'validated_pending_export',\n    'approved_pending_export',\n    'pending_watcher_export'\n)\nAND d.is_deleted = false\nAND d.last_modified_on < NOW() - INTERVAL '5 minutes'\nAND d.created_on BETWEEN $__timeFrom() AND $__timeTo()\nGROUP BY metric\nORDER BY metric ASC;",
           "refId": "A",
           "sql": {
             "columns": [
@@ -119,7 +143,8 @@
         }
       ],
       "title": "Stuck Documents",
-      "type": "bargauge"
+      "transparent": true,
+      "type": "barchart"
     }
   ],
   "preload": false,
@@ -131,7 +156,7 @@
     "list": []
   },
   "time": {
-    "from": "now-2d",
+    "from": "now-24h",
     "to": "now"
   },
   "timepicker": {
