@@ -18,7 +18,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 157,
+  "id": 174,
   "links": [],
   "panels": [
     {
@@ -26,7 +26,7 @@
         "type": "grafana-postgresql-datasource",
         "uid": "dega8v6bs6mm8d"
       },
-      "description": "Documents that got stuck in a status\n[new, restarted, restart_export, running, restart_in_progress, validating, validated_pending_export, approved_pending_export] for more then 5 Minutes",
+      "description": "Documents that got stuck in a status\n[new, restarted, restart_export, restart_in_progress, running, validating, validated_pending_export, approved_pending_export] for more then 5 Minutes",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -114,7 +114,7 @@
           "editorMode": "code",
           "format": "table",
           "rawQuery": true,
-          "rawSql": "SELECT \n  count(d.id) AS value, \n  SUBSTRING(oc.name FROM 1 FOR 5) || ' - ' || d.status AS metric\nFROM documents d\nJOIN organisation_cache oc ON d.org_id = oc.id\nWHERE d.status IN (\n    'new',\n    'restarted',\n    'restart_export',\n    'running',\n    'restart_in_progress',\n    'validating',\n    'validated_pending_export',\n    'approved_pending_export',\n    'pending_watcher_export'\n)\nAND d.is_deleted = false\nAND d.last_modified_on < NOW() - INTERVAL '5 minutes'\nAND d.created_on BETWEEN $__timeFrom() AND $__timeTo()\nGROUP BY metric\nORDER BY metric ASC;",
+          "rawSql": "SELECT \n  count(d.id) AS value, \n  SUBSTRING(oc.name FROM 1 FOR 5) || ' - ' || d.status AS metric\nFROM documents d\nJOIN organisation_cache oc ON d.org_id = oc.id\nWHERE d.status IN (\n    'new',\n    'restarted',\n    'restart_export',\n    'restart_in_progress',\n    'running',\n    'validating',\n    'validated_pending_export',\n    'approved_pending_export'\n)\nAND d.is_deleted = false\nAND d.last_modified_on < NOW() - INTERVAL '5 minutes'\nAND d.created_on BETWEEN $__timeFrom() AND $__timeTo()\nGROUP BY metric\nORDER BY metric ASC;",
           "refId": "A",
           "sql": {
             "columns": [
