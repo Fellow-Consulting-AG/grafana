@@ -27,6 +27,7 @@
           "type": "grafana-postgresql-datasource",
           "uid": "betod90qal8g0e"
         },
+        "description": "Processes that are stuck in celery and have not moved to any further Step.\nStuck for more then 10 Minutes",
         "fieldConfig": {
           "defaults": {
             "color": {
@@ -109,7 +110,7 @@
             "editorMode": "code",
             "format": "table",
             "rawQuery": true,
-            "rawSql": "SELECT\n  REPLACE(service, 'celery.', '') AS service,\n  COUNT(*) AS task_count\nFROM\n  kafka_task_status\nWHERE\n  status IN ('pending', 'started')\n  AND is_invalid = false\n  AND is_deleted = false\n  AND created_on BETWEEN $__timeFrom() AND $__timeTo()\nGROUP BY\n  REPLACE(service, 'celery.', '')\nORDER BY\n  task_count DESC\n",
+            "rawSql": "SELECT\n  REPLACE(service, 'celery.', '') AS service,\n  COUNT(*) AS task_count\nFROM\n  kafka_task_status\nWHERE\n  status IN ('pending', 'started')\n  AND is_invalid = false\n  AND is_deleted = false\n  AND created_on < NOW() - INTERVAL '10 minutes'\n  AND created_on BETWEEN $__timeFrom() AND $__timeTo()\nGROUP BY\n  REPLACE(service, 'celery.', '')\nORDER BY\n  task_count DESC\n",
             "refId": "A",
             "sql": {
               "columns": [
@@ -131,7 +132,8 @@
             "table": "kafka_task_status"
           }
         ],
-        "title": "New panel",
+        "title": "Stuck Celery Status Processes",
+        "transparent": true,
         "type": "barchart"
       },
       {
@@ -139,6 +141,7 @@
           "type": "yesoreyeram-infinity-datasource",
           "uid": "feto8kurwtipsb"
         },
+        "description": "The Current Count of the Sandbox-Celery-Q's",
         "fieldConfig": {
           "defaults": {
             "color": {
@@ -235,7 +238,8 @@
             }
           }
         ],
-        "title": "New panel",
+        "title": "Current Celery Q Count",
+        "transparent": true,
         "type": "barchart"
       }
     ],
@@ -263,5 +267,5 @@
     "timezone": "browser",
     "title": "DocBits Celery Usage",
     "uid": "53fbf079-bc47-4ee0-9d93-3744b47fa844",
-    "version": 2
+    "version": 3
   }
