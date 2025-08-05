@@ -19,11 +19,11 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 290,
+  "id": 342,
   "links": [],
   "panels": [
     {
-      "collapsed": true,
+      "collapsed": false,
       "gridPos": {
         "h": 1,
         "w": 24,
@@ -123,7 +123,7 @@
           "editorMode": "code",
           "format": "table",
           "rawQuery": true,
-          "rawSql": "SELECT\n  REPLACE(service, 'celery.', '') AS service,\n  COUNT(*) AS task_count\nFROM\n  kafka_task_status\nWHERE\n  status IN ('pending', 'started')\n  AND is_invalid = false\n  AND is_deleted = false\n  AND created_on < NOW() - INTERVAL '10 minutes'\n  AND created_on BETWEEN $__timeFrom() AND $__timeTo()\nGROUP BY\n  REPLACE(service, 'celery.', '')\nORDER BY\n  task_count DESC\n",
+          "rawSql": "SELECT\n  REPLACE(service, 'celery.', '') AS service,\n  COUNT(*) AS task_count\nFROM\n  kafka_task_status\nWHERE\n  status IN ('pending', 'started')\n  AND is_invalid = false\n  AND is_deleted = false\n  AND created_on < NOW() - INTERVAL '10 minutes'\n  AND created_on BETWEEN $__timeFrom() AND $__timeTo()\nGROUP BY\n  REPLACE(service, 'celery.', '')\nORDER BY\n  task_count DESC;\n",
           "refId": "A",
           "sql": {
             "columns": [
@@ -146,6 +146,120 @@
         }
       ],
       "title": "Stuck Celery Status Processes",
+      "transparent": true,
+      "type": "barchart"
+    },
+    {
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "dega8v6bs6mm8d"
+      },
+      "description": "Processes that are stuck in celery and have not moved to any further Step.\nStuck for more then 10 Minutes",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "fillOpacity": 80,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineWidth": 1,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 24,
+        "x": 0,
+        "y": 9
+      },
+      "id": 7,
+      "options": {
+        "barRadius": 0,
+        "barWidth": 0.97,
+        "fullHighlight": false,
+        "groupWidth": 0.7,
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "orientation": "horizontal",
+        "showValue": "auto",
+        "stacking": "none",
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        },
+        "xTickLabelRotation": 0,
+        "xTickLabelSpacing": 0
+      },
+      "pluginVersion": "12.1.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "dega8v6bs6mm8d"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT\n  -- 1. Select the organization's name. Use COALESCE to provide a fallback name if the org_id is not in the cache.\n  COALESCE(oc.name, 'Unknown Organisation (' || kts.org_id::text || ')') AS organisation_name,\n  \n  -- 2. Count the number of stuck documents for that organization.\n  COUNT(kts.doc_id) AS stuck_document_count,\n  \n  -- 3. Aggregate the corresponding doc_ids into a single comma-separated string.\n  STRING_AGG(kts.doc_id::text, ', ') AS stuck_doc_ids\nFROM\n  kafka_task_status AS kts\nLEFT JOIN\n  -- 4. Join with the organisation_cache table to get the name.\n  organisation_cache AS oc ON kts.org_id::text = oc.id\nWHERE\n  -- These conditions define a \"stuck\" task.\n  kts.status IN ('pending', 'started')\n  AND kts.is_invalid = false\n  AND kts.is_deleted = false\n  AND kts.created_on < NOW() - INTERVAL '10 minutes'\n  AND kts.created_on BETWEEN $__timeFrom() AND $__timeTo()\n\n  -- We only care about tasks that have an organization and a document.\n  AND kts.org_id IS NOT NULL\n  AND kts.doc_id IS NOT NULL\nGROUP BY\n  -- 5. Group by the organization's ID and name to get per-organisation counts.\n  oc.id, oc.name, kts.org_id\nORDER BY\n  -- Order by the highest count first.\n  stuck_document_count DESC;",
+          "refId": "A",
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          },
+          "table": "kafka_task_status"
+        }
+      ],
+      "title": "Stuck Celery Documents",
       "transparent": true,
       "type": "barchart"
     },
@@ -202,7 +316,7 @@
         "h": 11,
         "w": 24,
         "x": 0,
-        "y": 9
+        "y": 17
       },
       "id": 6,
       "options": {
@@ -261,7 +375,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 20
+        "y": 28
       },
       "id": 3,
       "panels": [],
@@ -321,7 +435,7 @@
         "h": 8,
         "w": 24,
         "x": 0,
-        "y": 21
+        "y": 29
       },
       "id": 2,
       "options": {
@@ -384,6 +498,120 @@
     },
     {
       "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "betod90qal8g0e"
+      },
+      "description": "Processes that are stuck in celery and have not moved to any further Step.\nStuck for more then 10 Minutes",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "fillOpacity": 80,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineWidth": 1,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 24,
+        "x": 0,
+        "y": 37
+      },
+      "id": 8,
+      "options": {
+        "barRadius": 0,
+        "barWidth": 0.97,
+        "fullHighlight": false,
+        "groupWidth": 0.7,
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "orientation": "horizontal",
+        "showValue": "auto",
+        "stacking": "none",
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        },
+        "xTickLabelRotation": 0,
+        "xTickLabelSpacing": 0
+      },
+      "pluginVersion": "12.1.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "betod90qal8g0e"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT\n  -- 1. Select the organization's name. Use COALESCE to provide a fallback name if the org_id is not in the cache.\n  COALESCE(oc.name, 'Unknown Organisation (' || kts.org_id::text || ')') AS organisation_name,\n  \n  -- 2. Count the number of stuck documents for that organization.\n  COUNT(kts.doc_id) AS stuck_document_count,\n  \n  -- 3. Aggregate the corresponding doc_ids into a single comma-separated string.\n  STRING_AGG(kts.doc_id::text, ', ') AS stuck_doc_ids\nFROM\n  kafka_task_status AS kts\nLEFT JOIN\n  -- 4. Join with the organisation_cache table to get the name.\n  organisation_cache AS oc ON kts.org_id::text = oc.id\nWHERE\n  -- These conditions define a \"stuck\" task.\n  kts.status IN ('pending', 'started')\n  AND kts.is_invalid = false\n  AND kts.is_deleted = false\n  AND kts.created_on < NOW() - INTERVAL '10 minutes'\n  AND kts.created_on BETWEEN $__timeFrom() AND $__timeTo()\n\n  -- We only care about tasks that have an organization and a document.\n  AND kts.org_id IS NOT NULL\n  AND kts.doc_id IS NOT NULL\nGROUP BY\n  -- 5. Group by the organization's ID and name to get per-organisation counts.\n  oc.id, oc.name, kts.org_id\nORDER BY\n  -- Order by the highest count first.\n  stuck_document_count DESC;",
+          "refId": "A",
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          },
+          "table": "kafka_task_status"
+        }
+      ],
+      "title": "Stuck Celery Documents",
+      "transparent": true,
+      "type": "barchart"
+    },
+    {
+      "datasource": {
         "type": "yesoreyeram-infinity-datasource",
         "uid": "feto8kurwtipsb"
       },
@@ -435,7 +663,7 @@
         "h": 11,
         "w": 24,
         "x": 0,
-        "y": 29
+        "y": 45
       },
       "id": 1,
       "options": {
