@@ -123,7 +123,7 @@
           "editorMode": "code",
           "format": "table",
           "rawQuery": true,
-          "rawSql": "SELECT\n  REPLACE(service, 'celery.', '') AS service,\n  COUNT(*) AS task_count\nFROM\n  kafka_task_status\nWHERE\n  status IN ('pending', 'started')\n  AND is_invalid = false\n  AND is_deleted = false\n  AND created_on < NOW() - INTERVAL '10 minutes'\n  AND created_on BETWEEN $__timeFrom() AND $__timeTo()\nGROUP BY\n  REPLACE(service, 'celery.', '')\nORDER BY\n  task_count DESC;\n",
+          "rawSql": "SELECT\n  REPLACE(service, 'celery.', '') AS service,\n  COUNT(*) AS task_count\nFROM\n  kafka_task_status\nWHERE\n  status IN ('pending', 'started')\n  AND is_invalid = false\n  AND is_deleted = false\n  AND created_on < NOW() - INTERVAL '15 minutes'\n  AND created_on BETWEEN $__timeFrom() AND $__timeTo()\nGROUP BY\n  REPLACE(service, 'celery.', '')\nORDER BY\n  task_count DESC;\n",
           "refId": "A",
           "sql": {
             "columns": [
@@ -237,7 +237,7 @@
           "editorMode": "code",
           "format": "table",
           "rawQuery": true,
-          "rawSql": "SELECT\n  -- 1. Select the organization's name. Use COALESCE to provide a fallback name if the org_id is not in the cache.\n  COALESCE(oc.name, 'Unknown Organisation (' || kts.org_id::text || ')') AS organisation_name,\n  \n  -- 2. Count the number of stuck documents for that organization.\n  COUNT(kts.doc_id) AS stuck_document_count,\n  \n  -- 3. Aggregate the corresponding doc_ids into a single comma-separated string.\n  STRING_AGG(kts.doc_id::text, ', ') AS stuck_doc_ids\nFROM\n  kafka_task_status AS kts\nLEFT JOIN\n  -- 4. Join with the organisation_cache table to get the name.\n  organisation_cache AS oc ON kts.org_id::text = oc.id\nWHERE\n  -- These conditions define a \"stuck\" task.\n  kts.status IN ('pending', 'started')\n  AND kts.is_invalid = false\n  AND kts.is_deleted = false\n  AND kts.created_on < NOW() - INTERVAL '10 minutes'\n  AND kts.created_on BETWEEN $__timeFrom() AND $__timeTo()\n\n  -- We only care about tasks that have an organization and a document.\n  AND kts.org_id IS NOT NULL\n  AND kts.doc_id IS NOT NULL\nGROUP BY\n  -- 5. Group by the organization's ID and name to get per-organisation counts.\n  oc.id, oc.name, kts.org_id\nORDER BY\n  -- Order by the highest count first.\n  stuck_document_count DESC;",
+          "rawSql": "SELECT\n  -- 1. Select the organization's name. Use COALESCE to provide a fallback name if the org_id is not in the cache.\n  COALESCE(oc.name, 'Unknown Organisation (' || kts.org_id::text || ')') AS organisation_name,\n  \n  -- 2. Count the number of stuck documents for that organization.\n  COUNT(kts.doc_id) AS stuck_document_count,\n  \n  -- 3. Aggregate the corresponding doc_ids into a single comma-separated string.\n  STRING_AGG(kts.doc_id::text, ', ') AS stuck_doc_ids\nFROM\n  kafka_task_status AS kts\nLEFT JOIN\n  -- 4. Join with the organisation_cache table to get the name.\n  organisation_cache AS oc ON kts.org_id::text = oc.id\nWHERE\n  -- These conditions define a \"stuck\" task.\n  kts.status IN ('pending', 'started')\n  AND kts.is_invalid = false\n  AND kts.is_deleted = false\n  AND kts.created_on < NOW() - INTERVAL '15 minutes'\n  AND kts.created_on BETWEEN $__timeFrom() AND $__timeTo()\n\n  -- We only care about tasks that have an organization and a document.\n  AND kts.org_id IS NOT NULL\n  AND kts.doc_id IS NOT NULL\nGROUP BY\n  -- 5. Group by the organization's ID and name to get per-organisation counts.\n  oc.id, oc.name, kts.org_id\nORDER BY\n  -- Order by the highest count first.\n  stuck_document_count DESC;",
           "refId": "A",
           "sql": {
             "columns": [
@@ -470,7 +470,7 @@
           "editorMode": "code",
           "format": "table",
           "rawQuery": true,
-          "rawSql": "SELECT\n  REPLACE(service, 'celery.', '') AS service,\n  COUNT(*) AS task_count\nFROM\n  kafka_task_status\nWHERE\n  status IN ('pending', 'started')\n  AND is_invalid = false\n  AND is_deleted = false\n  AND created_on < NOW() - INTERVAL '10 minutes'\n  AND created_on BETWEEN $__timeFrom() AND $__timeTo()\nGROUP BY\n  REPLACE(service, 'celery.', '')\nORDER BY\n  task_count DESC\n",
+          "rawSql": "SELECT\n  REPLACE(service, 'celery.', '') AS service,\n  COUNT(*) AS task_count\nFROM\n  kafka_task_status\nWHERE\n  status IN ('pending', 'started')\n  AND is_invalid = false\n  AND is_deleted = false\n  AND created_on < NOW() - INTERVAL '15 minutes'\n  AND created_on BETWEEN $__timeFrom() AND $__timeTo()\nGROUP BY\n  REPLACE(service, 'celery.', '')\nORDER BY\n  task_count DESC\n",
           "refId": "A",
           "sql": {
             "columns": [
@@ -584,7 +584,7 @@
           "editorMode": "code",
           "format": "table",
           "rawQuery": true,
-          "rawSql": "SELECT\n  -- 1. Select the organization's name. Use COALESCE to provide a fallback name if the org_id is not in the cache.\n  COALESCE(oc.name, 'Unknown Organisation (' || kts.org_id::text || ')') AS organisation_name,\n  \n  -- 2. Count the number of stuck documents for that organization.\n  COUNT(kts.doc_id) AS stuck_document_count,\n  \n  -- 3. Aggregate the corresponding doc_ids into a single comma-separated string.\n  STRING_AGG(kts.doc_id::text, ', ') AS stuck_doc_ids\nFROM\n  kafka_task_status AS kts\nLEFT JOIN\n  -- 4. Join with the organisation_cache table to get the name.\n  organisation_cache AS oc ON kts.org_id::text = oc.id\nWHERE\n  -- These conditions define a \"stuck\" task.\n  kts.status IN ('pending', 'started')\n  AND kts.is_invalid = false\n  AND kts.is_deleted = false\n  AND kts.created_on < NOW() - INTERVAL '10 minutes'\n  AND kts.created_on BETWEEN $__timeFrom() AND $__timeTo()\n\n  -- We only care about tasks that have an organization and a document.\n  AND kts.org_id IS NOT NULL\n  AND kts.doc_id IS NOT NULL\nGROUP BY\n  -- 5. Group by the organization's ID and name to get per-organisation counts.\n  oc.id, oc.name, kts.org_id\nORDER BY\n  -- Order by the highest count first.\n  stuck_document_count DESC;",
+          "rawSql": "SELECT\n  -- 1. Select the organization's name. Use COALESCE to provide a fallback name if the org_id is not in the cache.\n  COALESCE(oc.name, 'Unknown Organisation (' || kts.org_id::text || ')') AS organisation_name,\n  \n  -- 2. Count the number of stuck documents for that organization.\n  COUNT(kts.doc_id) AS stuck_document_count,\n  \n  -- 3. Aggregate the corresponding doc_ids into a single comma-separated string.\n  STRING_AGG(kts.doc_id::text, ', ') AS stuck_doc_ids\nFROM\n  kafka_task_status AS kts\nLEFT JOIN\n  -- 4. Join with the organisation_cache table to get the name.\n  organisation_cache AS oc ON kts.org_id::text = oc.id\nWHERE\n  -- These conditions define a \"stuck\" task.\n  kts.status IN ('pending', 'started')\n  AND kts.is_invalid = false\n  AND kts.is_deleted = false\n  AND kts.created_on < NOW() - INTERVAL '15 minutes'\n  AND kts.created_on BETWEEN $__timeFrom() AND $__timeTo()\n\n  -- We only care about tasks that have an organization and a document.\n  AND kts.org_id IS NOT NULL\n  AND kts.doc_id IS NOT NULL\nGROUP BY\n  -- 5. Group by the organization's ID and name to get per-organisation counts.\n  oc.id, oc.name, kts.org_id\nORDER BY\n  -- Order by the highest count first.\n  stuck_document_count DESC;",
           "refId": "A",
           "sql": {
             "columns": [
@@ -724,7 +724,7 @@
     "list": []
   },
   "time": {
-    "from": "now-12h",
+    "from": "now-24h",
     "to": "now"
   },
   "timepicker": {
@@ -741,5 +741,5 @@
   "timezone": "browser",
   "title": "DocBits Celery Usage",
   "uid": "53fbf079-bc47-4ee0-9d93-3744b47fa844",
-  "version": 1
+  "version": 2
 }
