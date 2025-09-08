@@ -18,7 +18,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 418,
+  "id": 497,
   "links": [],
   "panels": [
     {
@@ -56,6 +56,7 @@
             }
           },
           "mappings": [],
+          "noValue": "No documents are currently stuck",
           "thresholds": {
             "mode": "absolute",
             "steps": [
