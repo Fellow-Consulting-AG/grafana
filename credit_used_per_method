@@ -1,0 +1,200 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "id": 507,
+  "links": [],
+  "panels": [
+    {
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "adteym6l9r20wc"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 21,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "id": 1,
+      "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true
+      },
+      "pluginVersion": "12.1.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "adteym6l9r20wc"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "select\n    o.\"name\" as Organisation,\n    SUM(aul.credit_used) as Credits_Used,\n    aul.method_used as Method\nfrom\n    app_usage_log aul\njoin organisations o\n    on aul.org_id = o.id\nWHERE\n    (\n        CASE\n            WHEN '${organisation:csv}' = 'All' THEN true\n            ELSE o.name = ANY(string_to_array('${organisation:csv}', ','))\n        END\n    )\nAND\n    (\n        CASE\n            WHEN '${method:csv}' = 'All' THEN true\n            ELSE aul.method_used = ANY(string_to_array('${method:csv}', ','))\n        END\n    )\nand o.is_deleted = false\ngroup by\n    aul.method_used,\n    aul.org_id,\n    o.name\norder by\n    o.name asc,\n    Credits_Used desc",
+          "refId": "A",
+          "sql": {
+            "columns": [
+              {
+                "alias": "\"Org\"",
+                "parameters": [
+                  {
+                    "name": "name",
+                    "type": "functionParameter"
+                  }
+                ],
+                "type": "function"
+              },
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          },
+          "table": "organisations"
+        }
+      ],
+      "title": "Credit Usage",
+      "type": "table"
+    }
+  ],
+  "preload": false,
+  "schemaVersion": 41,
+  "tags": [],
+  "templating": {
+    "list": [
+      {
+        "allValue": "All",
+        "allowCustomValue": false,
+        "current": {
+          "text": [
+            "Ruiz Foods"
+          ],
+          "value": [
+            "Ruiz Foods"
+          ]
+        },
+        "datasource": {
+          "type": "grafana-postgresql-datasource",
+          "uid": "adteym6l9r20wc"
+        },
+        "definition": "select name, id from organisations where is_deleted=false order by name;",
+        "includeAll": true,
+        "multi": true,
+        "name": "organisation",
+        "options": [],
+        "query": "select name, id from organisations where is_deleted=false order by name;",
+        "refresh": 1,
+        "regex": "",
+        "type": "query"
+      },
+      {
+        "allValue": "All",
+        "allowCustomValue": false,
+        "current": {
+          "text": [
+            "All"
+          ],
+          "value": [
+            "$__all"
+          ]
+        },
+        "datasource": {
+          "type": "grafana-postgresql-datasource",
+          "uid": "adteym6l9r20wc"
+        },
+        "definition": "select distinct method_used as method from app_usage_log;",
+        "description": "",
+        "includeAll": true,
+        "multi": true,
+        "name": "method",
+        "options": [],
+        "query": "select distinct method_used as method from app_usage_log;",
+        "refresh": 1,
+        "regex": "",
+        "type": "query"
+      }
+    ]
+  },
+  "time": {
+    "from": "now-6h",
+    "to": "now"
+  },
+  "timepicker": {
+    "refresh_intervals": [
+      "1m",
+      "5m",
+      "15m",
+      "30m",
+      "1h",
+      "2h",
+      "1d"
+    ]
+  },
+  "timezone": "browser",
+  "title": "Credits used per Method",
+  "uid": "59154af3-3f9d-48e2-ba4a-4da1906bebf1",
+  "version": 19
+}
