@@ -18,7 +18,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 484,
+  "id": 529,
   "links": [],
   "panels": [
     {
@@ -124,7 +124,7 @@
           "editorMode": "code",
           "format": "table",
           "rawQuery": true,
-          "rawSql": "SELECT\n org_cache.name AS organisation_name,\n AVG(doc.extraction_time) AS total_credit_used\nFROM\n documents AS doc\nJOIN\n organisation_cache AS org_cache ON doc.org_id = org_cache.id\nWHERE\n doc.is_deleted = false\n AND doc.created_on >= $__timeFrom() AND doc.created_on <= $__timeTo()\nGROUP BY\n org_cache.name\nORDER BY\n total_credit_used DESC;",
+          "rawSql": "WITH doc_sum AS (\n    SELECT\n        doc.id AS document_id,\n        doc.org_id,\n        SUM((json_pairs.value)::numeric) AS sum_time_per_doc\n    FROM\n        documents AS doc\n        CROSS JOIN LATERAL jsonb_each_text(doc.extracted_data -> 'time_logs') AS json_pairs\n    WHERE\n        doc.is_deleted = false\n        AND doc.created_on >= $__timeFrom() AND doc.created_on <= $__timeTo()\n    GROUP BY\n        doc.id,\n        doc.org_id\n)\nSELECT\n    org_cache.name AS organisation_name,\n    AVG(doc_sum.sum_time_per_doc) AS avg_time_per_document\nFROM\n    doc_sum\n    JOIN organisation_cache AS org_cache ON doc_sum.org_id = org_cache.id\nGROUP BY\n    org_cache.name\nORDER BY\n    avg_time_per_document DESC;",
           "refId": "A",
           "sql": {
             "columns": [
