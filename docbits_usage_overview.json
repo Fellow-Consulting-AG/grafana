@@ -462,6 +462,7 @@
             }
           },
           "mappings": [],
+          "noValue": "No pending documents in Watchdawg export",
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -559,5 +560,5 @@
   "timezone": "browser",
   "title": "DocBits Usage Overview",
   "uid": "degb25q6g6mm8f",
-  "version": 1
+  "version": 2
 }
