@@ -18,7 +18,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 488,
+  "id": 524,
   "links": [],
   "panels": [
     {
@@ -78,7 +78,7 @@
           "editorMode": "code",
           "format": "table",
           "rawQuery": true,
-          "rawSql": "SELECT\n  SUM(credit.credit_used) AS total_credit_used\nFROM\n  app_usage_log credit\nWHERE\n  $__timeFilter(credit.created_on);",
+          "rawSql": "SELECT\n  SUM(credit.credit_used) AS total_credit_used\nFROM\n  app_usage_log credit\nWHERE\n  credit.created_on BETWEEN $__timeFrom() AND $__timeTo()\n  and credit.method_used in ('ELECTRONIC_DOCUMENT', 'FELLOW_KV2')",
           "refId": "A",
           "sql": {
             "columns": [
@@ -197,7 +197,7 @@
           "editorMode": "code",
           "format": "table",
           "rawQuery": true,
-          "rawSql": "SELECT\n  org.name AS organisation_name,\n  SUM(credit.credit_used) AS total_credit_used\nFROM\n  app_usage_log credit\nJOIN\n  organisations org ON credit.org_id = org.id\nWHERE\n  $__timeFilter(credit.created_on)\nGROUP BY\n  org.name\nORDER BY\n  total_credit_used DESC;",
+          "rawSql": "SELECT\n  org.name AS organisation_name,\n  SUM(credit.credit_used) AS total_credit_used\nFROM\n  app_usage_log credit\nJOIN\n  organisations org ON credit.org_id = org.id\nWHERE\n  credit.created_on BETWEEN $__timeFrom() AND $__timeTo()\n  and credit.method_used in ('ELECTRONIC_DOCUMENT', 'FELLOW_KV2')\nGROUP BY\n  org.name\nORDER BY\n  total_credit_used DESC;",
           "refId": "A",
           "sql": {
             "columns": [
