@@ -53,6 +53,7 @@
             }
           },
           "mappings": [],
+          "noValue": "No red markers",
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -286,5 +287,5 @@
   "timezone": "browser",
   "title": "Customer-Info",
   "uid": "5c02668c-e1c1-41fe-90bb-6d79d9f1250a",
-  "version": 1
+  "version": 2
 }
