@@ -1134,36 +1134,33 @@
       "type": "table"
     },
     {
-      "id": 17,
-      "title": "🔍 PERFORMANCE DIAGNOSTICS",
-      "type": "row",
       "collapsed": false,
       "gridPos": {
         "h": 1,
         "w": 24,
         "x": 0,
         "y": 70
-      }
+      },
+      "id": 17,
+      "title": "🔍 PERFORMANCE DIAGNOSTICS",
+      "type": "row"
     },
     {
-      "id": 18,
-      "title": "🏭 Pod CPU Usage vs Response Time Correlation",
-      "type": "timeseries",
       "datasource": {
         "type": "prometheus",
         "uid": "prometheus"
       },
       "fieldConfig": {
         "defaults": {
-          "custom": {
-            "drawStyle": "line",
-            "lineInterpolation": "smooth",
-            "lineWidth": 2,
-            "fillOpacity": 0.1,
-            "spanNulls": false
-          },
           "color": {
             "mode": "palette-classic"
+          },
+          "custom": {
+            "drawStyle": "line",
+            "fillOpacity": 0.1,
+            "lineInterpolation": "smooth",
+            "lineWidth": 2,
+            "spanNulls": false
           }
         },
         "overrides": [
@@ -1193,18 +1190,18 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "Response Time P95"
+              "options": "CPU Usage (cores)"
             },
             "properties": [
               {
                 "id": "unit",
-                "value": "ms"
+                "value": "short"
               },
               {
                 "id": "color",
                 "value": {
                   "mode": "fixed",
-                  "fixedColor": "red"
+                  "fixedColor": "orange"
                 }
               },
               {
@@ -1221,6 +1218,7 @@
         "x": 0,
         "y": 71
       },
+      "id": 18,
       "targets": [
         {
           "expr": "avg(rate(container_cpu_usage_seconds_total{namespace=~\"$namespace\", pod=~\".*api.*\"}[5m])) * 100",
@@ -1228,34 +1226,56 @@
           "refId": "A"
         },
         {
-          "expr": "histogram_quantile(0.95, sum(rate(nginx_ingress_controller_request_duration_seconds_bucket{namespace=~\"$namespace\", ingress=~\"$ingress\"}[5m])) by (le)) * 1000",
-          "legendFormat": "Response Time P95",
+          "expr": "avg(rate(container_cpu_usage_seconds_total{namespace=~\"$namespace\", pod=~\".*api.*\"}[5m]))",
+          "legendFormat": "CPU Usage (cores)",
           "refId": "B"
         }
-      ]
+      ],
+      "title": "🏭 Pod CPU Usage (% and cores)",
+      "type": "timeseries"
     },
     {
-      "id": 19,
-      "title": "💾 Pod Memory vs Response Time Correlation",
-      "type": "timeseries",
       "datasource": {
         "type": "prometheus",
         "uid": "prometheus"
       },
       "fieldConfig": {
         "defaults": {
-          "custom": {
-            "drawStyle": "line",
-            "lineInterpolation": "smooth",
-            "lineWidth": 2,
-            "fillOpacity": 0.1,
-            "spanNulls": false
-          },
           "color": {
             "mode": "palette-classic"
+          },
+          "custom": {
+            "drawStyle": "line",
+            "fillOpacity": 0.1,
+            "lineInterpolation": "smooth",
+            "lineWidth": 2,
+            "spanNulls": false
           }
         },
         "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Memory Usage (MB)"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "decbytes"
+              },
+              {
+                "id": "color",
+                "value": {
+                  "mode": "fixed",
+                  "fixedColor": "blue"
+                }
+              },
+              {
+                "id": "custom.axisPlacement",
+                "value": "left"
+              }
+            ]
+          },
           {
             "matcher": {
               "id": "byName",
@@ -1275,29 +1295,6 @@
               },
               {
                 "id": "custom.axisPlacement",
-                "value": "left"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Response Time P95"
-            },
-            "properties": [
-              {
-                "id": "unit",
-                "value": "ms"
-              },
-              {
-                "id": "color",
-                "value": {
-                  "mode": "fixed",
-                  "fixedColor": "red"
-                }
-              },
-              {
-                "id": "custom.axisPlacement",
                 "value": "right"
               }
             ]
@@ -1310,36 +1307,36 @@
         "x": 12,
         "y": 71
       },
+      "id": 19,
       "targets": [
         {
-          "expr": "avg(container_memory_working_set_bytes{namespace=~\"$namespace\", pod=~\".*api.*\"} / container_spec_memory_limit_bytes{namespace=~\"$namespace\", pod=~\".*api.*\"} * 100)",
-          "legendFormat": "Memory Usage %",
+          "expr": "avg(container_memory_working_set_bytes{namespace=~\"$namespace\", pod=~\".*api.*\"} / 1024 / 1024)",
+          "legendFormat": "Memory Usage (MB)",
           "refId": "A"
         },
         {
-          "expr": "histogram_quantile(0.95, sum(rate(nginx_ingress_controller_request_duration_seconds_bucket{namespace=~\"$namespace\", ingress=~\"$ingress\"}[5m])) by (le)) * 1000",
-          "legendFormat": "Response Time P95",
+          "expr": "avg(container_memory_working_set_bytes{namespace=~\"$namespace\", pod=~\".*api.*\"} / container_spec_memory_limit_bytes{namespace=~\"$namespace\", pod=~\".*api.*\"} * 100)",
+          "legendFormat": "Memory Usage %",
           "refId": "B"
         }
-      ]
+      ],
+      "title": "💾 Pod Memory Usage (MB and %)",
+      "type": "timeseries"
     },
     {
-      "id": 20,
-      "title": "🗄️ Database Connection Health",
-      "type": "timeseries",
       "datasource": {
         "type": "prometheus",
         "uid": "prometheus"
       },
       "fieldConfig": {
         "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
           "custom": {
             "drawStyle": "line",
             "lineInterpolation": "linear",
             "lineWidth": 2
-          },
-          "color": {
-            "mode": "palette-classic"
           }
         }
       },
@@ -1349,6 +1346,7 @@
         "x": 0,
         "y": 79
       },
+      "id": 20,
       "targets": [
         {
           "expr": "db_connections_active",
@@ -1360,12 +1358,11 @@
           "legendFormat": "Auth DB Query Duration (ms)",
           "refId": "B"
         }
-      ]
+      ],
+      "title": "🗄️ Database Connection Health",
+      "type": "timeseries"
     },
     {
-      "id": 21,
-      "title": "🎯 Performance Issue Diagnosis",
-      "type": "table",
       "datasource": {
         "type": "prometheus",
         "uid": "prometheus"
@@ -1422,29 +1419,31 @@
         "x": 12,
         "y": 79
       },
+      "id": 21,
       "targets": [
         {
           "expr": "avg(rate(container_cpu_usage_seconds_total{namespace=~\"$namespace\", pod=~\".*api.*\"}[5m]))",
-          "legendFormat": "CPU Usage",
-          "refId": "A",
           "format": "table",
-          "instant": true
+          "instant": true,
+          "legendFormat": "CPU Usage",
+          "refId": "A"
         },
         {
           "expr": "avg(container_memory_working_set_bytes{namespace=~\"$namespace\", pod=~\".*api.*\"} / container_spec_memory_limit_bytes{namespace=~\"$namespace\", pod=~\".*api.*\"})",
-          "legendFormat": "Memory Usage",
-          "refId": "B",
           "format": "table",
-          "instant": true
+          "instant": true,
+          "legendFormat": "Memory Usage",
+          "refId": "B"
         },
         {
           "expr": "db_connections_active",
-          "legendFormat": "DB Connections",
-          "refId": "C",
           "format": "table",
-          "instant": true
+          "instant": true,
+          "legendFormat": "DB Connections",
+          "refId": "C"
         }
       ],
+      "title": "🎯 Performance Issue Diagnosis",
       "transformations": [
         {
           "id": "merge",
@@ -1463,7 +1462,8 @@
             }
           }
         }
-      ]
+      ],
+      "type": "table"
     }
   ],
   "refresh": "60s",
@@ -1519,5 +1519,5 @@
   "timezone": "browser",
   "title": "📊 DocBits API Performance - User-Friendly Dashboard",
   "uid": "docbits-api-performance",
-  "version": 4
+  "version": 5
 }
