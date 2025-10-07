@@ -512,11 +512,27 @@
                 "value": "ms"
               }
             ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "full_query"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 600
+              },
+              {
+                "id": "custom.displayMode",
+                "value": "auto"
+              }
+            ]
           }
         ]
       },
       "gridPos": {
-        "h": 8,
+        "h": 10,
         "w": 24,
         "x": 0,
         "y": 14
@@ -538,7 +554,7 @@
             "uid": "dega8v6bs6mm8d"
           },
           "format": "table",
-          "rawSql": "SELECT \n  calls,\n  ROUND(mean_exec_time::numeric, 2) AS avg_time_ms,\n  ROUND(max_exec_time::numeric, 2) AS max_time_ms,\n  ROUND(total_exec_time::numeric, 2) AS total_time_ms,\n  CASE \n    WHEN mean_exec_time > 30000 THEN '🚨 CRITICAL'\n    WHEN mean_exec_time > 10000 THEN '🟠 HIGH' \n    WHEN mean_exec_time > 1000 THEN '🟡 MEDIUM'\n    ELSE '✅ NORMAL'\n  END AS severity,\n  LEFT(query, 150) || '...' AS query_preview\nFROM pg_stat_statements \nWHERE \n  mean_exec_time > 100\n  AND calls > 1\nORDER BY mean_exec_time DESC \nLIMIT 10",
+          "rawSql": "SELECT \n  calls,\n  ROUND(mean_exec_time::numeric, 2) AS avg_time_ms,\n  ROUND(max_exec_time::numeric, 2) AS max_time_ms,\n  ROUND(total_exec_time::numeric, 2) AS total_time_ms,\n  CASE \n    WHEN mean_exec_time > 30000 THEN '🚨 CRITICAL'\n    WHEN mean_exec_time > 10000 THEN '🟠 HIGH' \n    WHEN mean_exec_time > 1000 THEN '🟡 MEDIUM'\n    ELSE '✅ NORMAL'\n  END AS severity,\n  CASE \n    WHEN LENGTH(query) > 500 THEN LEFT(query, 500) || '... [TRUNCATED]'\n    ELSE query\n  END AS full_query\nFROM pg_stat_statements \nWHERE \n  mean_exec_time > 100\n  AND calls > 1\nORDER BY mean_exec_time DESC \nLIMIT 10",
           "refId": "A"
         }
       ],
@@ -551,7 +567,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 22
+        "y": 24
       },
       "id": 200,
       "panels": [],
@@ -627,7 +643,7 @@
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 23
+        "y": 25
       },
       "id": 5,
       "options": {
@@ -726,7 +742,7 @@
         "h": 8,
         "w": 12,
         "x": 12,
-        "y": 23
+        "y": 25
       },
       "id": 6,
       "options": {
@@ -758,7 +774,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 31
+        "y": 33
       },
       "id": 300,
       "panels": [],
@@ -838,7 +854,7 @@
         "h": 8,
         "w": 24,
         "x": 0,
-        "y": 32
+        "y": 34
       },
       "id": 7,
       "options": {
@@ -880,7 +896,7 @@
     "to": "now"
   },
   "timezone": "browser",
-  "title": "🐘 PostgreSQL Production Database Monitor - Enhanced",
-  "uid": "postgresql-production-monitor",
-  "version": 5
+  "title": "🐘 PostgreSQL Production Monitor - Full Queries",
+  "uid": "postgresql-production-monitor-enhanced",
+  "version": 6
 }
