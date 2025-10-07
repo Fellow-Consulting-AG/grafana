@@ -43,14 +43,7 @@
       "fieldConfig": {
         "defaults": {
           "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "vis": false
-            }
+            "mode": "thresholds"
           },
           "mappings": [],
           "thresholds": {
@@ -59,6 +52,10 @@
               {
                 "color": "green",
                 "value": null
+              },
+              {
+                "color": "yellow",
+                "value": 50
               },
               {
                 "color": "red",
@@ -78,12 +75,10 @@
       },
       "id": 1,
       "options": {
-        "legend": {
-          "displayMode": "list",
-          "placement": "bottom",
-          "showLegend": true
-        },
-        "pieType": "pie",
+        "colorMode": "background",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
         "reduceOptions": {
           "calcs": [
             "lastNotNull"
@@ -91,10 +86,7 @@
           "fields": "",
           "values": false
         },
-        "tooltip": {
-          "mode": "single",
-          "sort": "none"
-        }
+        "textMode": "auto"
       },
       "targets": [
         {
@@ -102,12 +94,12 @@
             "type": "prometheus",
             "uid": "API PROD"
           },
-          "expr": "pg_stat_database_numbackends{datname=\"doc2_export_prod\"}",
+          "expr": "pg_stat_database_numbackends",
           "refId": "A"
         }
       ],
       "title": "🔗 Active Connections",
-      "type": "piechart"
+      "type": "stat"
     },
     {
       "datasource": {
@@ -162,14 +154,13 @@
         },
         "textMode": "auto"
       },
-      "pluginVersion": "9.0.0",
       "targets": [
         {
           "datasource": {
             "type": "prometheus",
             "uid": "API PROD"
           },
-          "expr": "pg_locks_count{datname=\"doc2_export_prod\",mode=\"ExclusiveLock\"}",
+          "expr": "pg_locks_count",
           "refId": "A"
         }
       ],
@@ -184,7 +175,35 @@
       "fieldConfig": {
         "defaults": {
           "color": {
-            "mode": "thresholds"
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 20,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "vis": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 2,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
           },
           "mappings": [],
           "thresholds": {
@@ -195,79 +214,8 @@
                 "value": null
               },
               {
-                "color": "yellow",
-                "value": 1000
-              },
-              {
                 "color": "red",
-                "value": 5000
-              }
-            ]
-          },
-          "unit": "ms"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 4,
-        "w": 6,
-        "x": 12,
-        "y": 1
-      },
-      "id": 3,
-      "options": {
-        "colorMode": "background",
-        "graphMode": "area",
-        "justifyMode": "auto",
-        "orientation": "auto",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "textMode": "auto"
-      },
-      "pluginVersion": "9.0.0",
-      "targets": [
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "API PROD"
-          },
-          "expr": "pg_stat_statements_mean_time_ms{datname=\"doc2_export_prod\"} > 100",
-          "refId": "A"
-        }
-      ],
-      "title": "⚡ Slow Query Avg Time",
-      "type": "stat"
-    },
-    {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "API PROD"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "yellow",
-                "value": 1000000
-              },
-              {
-                "color": "red",
-                "value": 10000000
+                "value": 80
               }
             ]
           },
@@ -276,39 +224,45 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 4,
-        "w": 6,
-        "x": 18,
+        "h": 8,
+        "w": 12,
+        "x": 12,
         "y": 1
       },
-      "id": 4,
+      "id": 5,
       "options": {
-        "colorMode": "background",
-        "graphMode": "area",
-        "justifyMode": "auto",
-        "orientation": "auto",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom"
         },
-        "textMode": "auto"
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
       },
-      "pluginVersion": "9.0.0",
       "targets": [
         {
           "datasource": {
             "type": "prometheus",
             "uid": "API PROD"
           },
-          "expr": "sum(pg_stat_user_tables_seq_tup_read{datname=\"doc2_export_prod\"})",
+          "expr": "pg_stat_database_numbackends",
+          "legendFormat": "Active Connections - {{datname}}",
           "refId": "A"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "API PROD"
+          },
+          "expr": "pg_settings_max_connections",
+          "legendFormat": "Max Connections",
+          "refId": "B"
         }
       ],
-      "title": "📊 Sequential Scan Rows",
-      "type": "stat"
+      "title": "📈 Database Connections Over Time",
+      "type": "timeseries"
     },
     {
       "collapsed": false,
@@ -375,7 +329,7 @@
               }
             ]
           },
-          "unit": "short"
+          "unit": "reqps"
         },
         "overrides": []
       },
@@ -385,7 +339,7 @@
         "x": 0,
         "y": 10
       },
-      "id": 5,
+      "id": 6,
       "options": {
         "legend": {
           "calcs": [],
@@ -403,8 +357,8 @@
             "type": "prometheus",
             "uid": "API PROD"
           },
-          "expr": "pg_stat_database_numbackends{datname=\"doc2_export_prod\"}",
-          "legendFormat": "Active Connections",
+          "expr": "rate(pg_stat_database_xact_commit[5m])",
+          "legendFormat": "Commits/sec - {{datname}}",
           "refId": "A"
         },
         {
@@ -412,12 +366,12 @@
             "type": "prometheus",
             "uid": "API PROD"
           },
-          "expr": "pg_settings_max_connections",
-          "legendFormat": "Max Connections",
+          "expr": "rate(pg_stat_database_xact_rollback[5m])",
+          "legendFormat": "Rollbacks/sec - {{datname}}",
           "refId": "B"
         }
       ],
-      "title": "📈 Database Connections Over Time",
+      "title": "📊 Transaction Rate",
       "type": "timeseries"
     },
     {
@@ -472,7 +426,7 @@
               }
             ]
           },
-          "unit": "reqps"
+          "unit": "binBps"
         },
         "overrides": []
       },
@@ -482,7 +436,7 @@
         "x": 12,
         "y": 10
       },
-      "id": 6,
+      "id": 12,
       "options": {
         "legend": {
           "calcs": [],
@@ -500,8 +454,8 @@
             "type": "prometheus",
             "uid": "API PROD"
           },
-          "expr": "rate(pg_stat_database_xact_commit{datname=\"doc2_export_prod\"}[5m])",
-          "legendFormat": "Commits/sec",
+          "expr": "rate(pg_stat_database_blks_read[5m]) * 8192",
+          "legendFormat": "Disk Reads/sec - {{datname}}",
           "refId": "A"
         },
         {
@@ -509,12 +463,12 @@
             "type": "prometheus",
             "uid": "API PROD"
           },
-          "expr": "rate(pg_stat_database_xact_rollback{datname=\"doc2_export_prod\"}[5m])",
-          "legendFormat": "Rollbacks/sec",
+          "expr": "rate(pg_stat_database_blks_hit[5m]) * 8192",
+          "legendFormat": "Cache Hits/sec - {{datname}}",
           "refId": "B"
         }
       ],
-      "title": "📊 Transaction Rate",
+      "title": "💽 Disk I/O vs Cache Performance",
       "type": "timeseries"
     },
     {
@@ -526,140 +480,6 @@
         "y": 18
       },
       "id": 300,
-      "panels": [],
-      "title": "🚀 SLOW QUERIES & PERFORMANCE",
-      "type": "row"
-    },
-    {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "API PROD"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "align": "auto",
-            "displayMode": "auto",
-            "filterable": true,
-            "inspect": false
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          }
-        },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Mean Time (ms)"
-            },
-            "properties": [
-              {
-                "id": "color",
-                "value": {
-                  "mode": "thresholds"
-                }
-              },
-              {
-                "id": "thresholds",
-                "value": {
-                  "mode": "absolute",
-                  "steps": [
-                    {
-                      "color": "green",
-                      "value": null
-                    },
-                    {
-                      "color": "yellow",
-                      "value": 100
-                    },
-                    {
-                      "color": "orange",
-                      "value": 1000
-                    },
-                    {
-                      "color": "red",
-                      "value": 5000
-                    }
-                  ]
-                }
-              }
-            ]
-          }
-        ]
-      },
-      "gridPos": {
-        "h": 8,
-        "w": 24,
-        "x": 0,
-        "y": 19
-      },
-      "id": 7,
-      "options": {
-        "showHeader": true,
-        "sortBy": [
-          {
-            "desc": true,
-            "displayName": "Mean Time (ms)"
-          }
-        ]
-      },
-      "pluginVersion": "9.0.0",
-      "targets": [
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "API PROD"
-          },
-          "expr": "topk(10, pg_stat_statements_mean_time_ms{datname=\"doc2_export_prod\"} > 100)",
-          "format": "table",
-          "refId": "A"
-        }
-      ],
-      "title": "🐌 Top 10 Slowest Queries (>100ms avg)",
-      "transformations": [
-        {
-          "id": "organize",
-          "options": {
-            "excludeByName": {
-              "__name__": true,
-              "job": true,
-              "instance": true
-            },
-            "indexByName": {},
-            "renameByName": {
-              "datname": "Database",
-              "query": "Query Hash",
-              "Value": "Mean Time (ms)"
-            }
-          }
-        }
-      ],
-      "type": "table"
-    },
-    {
-      "collapsed": false,
-      "gridPos": {
-        "h": 1,
-        "w": 24,
-        "x": 0,
-        "y": 27
-      },
-      "id": 400,
       "panels": [],
       "title": "🗃️ TABLE STATISTICS & HEALTH",
       "type": "row"
@@ -733,48 +553,14 @@
                 }
               }
             ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Sequential Scans"
-            },
-            "properties": [
-              {
-                "id": "color",
-                "value": {
-                  "mode": "thresholds"
-                }
-              },
-              {
-                "id": "thresholds",
-                "value": {
-                  "mode": "absolute",
-                  "steps": [
-                    {
-                      "color": "green",
-                      "value": null
-                    },
-                    {
-                      "color": "yellow",
-                      "value": 1000
-                    },
-                    {
-                      "color": "red",
-                      "value": 10000
-                    }
-                  ]
-                }
-              }
-            ]
           }
         ]
       },
       "gridPos": {
         "h": 8,
-        "w": 24,
+        "w": 12,
         "x": 0,
-        "y": 28
+        "y": 19
       },
       "id": 8,
       "options": {
@@ -782,18 +568,17 @@
         "sortBy": [
           {
             "desc": true,
-            "displayName": "Dead Tuples"
+            "displayName": "Value"
           }
         ]
       },
-      "pluginVersion": "9.0.0",
       "targets": [
         {
           "datasource": {
             "type": "prometheus",
             "uid": "API PROD"
           },
-          "expr": "pg_stat_user_tables_n_dead_tup{datname=\"doc2_export_prod\"} > 1000",
+          "expr": "pg_stat_user_tables_n_dead_tup > 1000",
           "format": "table",
           "refId": "A"
         }
@@ -806,8 +591,7 @@
             "excludeByName": {
               "__name__": true,
               "job": true,
-              "instance": true,
-              "datname": false
+              "instance": true
             },
             "indexByName": {},
             "renameByName": {
@@ -894,9 +678,9 @@
       },
       "gridPos": {
         "h": 8,
-        "w": 24,
-        "x": 0,
-        "y": 36
+        "w": 12,
+        "x": 12,
+        "y": 19
       },
       "id": 9,
       "options": {
@@ -904,18 +688,17 @@
         "sortBy": [
           {
             "desc": true,
-            "displayName": "Seq Scan Rows"
+            "displayName": "Value"
           }
         ]
       },
-      "pluginVersion": "9.0.0",
       "targets": [
         {
           "datasource": {
             "type": "prometheus",
             "uid": "API PROD"
           },
-          "expr": "topk(10, pg_stat_user_tables_seq_tup_read{datname=\"doc2_export_prod\"})",
+          "expr": "topk(10, pg_stat_user_tables_seq_tup_read)",
           "format": "table",
           "refId": "A"
         }
@@ -947,11 +730,11 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 44
+        "y": 27
       },
       "id": 500,
       "panels": [],
-      "title": "🔒 LOCKS & BLOCKING QUERIES",
+      "title": "🔒 LOCKS & CONNECTION MONITORING",
       "type": "row"
     },
     {
@@ -1014,7 +797,7 @@
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 45
+        "y": 28
       },
       "id": 10,
       "options": {
@@ -1034,210 +817,12 @@
             "type": "prometheus",
             "uid": "API PROD"
           },
-          "expr": "pg_locks_count{datname=\"doc2_export_prod\"}",
-          "legendFormat": "{{mode}} Locks",
+          "expr": "pg_locks_count",
+          "legendFormat": "{{mode}} Locks - {{datname}}",
           "refId": "A"
         }
       ],
       "title": "🔐 Database Locks by Type",
-      "type": "timeseries"
-    },
-    {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "API PROD"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "drawStyle": "line",
-            "fillOpacity": 20,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "vis": false
-            },
-            "lineInterpolation": "linear",
-            "lineWidth": 2,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "never",
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          },
-          "unit": "short"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 8,
-        "w": 12,
-        "x": 12,
-        "y": 45
-      },
-      "id": 11,
-      "options": {
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "bottom"
-        },
-        "tooltip": {
-          "mode": "single",
-          "sort": "none"
-        }
-      },
-      "targets": [
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "API PROD"
-          },
-          "expr": "pg_stat_activity_count{datname=\"doc2_export_prod\"}",
-          "legendFormat": "{{state}} Connections",
-          "refId": "A"
-        }
-      ],
-      "title": "🔄 Connection States",
-      "type": "timeseries"
-    },
-    {
-      "collapsed": false,
-      "gridPos": {
-        "h": 1,
-        "w": 24,
-        "x": 0,
-        "y": 53
-      },
-      "id": 600,
-      "panels": [],
-      "title": "💾 DISK & I/O PERFORMANCE",
-      "type": "row"
-    },
-    {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "API PROD"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "drawStyle": "line",
-            "fillOpacity": 20,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "vis": false
-            },
-            "lineInterpolation": "linear",
-            "lineWidth": 2,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "never",
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          },
-          "unit": "binBps"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 8,
-        "w": 12,
-        "x": 0,
-        "y": 54
-      },
-      "id": 12,
-      "options": {
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "bottom"
-        },
-        "tooltip": {
-          "mode": "single",
-          "sort": "none"
-        }
-      },
-      "targets": [
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "API PROD"
-          },
-          "expr": "rate(pg_stat_database_blks_read{datname=\"doc2_export_prod\"}[5m]) * 8192",
-          "legendFormat": "Disk Reads/sec",
-          "refId": "A"
-        },
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "API PROD"
-          },
-          "expr": "rate(pg_stat_database_blks_hit{datname=\"doc2_export_prod\"}[5m]) * 8192",
-          "legendFormat": "Cache Hits/sec",
-          "refId": "B"
-        }
-      ],
-      "title": "💽 Disk I/O vs Cache Performance",
       "type": "timeseries"
     },
     {
@@ -1278,7 +863,7 @@
         "h": 8,
         "w": 12,
         "x": 12,
-        "y": 54
+        "y": 28
       },
       "id": 13,
       "options": {
@@ -1293,14 +878,13 @@
         "showThresholdLabels": false,
         "showThresholdMarkers": true
       },
-      "pluginVersion": "9.0.0",
       "targets": [
         {
           "datasource": {
             "type": "prometheus",
             "uid": "API PROD"
           },
-          "expr": "(pg_stat_database_blks_hit{datname=\"doc2_export_prod\"} / (pg_stat_database_blks_hit{datname=\"doc2_export_prod\"} + pg_stat_database_blks_read{datname=\"doc2_export_prod\"})) * 100",
+          "expr": "(pg_stat_database_blks_hit / (pg_stat_database_blks_hit + pg_stat_database_blks_read)) * 100",
           "refId": "A"
         }
       ],
