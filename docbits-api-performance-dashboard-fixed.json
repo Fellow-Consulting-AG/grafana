@@ -1,0 +1,979 @@
+{
+  "id": null,
+  "title": "📊 DocBits API Performance - User-Friendly Dashboard (Fixed)",
+  "tags": ["docbits", "api", "performance", "monitoring", "production"],
+  "timezone": "browser",
+  "refresh": "30s",
+  "time": {
+    "from": "now-1h",
+    "to": "now"
+  },
+  "templating": {
+    "list": [
+      {
+        "name": "namespace",
+        "type": "query",
+        "query": "label_values(nginx_ingress_controller_requests, namespace)",
+        "current": {
+          "value": "All",
+          "text": "All"
+        },
+        "multi": false,
+        "includeAll": true,
+        "refresh": "on_dashboard_load",
+        "datasource": {
+          "type": "prometheus",
+          "uid": "prometheus"
+        }
+      },
+      {
+        "name": "ingress",
+        "type": "query", 
+        "query": "label_values(nginx_ingress_controller_requests{namespace=~\"$namespace\"}, ingress)",
+        "current": {
+          "value": "api",
+          "text": "api"
+        },
+        "multi": true,
+        "includeAll": true,
+        "refresh": "on_dashboard_load",
+        "datasource": {
+          "type": "prometheus",
+          "uid": "prometheus"
+        }
+      }
+    ]
+  },
+  "panels": [
+    {
+      "id": 1,
+      "title": "🚨 CRITICAL API STATUS",
+      "type": "row",
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      }
+    },
+    {
+      "id": 2,
+      "title": "⚡ Requests per Second",
+      "type": "stat",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "reqps",
+          "color": {
+            "mode": "thresholds"
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {"color": "green", "value": 0},
+              {"color": "yellow", "value": 100},
+              {"color": "red", "value": 500}
+            ]
+          }
+        }
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 4,
+        "x": 0,
+        "y": 1
+      },
+      "targets": [
+        {
+          "expr": "sum(rate(nginx_ingress_controller_requests{namespace=~\"$namespace\", ingress=~\"$ingress\"}[1m]))",
+          "refId": "A"
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "title": "🎯 Success Rate (Last 5min)",
+      "type": "stat",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "percent",
+          "max": 100,
+          "min": 0,
+          "color": {
+            "mode": "thresholds"
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {"color": "red", "value": 0},
+              {"color": "orange", "value": 95},
+              {"color": "yellow", "value": 98},
+              {"color": "green", "value": 99.5}
+            ]
+          }
+        }
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 4,
+        "x": 4,
+        "y": 1
+      },
+      "targets": [
+        {
+          "expr": "(1 - (sum(rate(nginx_ingress_controller_requests{namespace=~\"$namespace\", ingress=~\"$ingress\", status=~\"5..\"}[5m])) / sum(rate(nginx_ingress_controller_requests{namespace=~\"$namespace\", ingress=~\"$ingress\"}[5m])))) * 100",
+          "refId": "A"
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "title": "⏱️ Response Time P50/P95/P99",
+      "type": "stat",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "ms",
+          "color": {
+            "mode": "thresholds"
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {"color": "green", "value": 0},
+              {"color": "yellow", "value": 200},
+              {"color": "orange", "value": 1000},
+              {"color": "red", "value": 3000}
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {"id": "byName", "options": "P50"},
+            "properties": [{"id": "displayName", "value": "P50 (Median)"}]
+          },
+          {
+            "matcher": {"id": "byName", "options": "P95"},
+            "properties": [{"id": "displayName", "value": "P95 (95th percentile)"}]
+          },
+          {
+            "matcher": {"id": "byName", "options": "P99"},
+            "properties": [{"id": "displayName", "value": "P99 (99th percentile)"}]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 8,
+        "x": 8,
+        "y": 1
+      },
+      "targets": [
+        {
+          "expr": "histogram_quantile(0.50, sum(rate(nginx_ingress_controller_request_duration_seconds_bucket{namespace=~\"$namespace\", ingress=~\"$ingress\"}[5m])) by (le)) * 1000",
+          "legendFormat": "P50",
+          "refId": "A"
+        },
+        {
+          "expr": "histogram_quantile(0.95, sum(rate(nginx_ingress_controller_request_duration_seconds_bucket{namespace=~\"$namespace\", ingress=~\"$ingress\"}[5m])) by (le)) * 1000", 
+          "legendFormat": "P95",
+          "refId": "B"
+        },
+        {
+          "expr": "histogram_quantile(0.99, sum(rate(nginx_ingress_controller_request_duration_seconds_bucket{namespace=~\"$namespace\", ingress=~\"$ingress\"}[5m])) by (le)) * 1000",
+          "legendFormat": "P99",
+          "refId": "C"
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "title": "🔥 Active Pod Count",
+      "type": "stat",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "color": {
+            "mode": "thresholds"
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {"color": "red", "value": 0},
+              {"color": "yellow", "value": 1},
+              {"color": "green", "value": 2}
+            ]
+          }
+        }
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 4,
+        "x": 16,
+        "y": 1
+      },
+      "targets": [
+        {
+          "expr": "sum(kube_deployment_status_replicas{deployment=\"api\", namespace=~\"$namespace\"})",
+          "refId": "A"
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "title": "📈 RESPONSE TIME TRENDS",
+      "type": "row",
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 7
+      }
+    },
+    {
+      "id": 7,
+      "title": "⏰ Response Time Over Time (P50/P95/P99)",
+      "type": "timeseries",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "ms",
+          "custom": {
+            "drawStyle": "line",
+            "lineInterpolation": "smooth",
+            "barAlignment": 0,
+            "lineWidth": 2,
+            "fillOpacity": 0.1,
+            "gradientMode": "none",
+            "spanNulls": false,
+            "insertNulls": false,
+            "showPoints": "never",
+            "pointSize": 5,
+            "stacking": {
+              "mode": "none",
+              "group": "A"
+            },
+            "axisPlacement": "auto",
+            "axisLabel": "",
+            "axisColorMode": "text",
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "axisCenteredZero": false,
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "vis": false
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "color": {
+            "mode": "palette-classic"
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {"color": "green", "value": null},
+              {"color": "red", "value": 3000}
+            ]
+          }
+        }
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 24,
+        "x": 0,
+        "y": 8
+      },
+      "targets": [
+        {
+          "expr": "histogram_quantile(0.50, sum(rate(nginx_ingress_controller_request_duration_seconds_bucket{namespace=~\"$namespace\", ingress=~\"$ingress\"}[1m])) by (le)) * 1000",
+          "legendFormat": "P50 (Median)",
+          "refId": "A"
+        },
+        {
+          "expr": "histogram_quantile(0.95, sum(rate(nginx_ingress_controller_request_duration_seconds_bucket{namespace=~\"$namespace\", ingress=~\"$ingress\"}[1m])) by (le)) * 1000",
+          "legendFormat": "P95 (95th percentile)",
+          "refId": "B"
+        },
+        {
+          "expr": "histogram_quantile(0.99, sum(rate(nginx_ingress_controller_request_duration_seconds_bucket{namespace=~\"$namespace\", ingress=~\"$ingress\"}[1m])) by (le)) * 1000",
+          "legendFormat": "P99 (99th percentile)",
+          "refId": "C"
+        }
+      ]
+    },
+    {
+      "id": 15,
+      "title": "📊 NEW: Endpoint Performance Overview (Avg/Min/Max Times)",
+      "type": "barchart",
+      "datasource": {
+        "type": "loki",
+        "uid": "loki"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "s",
+          "custom": {
+            "drawStyle": "bars",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "barMaxWidth": 100,
+            "stacking": {
+              "mode": "none",
+              "group": "A"
+            },
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "vis": false
+            }
+          },
+          "color": {
+            "mode": "palette-classic"
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {"color": "green", "value": null},
+              {"color": "yellow", "value": 2},
+              {"color": "orange", "value": 10},
+              {"color": "red", "value": 30}
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {"id": "byName", "options": "avg_time"},
+            "properties": [
+              {"id": "displayName", "value": "Avg Response Time"},
+              {"id": "color", "value": {"mode": "fixed", "fixedColor": "blue"}}
+            ]
+          },
+          {
+            "matcher": {"id": "byName", "options": "min_time"},
+            "properties": [
+              {"id": "displayName", "value": "Min Response Time"},
+              {"id": "color", "value": {"mode": "fixed", "fixedColor": "green"}}
+            ]
+          },
+          {
+            "matcher": {"id": "byName", "options": "max_time"},
+            "properties": [
+              {"id": "displayName", "value": "Max Response Time"},
+              {"id": "color", "value": {"mode": "fixed", "fixedColor": "red"}}
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 24,
+        "x": 0,
+        "y": 16
+      },
+      "targets": [
+        {
+          "expr": "topk(10, avg by (path) (avg_over_time({namespace=\"ingress-nginx\"} | pattern `<_> - - <_> \"<method> <path> <_>\" <status> <_> \"<_>\" \"<_>\" <_> <duration> [<service>] [<_>] <_> <_> <_> <_> <_>` | service =~ \".*api.*\" | duration != \"\" | unwrap duration [15m])))",
+          "legendFormat": "{{path}} - Avg",
+          "refId": "A"
+        },
+        {
+          "expr": "topk(10, min by (path) (min_over_time({namespace=\"ingress-nginx\"} | pattern `<_> - - <_> \"<method> <path> <_>\" <status> <_> \"<_>\" \"<_>\" <_> <duration> [<service>] [<_>] <_> <_> <_> <_> <_>` | service =~ \".*api.*\" | duration != \"\" | unwrap duration [15m])))",
+          "legendFormat": "{{path}} - Min",
+          "refId": "B"
+        },
+        {
+          "expr": "topk(10, max by (path) (max_over_time({namespace=\"ingress-nginx\"} | pattern `<_> - - <_> \"<method> <path> <_>\" <status> <_> \"<_>\" \"<_>\" <_> <duration> [<service>] [<_>] <_> <_> <_> <_> <_>` | service =~ \".*api.*\" | duration != \"\" | unwrap duration [15m])))",
+          "legendFormat": "{{path}} - Max",
+          "refId": "C"
+        }
+      ],
+      "transformations": [
+        {
+          "id": "sortBy",
+          "options": {
+            "sort": [
+              {
+                "field": "avg_time",
+                "desc": true
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": 16,
+      "title": "🏢 NEW: Request Times by Organization (x-org-id Header)",
+      "type": "timeseries",
+      "datasource": {
+        "type": "loki",
+        "uid": "loki"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "s",
+          "custom": {
+            "drawStyle": "line",
+            "lineInterpolation": "smooth",
+            "barAlignment": 0,
+            "lineWidth": 2,
+            "fillOpacity": 0.2,
+            "gradientMode": "opacity",
+            "spanNulls": false,
+            "insertNulls": false,
+            "showPoints": "auto",
+            "pointSize": 3,
+            "stacking": {
+              "mode": "none",
+              "group": "A"
+            }
+          },
+          "color": {
+            "mode": "palette-classic"
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {"color": "green", "value": null},
+              {"color": "yellow", "value": 2},
+              {"color": "orange", "value": 10},
+              {"color": "red", "value": 30}
+            ]
+          }
+        }
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 24,
+        "x": 0,
+        "y": 24
+      },
+      "targets": [
+        {
+          "expr": "avg by (org_id) (avg_over_time({namespace=\"ingress-nginx\"} | pattern `<_> - - <_> \"<method> <path> <_>\" <status> <_> \"<_>\" \"<user_agent>\" <_> <duration> [<service>] [<_>] <_> <_> <_> <_> <org_id>` | service =~ \".*api.*\" | org_id != \"\" | unwrap duration [2m]))",
+          "legendFormat": "Org ID: {{org_id}}",
+          "refId": "A"
+        }
+      ]
+    },
+    {
+      "id": 8,
+      "title": "🚨 SMART SLOW REQUEST ANALYSIS",
+      "type": "row",
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 32
+      }
+    },
+    {
+      "id": 9,
+      "title": "🐌 Requests by Speed Categories (FIXED)",
+      "type": "piechart",
+      "datasource": {
+        "type": "loki",
+        "uid": "loki"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "vis": false
+            }
+          },
+          "mappings": []
+        },
+        "overrides": [
+          {
+            "matcher": {"id": "byName", "options": "Fast"},
+            "properties": [{"id": "color", "value": {"mode": "fixed", "fixedColor": "green"}}]
+          },
+          {
+            "matcher": {"id": "byName", "options": "Normal"},
+            "properties": [{"id": "color", "value": {"mode": "fixed", "fixedColor": "blue"}}]
+          },
+          {
+            "matcher": {"id": "byName", "options": "Slow"},
+            "properties": [{"id": "color", "value": {"mode": "fixed", "fixedColor": "yellow"}}]
+          },
+          {
+            "matcher": {"id": "byName", "options": "Very Slow"},
+            "properties": [{"id": "color", "value": {"mode": "fixed", "fixedColor": "orange"}}]
+          },
+          {
+            "matcher": {"id": "byName", "options": "Critical"},
+            "properties": [{"id": "color", "value": {"mode": "fixed", "fixedColor": "red"}}]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 8,
+        "x": 0,
+        "y": 33
+      },
+      "targets": [
+        {
+          "expr": "count by (speed_category) (label_replace(label_replace(label_replace(label_replace(label_replace({namespace=\"ingress-nginx\"} | pattern `<_> - - <_> \"<method> <path> <_>\" <status> <_> \"<_>\" \"<_>\" <_> <duration> [<service>] [<_>] <_> <_> <_> <_> <_>` | service =~ \".*api.*\" | duration != \"\", \"speed_category\", \"Critical\", \"duration\", \"[3-9][0-9]\\\\..+|[0-9]{3,}\\\\..+\"), \"speed_category\", \"Very Slow\", \"duration\", \"[12][0-9]\\\\..+\"), \"speed_category\", \"Slow\", \"duration\", \"[2-9]\\\\..+\"), \"speed_category\", \"Normal\", \"duration\", \"[01]\\\\.[5-9].+\"), \"speed_category\", \"Fast\", \"duration\", \"0\\\\.[0-4].+\"))",
+          "refId": "A",
+          "legendFormat": "{{speed_category}}"
+        }
+      ],
+      "options": {
+        "reduceOptions": {
+          "values": false,
+          "calcs": ["lastNotNull"],
+          "fields": ""
+        },
+        "pieType": "pie",
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        },
+        "legend": {
+          "displayMode": "visible",
+          "placement": "bottom",
+          "showLegend": true
+        }
+      }
+    },
+    {
+      "id": 10,
+      "title": "📊 Top 10 Slowest API Endpoints",
+      "type": "table",
+      "datasource": {
+        "type": "loki",
+        "uid": "loki"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {"color": "green", "value": null},
+              {"color": "red", "value": 80}
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {"id": "byName", "options": "Value"},
+            "properties": [
+              {"id": "displayName", "value": "Avg Duration (s)"},
+              {"id": "unit", "value": "s"},
+              {"id": "custom.width", "value": 120},
+              {
+                "id": "color",
+                "value": {
+                  "mode": "thresholds"
+                }
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {"color": "green", "value": null},
+                    {"color": "yellow", "value": 2},
+                    {"color": "orange", "value": 10},
+                    {"color": "red", "value": 30}
+                  ]
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {"id": "byName", "options": "path"},
+            "properties": [
+              {"id": "displayName", "value": "API Endpoint"},
+              {"id": "custom.width", "value": 400}
+            ]
+          },
+          {
+            "matcher": {"id": "byName", "options": "method"},
+            "properties": [
+              {"id": "displayName", "value": "Method"},
+              {"id": "custom.width", "value": 80}
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 16,
+        "x": 8,
+        "y": 33
+      },
+      "targets": [
+        {
+          "expr": "topk(10, avg by (path, method) (avg_over_time({namespace=\"ingress-nginx\"} | pattern `<_> - - <_> \"<method> <path> <_>\" <status> <_> \"<_>\" \"<_>\" <_> <duration> [<service>] [<_>] <_> <_> <_> <_> <_>` | service =~ \".*api.*\" | duration != \"\" | unwrap duration [15m])))",
+          "refId": "A",
+          "legendFormat": "{{path}} {{method}}"
+        }
+      ],
+      "transformations": [
+        {
+          "id": "extractFields",
+          "options": {
+            "source": "labels"
+          }
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "Time": true
+            },
+            "indexByName": {
+              "method": 0,
+              "path": 1,
+              "Value": 2
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": 11,
+      "title": "🔍 Recent Slow Requests (>2 seconds) - Detailed View",
+      "type": "table",
+      "datasource": {
+        "type": "loki",
+        "uid": "loki"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {"color": "green", "value": null},
+              {"color": "red", "value": 80}
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {"id": "byName", "options": "duration"},
+            "properties": [
+              {"id": "displayName", "value": "Duration (s)"},
+              {"id": "unit", "value": "s"},
+              {"id": "custom.width", "value": 100},
+              {
+                "id": "color",
+                "value": {
+                  "mode": "thresholds"
+                }
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {"color": "green", "value": null},
+                    {"color": "yellow", "value": 2},
+                    {"color": "orange", "value": 10},
+                    {"color": "red", "value": 30}
+                  ]
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {"id": "byName", "options": "status"},
+            "properties": [
+              {"id": "displayName", "value": "Status"},
+              {"id": "custom.width", "value": 80},
+              {
+                "id": "color",
+                "value": {
+                  "mode": "thresholds"
+                }
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {"color": "green", "value": 200},
+                    {"color": "yellow", "value": 300},
+                    {"color": "orange", "value": 400},
+                    {"color": "red", "value": 500}
+                  ]
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {"id": "byName", "options": "method"},
+            "properties": [
+              {"id": "custom.width", "value": 80}
+            ]
+          },
+          {
+            "matcher": {"id": "byName", "options": "path"},
+            "properties": [
+              {"id": "displayName", "value": "API Endpoint"},
+              {"id": "custom.width", "value": 500}
+            ]
+          },
+          {
+            "matcher": {"id": "byName", "options": "service"},
+            "properties": [
+              {"id": "custom.width", "value": 120}
+            ]
+          },
+          {
+            "matcher": {"id": "byName", "options": "Time"},
+            "properties": [
+              {"id": "custom.width", "value": 180}
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 12,
+        "w": 24,
+        "x": 0,
+        "y": 41
+      },
+      "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "fields": "",
+          "reducer": ["sum"],
+          "show": false
+        },
+        "showHeader": true,
+        "sortBy": [
+          {
+            "desc": true,
+            "displayName": "Duration (s)"
+          }
+        ]
+      },
+      "targets": [
+        {
+          "expr": "{namespace=\"ingress-nginx\"} | pattern `<_> - - <_> \"<method> <path> <_>\" <status> <_> \"<_>\" \"<_>\" <_> <duration> [<service>] [<_>] <_> <_> <_> <_> <_>` | service =~ \".*api.*\" | duration > 2",
+          "refId": "A"
+        }
+      ],
+      "transformations": [
+        {
+          "id": "extractFields",
+          "options": {
+            "source": "labels"
+          }
+        },
+        {
+          "id": "organize",
+          "options": {
+            "includeByName": {
+              "Time": true,
+              "duration": true,
+              "method": true,
+              "path": true,
+              "service": true,
+              "status": true
+            },
+            "indexByName": {
+              "Time": 0,
+              "duration": 1,
+              "status": 2,
+              "method": 3,
+              "path": 4,
+              "service": 5
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": 12,
+      "title": "🚦 ERROR ANALYSIS",
+      "type": "row",
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 53
+      }
+    },
+    {
+      "id": 13,
+      "title": "📈 Request Volume by Status Code",
+      "type": "timeseries",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "reqps",
+          "custom": {
+            "drawStyle": "line",
+            "lineInterpolation": "linear",
+            "barAlignment": 0,
+            "lineWidth": 1,
+            "fillOpacity": 0.1,
+            "gradientMode": "none",
+            "spanNulls": false,
+            "insertNulls": false,
+            "showPoints": "never",
+            "pointSize": 5,
+            "stacking": {
+              "mode": "normal",
+              "group": "A"
+            }
+          },
+          "color": {
+            "mode": "palette-classic"
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {"id": "byRegexp", "options": "/5../"},
+            "properties": [{"id": "color", "value": {"mode": "fixed", "fixedColor": "red"}}]
+          },
+          {
+            "matcher": {"id": "byRegexp", "options": "/4../"},
+            "properties": [{"id": "color", "value": {"mode": "fixed", "fixedColor": "orange"}}]
+          },
+          {
+            "matcher": {"id": "byRegexp", "options": "/2../"},
+            "properties": [{"id": "color", "value": {"mode": "fixed", "fixedColor": "green"}}]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 54
+      },
+      "targets": [
+        {
+          "expr": "sum(rate(nginx_ingress_controller_requests{namespace=~\"$namespace\", ingress=~\"$ingress\"}[1m])) by (status)",
+          "legendFormat": "Status {{status}}",
+          "refId": "A"
+        }
+      ]
+    },
+    {
+      "id": 14,
+      "title": "🚨 Recent Error Requests (4xx/5xx)",
+      "type": "table",
+      "datasource": {
+        "type": "loki",
+        "uid": "loki"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "inspect": false
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {"id": "byName", "options": "status"},
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "mode": "thresholds"
+                }
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {"color": "green", "value": 200},
+                    {"color": "yellow", "value": 300},
+                    {"color": "orange", "value": 400},
+                    {"color": "red", "value": 500}
+                  ]
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 54
+      },
+      "targets": [
+        {
+          "expr": "{namespace=\"ingress-nginx\"} | pattern `<_> - - <_> \"<method> <path> <_>\" <status> <_> \"<_>\" \"<_>\" <_> <duration> [<service>] [<_>] <_> <_> <_> <_> <_>` | service =~ \".*api.*\" | status =~ \"[45]..\"",
+          "refId": "A"
+        }
+      ],
+      "transformations": [
+        {
+          "id": "extractFields",
+          "options": {
+            "source": "labels"
+          }
+        }
+      ]
+    }
+  ],
+  "uid": "docbits-api-performance-fixed",
+  "version": 1,
+  "schemaVersion": 39,
+  "style": "dark"
+}
