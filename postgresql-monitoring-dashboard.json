@@ -1,9 +1,11 @@
 {
   "dashboard": {
     "id": null,
-    "title": "PostgreSQL Monitoring Dashboard",
+    "uid": "postgresql-monitoring-v2",
+    "title": "🐘 PostgreSQL DB Monitor",
     "tags": ["postgresql", "monitoring"],
     "timezone": "browser",
+    "version": 1,
     "panels": [
       {
         "datasource": {
@@ -25,26 +27,25 @@
                 },
                 {
                   "color": "red",
-                  "value": 80
+                  "value": 0
                 }
               ]
             },
             "unit": "short"
-          },
-          "overrides": []
+          }
         },
         "gridPos": {
-          "h": 8,
-          "w": 12,
+          "h": 6,
+          "w": 8,
           "x": 0,
           "y": 0
         },
         "id": 1,
         "options": {
           "colorMode": "background",
-          "graphMode": "area",
-          "justifyMode": "auto",
-          "orientation": "auto",
+          "graphMode": "none",
+          "justifyMode": "center",
+          "orientation": "horizontal",
           "reduceOptions": {
             "calcs": [
               "lastNotNull"
@@ -52,9 +53,8 @@
             "fields": "",
             "values": false
           },
-          "textMode": "auto"
+          "textMode": "value_and_name"
         },
-        "pluginVersion": "9.0.0",
         "targets": [
           {
             "datasource": {
@@ -62,10 +62,143 @@
               "uid": "API PROD"
             },
             "expr": "pg_up",
-            "refId": "A"
+            "refId": "A",
+            "legendFormat": "PostgreSQL Status"
           }
         ],
-        "title": "PostgreSQL Status",
+        "title": "🟢 PostgreSQL Up Status",
+        "type": "stat"
+      },
+      {
+        "datasource": {
+          "type": "prometheus",
+          "uid": "API PROD"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "yellow",
+                  "value": 50
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            },
+            "unit": "short"
+          }
+        },
+        "gridPos": {
+          "h": 6,
+          "w": 8,
+          "x": 8,
+          "y": 0
+        },
+        "id": 2,
+        "options": {
+          "colorMode": "background",
+          "graphMode": "area",
+          "justifyMode": "center",
+          "orientation": "horizontal",
+          "reduceOptions": {
+            "calcs": [
+              "lastNotNull"
+            ],
+            "fields": "",
+            "values": false
+          },
+          "textMode": "value_and_name"
+        },
+        "targets": [
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "API PROD"
+            },
+            "expr": "sum(pg_stat_database_numbackends)",
+            "refId": "A",
+            "legendFormat": "Total Connections"
+          }
+        ],
+        "title": "🔗 Active Connections",
+        "type": "stat"
+      },
+      {
+        "datasource": {
+          "type": "prometheus",
+          "uid": "API PROD"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "yellow",
+                  "value": 5
+                },
+                {
+                  "color": "red",
+                  "value": 10
+                }
+              ]
+            },
+            "unit": "short"
+          }
+        },
+        "gridPos": {
+          "h": 6,
+          "w": 8,
+          "x": 16,
+          "y": 0
+        },
+        "id": 3,
+        "options": {
+          "colorMode": "background",
+          "graphMode": "area",
+          "justifyMode": "center",
+          "orientation": "horizontal",
+          "reduceOptions": {
+            "calcs": [
+              "lastNotNull"
+            ],
+            "fields": "",
+            "values": false
+          },
+          "textMode": "value_and_name"
+        },
+        "targets": [
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "API PROD"
+            },
+            "expr": "sum(pg_locks_count)",
+            "refId": "A",
+            "legendFormat": "Total Locks"
+          }
+        ],
+        "title": "🔒 Database Locks",
         "type": "stat"
       },
       {
@@ -96,7 +229,7 @@
               "scaleDistribution": {
                 "type": "linear"
               },
-              "showPoints": "never",
+              "showPoints": "auto",
               "spanNulls": false,
               "stacking": {
                 "group": "A",
@@ -113,24 +246,19 @@
                 {
                   "color": "green",
                   "value": null
-                },
-                {
-                  "color": "red",
-                  "value": 80
                 }
               ]
             },
             "unit": "short"
-          },
-          "overrides": []
+          }
         },
         "gridPos": {
           "h": 8,
-          "w": 12,
-          "x": 12,
-          "y": 0
+          "w": 24,
+          "x": 0,
+          "y": 6
         },
-        "id": 2,
+        "id": 4,
         "options": {
           "legend": {
             "calcs": [],
@@ -149,11 +277,11 @@
               "uid": "API PROD"
             },
             "expr": "pg_stat_database_numbackends",
-            "legendFormat": "Connections - {{datname}}",
-            "refId": "A"
+            "refId": "A",
+            "legendFormat": "Connections: {{datname}}"
           }
         ],
-        "title": "Database Connections",
+        "title": "📊 Database Connections Over Time",
         "type": "timeseries"
       }
     ],
@@ -161,6 +289,8 @@
       "from": "now-1h",
       "to": "now"
     },
-    "refresh": "30s"
+    "refresh": "30s",
+    "schemaVersion": 30,
+    "style": "dark"
   }
 }
