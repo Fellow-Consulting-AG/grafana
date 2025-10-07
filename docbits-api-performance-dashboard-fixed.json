@@ -473,7 +473,7 @@
       },
       "targets": [
         {
-          "expr": "avg by (org_id) (avg_over_time({namespace=\"ingress-nginx\"} | pattern `<_> - - <_> \"<method> <path> <_>\" <status> <_> \"<_>\" \"<user_agent>\" <_> <duration> [<service>] [<_>] <_> <_> <_> <_> <org_id>` | service =~ \".*api.*\" | org_id != \"\" | unwrap duration [2m]))",
+          "expr": "topk(5, avg by (org_id) (avg_over_time({namespace=\"ingress-nginx\"} | pattern `<_> - - <_> \"<method> <path> <_>\" <status> <_> \"<_>\" \"<user_agent>\" <_> <duration> [<service>] [<_>] <_> <_> <_> <_> <org_id>` | service =~ \".*api.*\" | org_id != \"\" | unwrap duration [5m])))
           "legendFormat": "Org ID: {{org_id}}",
           "refId": "A"
         }
@@ -544,9 +544,24 @@
       },
       "targets": [
         {
-          "expr": "count by (speed_category) (label_replace(label_replace(label_replace(label_replace(label_replace({namespace=\"ingress-nginx\"} | pattern `<_> - - <_> \"<method> <path> <_>\" <status> <_> \"<_>\" \"<_>\" <_> <duration> [<service>] [<_>] <_> <_> <_> <_> <_>` | service =~ \".*api.*\" | duration != \"\", \"speed_category\", \"Critical\", \"duration\", \"[3-9][0-9]\\\\..+|[0-9]{3,}\\\\..+\"), \"speed_category\", \"Very Slow\", \"duration\", \"[12][0-9]\\\\..+\"), \"speed_category\", \"Slow\", \"duration\", \"[2-9]\\\\..+\"), \"speed_category\", \"Normal\", \"duration\", \"[01]\\\\.[5-9].+\"), \"speed_category\", \"Fast\", \"duration\", \"0\\\\.[0-4].+\"))",
+          "expr": "sum(rate(nginx_ingress_controller_request_duration_seconds_bucket{namespace=~\"$namespace\", ingress=~\"$ingress\", le=\"0.5\"}[5m]))",
           "refId": "A",
-          "legendFormat": "{{speed_category}}"
+          "legendFormat": "Fast (< 0.5s)"
+        },
+        {
+          "expr": "sum(rate(nginx_ingress_controller_request_duration_seconds_bucket{namespace=~\"$namespace\", ingress=~\"$ingress\", le=\"2\"}[5m])) - sum(rate(nginx_ingress_controller_request_duration_seconds_bucket{namespace=~\"$namespace\", ingress=~\"$ingress\", le=\"0.5\"}[5m]))",
+          "refId": "B",
+          "legendFormat": "Normal (0.5-2s)"
+        },
+        {
+          "expr": "sum(rate(nginx_ingress_controller_request_duration_seconds_bucket{namespace=~\"$namespace\", ingress=~\"$ingress\", le=\"10\"}[5m])) - sum(rate(nginx_ingress_controller_request_duration_seconds_bucket{namespace=~\"$namespace\", ingress=~\"$ingress\", le=\"2\"}[5m]))",
+          "refId": "C",
+          "legendFormat": "Slow (2-10s)"
+        },
+        {
+          "expr": "sum(rate(nginx_ingress_controller_requests{namespace=~\"$namespace\", ingress=~\"$ingress\"}[5m])) - sum(rate(nginx_ingress_controller_request_duration_seconds_bucket{namespace=~\"$namespace\", ingress=~\"$ingress\", le=\"10\"}[5m]))",
+          "refId": "D",
+          "legendFormat": "Very Slow (>10s)"
         }
       ],
       "options": {
@@ -644,7 +659,7 @@
       },
       "targets": [
         {
-          "expr": "topk(10, avg by (path, method) (avg_over_time({namespace=\"ingress-nginx\"} | pattern `<_> - - <_> \"<method> <path> <_>\" <status> <_> \"<_>\" \"<_>\" <_> <duration> [<service>] [<_>] <_> <_> <_> <_> <_>` | service =~ \".*api.*\" | duration != \"\" | unwrap duration [15m])))",
+          "expr": "topk(10, avg by (path, method) (avg_over_time({namespace=\"ingress-nginx\"} | pattern `<_> - - <_> \"<method> <path> <_>\" <status> <_> \"<_>\" \"<_>\" <_> <duration> [<service>] [<_>] <_> <_> <_> <_> <_>` | service =~ \".*api.*\" | duration > 0.1 | unwrap duration [15m])))
           "refId": "A",
           "legendFormat": "{{path}} {{method}}"
         }
@@ -973,7 +988,7 @@
     }
   ],
   "uid": "docbits-api-performance-fixed",
-  "version": 1,
+  "version": 2,
   "schemaVersion": 39,
   "style": "dark"
 }
