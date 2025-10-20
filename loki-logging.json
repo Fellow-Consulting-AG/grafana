@@ -19,21 +19,23 @@
         "sortOrder": "Descending",
         "wrapLogMessage": true
       },
+      "maxDataPoints": 1000,
       "targets": [
         {
           "datasource": {
             "type": "loki",
             "uid": "loki"
           },
-          "expr": "{environment=~\"$environment\", service=~\"$service\"} |~ \"$search_query\" |~ \"(?i)$log_level\"",
-          "refId": "A"
+          "expr": "{environment=~\"$environment\", service=~\"$service\"} |~ \"$search_query\" |~ \"(?i)$log_level\" | limit 1000",
+          "refId": "A",
+          "maxLines": 1000
         }
       ],
       "title": "Application Logs",
       "type": "logs"
     }
   ],
-  "refresh": "60s",
+  "refresh": "30s",
   "schemaVersion": 30,
   "style": "dark",
   "tags": [
@@ -167,7 +169,7 @@
     ]
   },
   "time": {
-    "from": "now-15m",
+    "from": "now-5m",
     "to": "now"
   },
   "timepicker": {
