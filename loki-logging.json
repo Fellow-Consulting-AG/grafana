@@ -19,7 +19,6 @@
         "sortOrder": "Descending",
         "wrapLogMessage": true
       },
-      "maxDataPoints": 1000,
       "targets": [
         {
           "datasource": {
@@ -27,8 +26,7 @@
             "uid": "loki"
           },
           "expr": "{environment=~\"$environment\", service=~\"$service\"} |~ \"$search_query\" |~ \"(?i)$log_level\" | limit 1000",
-          "refId": "A",
-          "maxLines": 1000
+          "refId": "A"
         }
       ],
       "title": "Application Logs",
