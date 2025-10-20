@@ -32,7 +32,7 @@
             "type": "loki",
             "uid": "loki"
           },
-          "expr": "{environment=~\"$environment\", service=~\"$service\"} |~ \"$search_query\"",
+          "expr": "{namespace=~\"$namespace\", app=~\"$app\", severity=~\"$severity\"} |~ \"$search_query\"",
           "refId": "A"
         }
       ],
@@ -60,13 +60,13 @@
           "type": "loki",
           "uid": "loki"
         },
-        "definition": "label_values(environment)",
+        "definition": "label_values(namespace)",
         "hide": 0,
         "includeAll": true,
         "multi": true,
-        "name": "environment",
+        "name": "namespace",
         "options": [],
-        "query": "label_values(environment)",
+        "query": "label_values(namespace)",
         "refresh": 1,
         "regex": "",
         "skipUrlSync": false,
@@ -84,13 +84,13 @@
           "type": "loki",
           "uid": "loki"
         },
-        "definition": "label_values({environment=~\"$environment\"}, service)",
+        "definition": "label_values({namespace=~\"$namespace\"}, app)",
         "hide": 0,
         "includeAll": true,
         "multi": true,
-        "name": "service",
+        "name": "app",
         "options": [],
-        "query": "label_values({environment=~\"$environment\"}, service)",
+        "query": "label_values({namespace=~\"$namespace\"}, app)",
         "refresh": 1,
         "regex": "",
         "skipUrlSync": false,
@@ -116,6 +116,31 @@
         "query": "",
         "skipUrlSync": false,
         "type": "textbox"
+      },
+      {
+        "allValue": ".*",
+        "current": {
+          "selected": false,
+          "text": "All",
+          "value": "$__all"
+        },
+        "datasource": {
+          "type": "loki",
+          "uid": "loki"
+        },
+        "definition": "label_values(severity)",
+        "hide": 0,
+        "includeAll": true,
+        "label": "Severity",
+        "multi": true,
+        "name": "severity",
+        "options": [],
+        "query": "label_values(severity)",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 1,
+        "type": "query"
       }
     ]
   },
