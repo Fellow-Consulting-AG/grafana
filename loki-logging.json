@@ -32,7 +32,7 @@
             "type": "loki",
             "uid": "loki"
           },
-          "expr": "{environment=~\"$environment\", service=~\"$service\"} |~ \"$search_query\" |~ \"(?i)$log_level\" | limit 1000",
+          "expr": "{environment=~\"$environment\", service=~\"$service\"} |~ \"$search_query\" |~ \"$log_level\" | limit 1000",
           "refId": "A"
         }
       ],
@@ -118,7 +118,7 @@
         "type": "textbox"
       },
       {
-        "allValue": ".*",
+        "allValue": "",
         "current": {
           "selected": false,
           "text": "All",
