@@ -92,7 +92,7 @@
         "options": [],
         "query": "label_values(app)",
         "refresh": 1,
-        "regex": "^(api|auth|docflow|barcode|ocr|operator|extraction|docnet|forecasting|importemail|pomatch|autoaccounting|docoperator).*",
+        "regex": "^(api-beats|api-service|auth-service|autoaccounting-service|barcode-celery|barcode-service|docflow|docflow-celery-base|docnet|docoperator-celery-base|extraction-celery|extraction-service|fellowkv|import-email-service|import-ftp-service|ocr-celery|ocr-service|operator|po-match-celery|pomatch-service)$",
         "skipUrlSync": false,
         "sort": 1,
         "type": "query"
