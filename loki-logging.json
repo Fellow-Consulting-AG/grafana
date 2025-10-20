@@ -32,7 +32,7 @@
             "type": "loki",
             "uid": "loki"
           },
-          "expr": "{namespace=~\"$namespace\", app=~\"$app\", severity=~\"$severity\"} |~ \"$search_query\"",
+          "expr": "{namespace=~\"$namespace\", app=~\"$app\"} |~ \"$search_query\"",
           "refId": "A"
         }
       ],
@@ -116,31 +116,6 @@
         "query": "",
         "skipUrlSync": false,
         "type": "textbox"
-      },
-      {
-        "allValue": "debug|info|warning|error",
-        "current": {
-          "selected": false,
-          "text": "All",
-          "value": "$__all"
-        },
-        "datasource": {
-          "type": "loki",
-          "uid": "loki"
-        },
-        "definition": "label_values({namespace=~\"$namespace\", app=~\"$app\"}, severity)",
-        "hide": 0,
-        "includeAll": true,
-        "label": "Severity",
-        "multi": true,
-        "name": "severity",
-        "options": [],
-        "query": "label_values({namespace=~\"$namespace\", app=~\"$app\"}, severity)",
-        "refresh": 1,
-        "regex": "",
-        "skipUrlSync": false,
-        "sort": 1,
-        "type": "query"
       }
     ]
   },
