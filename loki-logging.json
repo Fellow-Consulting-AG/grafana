@@ -32,7 +32,7 @@
             "type": "loki",
             "uid": "loki"
           },
-          "expr": "{environment=~\"$environment\", service=~\"$service\"} |~ \"$search_query\" |~ \"$log_level\" | limit 1000",
+          "expr": "{environment=~\"$environment\", service=~\"$service\"}",
           "refId": "A"
         }
       ],
@@ -116,60 +116,6 @@
         "query": "",
         "skipUrlSync": false,
         "type": "textbox"
-      },
-      {
-        "allValue": "",
-        "current": {
-          "selected": false,
-          "text": "All",
-          "value": "$__all"
-        },
-        "hide": 0,
-        "includeAll": true,
-        "label": "Log Level",
-        "multi": true,
-        "name": "log_level",
-        "options": [
-          {
-            "selected": true,
-            "text": "All",
-            "value": "$__all"
-          },
-          {
-            "selected": false,
-            "text": "TRACE",
-            "value": "TRACE"
-          },
-          {
-            "selected": false,
-            "text": "DEBUG",
-            "value": "DEBUG"
-          },
-          {
-            "selected": false,
-            "text": "INFO",
-            "value": "INFO"
-          },
-          {
-            "selected": false,
-            "text": "WARN",
-            "value": "WARN"
-          },
-          {
-            "selected": false,
-            "text": "ERROR",
-            "value": "ERROR"
-          },
-          {
-            "selected": false,
-            "text": "FATAL",
-            "value": "FATAL"
-          }
-        ],
-        "query": "TRACE,DEBUG,INFO,WARN,ERROR,FATAL",
-        "queryValue": "",
-        "skipUrlSync": false,
-        "type": "custom"
       }
     ]
   },
