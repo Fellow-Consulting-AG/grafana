@@ -32,7 +32,7 @@
             "type": "loki",
             "uid": "loki"
           },
-          "expr": "{environment=~\"$environment\", service=~\"$service\"}",
+          "expr": "{environment=~\"$environment\", service=~\"$service\"} |~ \"$search_query\"",
           "refId": "A"
         }
       ],
