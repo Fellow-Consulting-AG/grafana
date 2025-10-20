@@ -1,5 +1,12 @@
 {
+  "annotations": {
+    "list": []
+  },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
   "links": [],
+  "liveNow": false,
   "panels": [
     {
       "gridPos": {
@@ -34,7 +41,7 @@
     }
   ],
   "refresh": "30s",
-  "schemaVersion": 30,
+  "schemaVersion": 38,
   "style": "dark",
   "tags": [
     "kubernetes",
@@ -181,6 +188,7 @@
     ]
   },
   "timezone": "",
-  "title": "Kubernetes Logs - Clean",
-  "uid": "cf17tfr3x4bggb"
+  "title": "Kubernetes Logs",
+  "version": 1,
+  "weekStart": ""
 }
