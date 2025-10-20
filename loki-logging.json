@@ -53,8 +53,8 @@
         "allValue": "sandbox|prod|pre-prod|ruiz|demo",
         "current": {
           "selected": false,
-          "text": "All",
-          "value": "$__all"
+          "text": "sandbox",
+          "value": "sandbox"
         },
         "datasource": {
           "type": "loki",
@@ -84,15 +84,15 @@
           "type": "loki",
           "uid": "loki"
         },
-        "definition": "label_values({namespace=~\"$namespace\"}, app)",
+        "definition": "label_values(app)",
         "hide": 0,
         "includeAll": true,
         "multi": true,
         "name": "app",
         "options": [],
-        "query": "label_values({namespace=~\"$namespace\"}, app)",
+        "query": "label_values(app)",
         "refresh": 1,
-        "regex": "/^(?!.*(prometheus|grafana|loki|nginx|kube-|cert-|metrics-|node-exporter|cilium|coredns|velero|linkerd|hubble)).*$/",
+        "regex": "^(api|auth|docflow|barcode|ocr|operator|extraction|docnet|forecasting|importemail|pomatch|autoaccounting|docoperator).*",
         "skipUrlSync": false,
         "sort": 1,
         "type": "query"
@@ -118,7 +118,7 @@
         "type": "textbox"
       },
       {
-        "allValue": ".*",
+        "allValue": "debug|info|warning|error",
         "current": {
           "selected": false,
           "text": "All",
