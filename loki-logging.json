@@ -32,7 +32,7 @@
             "type": "loki",
             "uid": "loki"
           },
-          "expr": "{namespace=~\"$namespace\"} |~ \"$search_query\"",
+          "expr": "{namespace=~\"$namespace\", app=~\"$app\"} |~ \"$search_query\"",
           "refId": "A"
         }
       ],
@@ -84,15 +84,15 @@
           "type": "loki",
           "uid": "loki"
         },
-        "definition": "label_values(app)",
+        "definition": "label_values({namespace=~\"$namespace\"}, app)",
         "hide": 0,
         "includeAll": true,
         "multi": true,
         "name": "app",
         "options": [],
-        "query": "label_values(app)",
+        "query": "label_values({namespace=~\"$namespace\"}, app)",
         "refresh": 1,
-        "regex": "^(api-beats|api-beats-tasks|api-celery|api-service|auth-service|autoaccounting-service|barcode-celery|barcode-service|docflow|docflow-celery-base|docnet|docoperator-celery-base|extraction-celery|extraction-service|fellowkv|flower-service|import-email-service|import-ftp-service|ocr-celery|ocr-service|operator|po-match-celery|pomatch-service)$",
+        "regex": "",
         "skipUrlSync": false,
         "sort": 1,
         "type": "query"
