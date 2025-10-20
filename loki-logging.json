@@ -32,7 +32,7 @@
             "type": "loki",
             "uid": "loki"
           },
-          "expr": "{namespace=~\"$namespace\", app=~\"$app\", severity=~\"$severity\"} |~ \"$search_query\"",
+          "expr": "{namespace=~\"$namespace\"} |~ \"$search_query\"",
           "refId": "A"
         }
       ],
