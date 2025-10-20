@@ -92,7 +92,7 @@
         "options": [],
         "query": "label_values({namespace=~\"$namespace\"}, app)",
         "refresh": 1,
-        "regex": "",
+        "regex": "/^(?!.*(prometheus|grafana|loki|nginx|kube-|cert-|metrics-|node-exporter|cilium|coredns|velero|linkerd|hubble)).*$/",
         "skipUrlSync": false,
         "sort": 1,
         "type": "query"
