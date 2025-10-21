@@ -460,7 +460,7 @@
   "templating": {
     "list": [
       {
-        "allValue": ".*",
+        "allValue": ".+",
         "current": {
           "selected": true,
           "text": [
@@ -488,7 +488,7 @@
         "type": "query"
       },
       {
-        "allValue": ".*",
+        "allValue": ".+",
         "current": {
           "selected": true,
           "text": [
@@ -516,7 +516,7 @@
         "type": "query"
       },
       {
-        "allValue": ".*",
+        "allValue": ".+",
         "current": {
           "selected": true,
           "text": [
@@ -583,6 +583,6 @@
   "timezone": "",
   "title": "Kubernetes Logs - Comprehensive",
   "uid": "kubernetes-logs-comprehensive",
-  "version": 1,
+  "version": 2,
   "weekStart": ""
 }
