@@ -441,7 +441,7 @@
             "type": "loki",
             "uid": "loki"
           },
-          "expr": "{namespace=~\"$namespace\"} |~ \"$search\"",
+          "expr": "{namespace=~\"$namespace\", app=~\"$app\"} |~ \"$search\"",
           "refId": "A",
           "maxLines": 100
         }
@@ -484,6 +484,34 @@
         "query": "label_values(namespace)",
         "refresh": 1,
         "regex": "^(sandbox|prod|pre-prod|demo)$",
+        "skipUrlSync": false,
+        "sort": 1,
+        "type": "query"
+      },
+      {
+        "allValue": ".+",
+        "current": {
+          "selected": true,
+          "text": [
+            "All"
+          ],
+          "value": [
+            "$__all"
+          ]
+        },
+        "datasource": {
+          "type": "loki",
+          "uid": "loki"
+        },
+        "definition": "label_values({namespace=~\"$namespace\"}, app)",
+        "hide": 0,
+        "includeAll": true,
+        "multi": true,
+        "name": "app",
+        "options": [],
+        "query": "label_values({namespace=~\"$namespace\"}, app)",
+        "refresh": 1,
+        "regex": "",
         "skipUrlSync": false,
         "sort": 1,
         "type": "query"
