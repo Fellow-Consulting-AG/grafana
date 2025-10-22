@@ -202,11 +202,11 @@
             "type": "loki",
             "uid": "loki"
           },
-          "expr": "sum by (pod) (count_over_time({namespace=~\"$namespace\"}[5m]))",
+          "expr": "sum(count_over_time({namespace=~\"$namespace\"}[5m]))",
           "refId": "A"
         }
       ],
-      "title": "Logs by Pod",
+      "title": "Top Pods by Log Count",
       "type": "piechart"
     },
     {
@@ -393,11 +393,11 @@
             "type": "loki",
             "uid": "loki"
           },
-          "expr": "sum by (pod) (rate({namespace=~\"$namespace\"}[1m]))",
+          "expr": "sum(rate({namespace=~\"$namespace\"}[1m]))",
           "refId": "A"
         }
       ],
-      "title": "Log Rate by Pod",
+      "title": "Total Log Rate",
       "type": "timeseries"
     },
     {
@@ -441,7 +441,7 @@
             "type": "loki",
             "uid": "loki"
           },
-          "expr": "{namespace=~\"$namespace\", pod=~\"$pod\"} |~ \"$search\"",
+          "expr": "{namespace=~\"$namespace\"} |~ \"$search\"",
           "refId": "A"
         }
       ],
@@ -483,34 +483,6 @@
         "query": "label_values(namespace)",
         "refresh": 1,
         "regex": "^(sandbox|prod|pre-prod|demo)$",
-        "skipUrlSync": false,
-        "sort": 1,
-        "type": "query"
-      },
-      {
-        "allValue": ".+",
-        "current": {
-          "selected": true,
-          "text": [
-            "All"
-          ],
-          "value": [
-            "$__all"
-          ]
-        },
-        "datasource": {
-          "type": "loki",
-          "uid": "loki"
-        },
-        "definition": "label_values({namespace=~\"$namespace\"}, pod)",
-        "hide": 0,
-        "includeAll": true,
-        "multi": true,
-        "name": "pod",
-        "options": [],
-        "query": "label_values({namespace=~\"$namespace\"}, pod)",
-        "refresh": 1,
-        "regex": "",
         "skipUrlSync": false,
         "sort": 1,
         "type": "query"
