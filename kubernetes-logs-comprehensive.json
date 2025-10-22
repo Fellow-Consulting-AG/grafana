@@ -443,7 +443,7 @@
           },
           "expr": "{namespace=~\"$namespace\"} |~ \"$search\"",
           "refId": "A",
-          "maxLines": 1000
+          "maxLines": 100
         }
       ],
       "title": "Application Logs",
