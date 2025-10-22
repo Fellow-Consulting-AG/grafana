@@ -202,11 +202,11 @@
             "type": "loki",
             "uid": "loki"
           },
-          "expr": "sum by (app) (count_over_time({namespace=~\"$namespace\", app=~\"$app\"}[5m]))",
+          "expr": "sum by (pod) (count_over_time({namespace=~\"$namespace\"}[5m]))",
           "refId": "A"
         }
       ],
-      "title": "Logs by Service",
+      "title": "Logs by Pod",
       "type": "piechart"
     },
     {
@@ -393,11 +393,11 @@
             "type": "loki",
             "uid": "loki"
           },
-          "expr": "sum by (app) (rate({namespace=~\"$namespace\", app=~\"$app\"}[1m]))",
+          "expr": "sum by (pod) (rate({namespace=~\"$namespace\"}[1m]))",
           "refId": "A"
         }
       ],
-      "title": "Log Rate by Service",
+      "title": "Log Rate by Pod",
       "type": "timeseries"
     },
     {
@@ -441,7 +441,7 @@
             "type": "loki",
             "uid": "loki"
           },
-          "expr": "{namespace=~\"$namespace\", app=~\"$app\", container=~\"$container\"} |~ \"$search\"",
+          "expr": "{namespace=~\"$namespace\", pod=~\"$pod\"} |~ \"$search\"",
           "refId": "A"
         }
       ],
@@ -502,41 +502,13 @@
           "type": "loki",
           "uid": "loki"
         },
-        "definition": "label_values({namespace=~\"$namespace\"}, app)",
+        "definition": "label_values({namespace=~\"$namespace\"}, pod)",
         "hide": 0,
         "includeAll": true,
         "multi": true,
-        "name": "app",
+        "name": "pod",
         "options": [],
-        "query": "label_values({namespace=~\"$namespace\"}, app)",
-        "refresh": 1,
-        "regex": "",
-        "skipUrlSync": false,
-        "sort": 1,
-        "type": "query"
-      },
-      {
-        "allValue": ".+",
-        "current": {
-          "selected": true,
-          "text": [
-            "All"
-          ],
-          "value": [
-            "$__all"
-          ]
-        },
-        "datasource": {
-          "type": "loki",
-          "uid": "loki"
-        },
-        "definition": "label_values({namespace=~\"$namespace\", app=~\"$app\"}, container)",
-        "hide": 0,
-        "includeAll": true,
-        "multi": true,
-        "name": "container",
-        "options": [],
-        "query": "label_values({namespace=~\"$namespace\", app=~\"$app\"}, container)",
+        "query": "label_values({namespace=~\"$namespace\"}, pod)",
         "refresh": 1,
         "regex": "",
         "skipUrlSync": false,
