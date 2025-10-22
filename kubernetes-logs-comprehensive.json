@@ -442,7 +442,8 @@
             "uid": "loki"
           },
           "expr": "{namespace=~\"$namespace\"} |~ \"$search\"",
-          "refId": "A"
+          "refId": "A",
+          "maxLines": 1000
         }
       ],
       "title": "Application Logs",
