@@ -483,7 +483,7 @@
         "options": [],
         "query": "label_values(namespace)",
         "refresh": 1,
-        "regex": "^(sandbox|prod|pre-prod|demo)$",
+        "regex": "^(sandbox|demo|prod|pre-prod|prod-v2)$",
         "skipUrlSync": false,
         "sort": 1,
         "type": "query"
