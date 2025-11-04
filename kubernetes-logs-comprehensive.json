@@ -428,7 +428,7 @@
       "options": {
         "dedupStrategy": "exact",
         "enableLogDetails": true,
-        "prettifyLogMessage": false,
+        "prettifyLogMessage": true,
         "showCommonLabels": false,
         "showLabels": true,
         "showTime": true,
@@ -441,12 +441,12 @@
             "type": "loki",
             "uid": "loki"
           },
-          "expr": "{namespace=~\"$namespace\", app=~\"$app\"} |~ \"$search\"",
+          "expr": "{namespace=~\"$namespace\", app=~\"$app\"} | json | __error__=\"\" | line_format \"{{__line__}}\" |~ \"(?i)$search\"",
           "refId": "A",
           "maxLines": 100
         }
       ],
-      "title": "Application Logs",
+      "title": "Application Logs (JSON-aware search)",
       "type": "logs"
     }
   ],
@@ -523,7 +523,7 @@
           "value": ""
         },
         "hide": 0,
-        "label": "Search Text",
+        "label": "Search Text (searches in JSON fields + raw text)",
         "name": "search",
         "options": [
           {
