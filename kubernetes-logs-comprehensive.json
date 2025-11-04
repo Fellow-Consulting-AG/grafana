@@ -461,14 +461,22 @@
   "templating": {
     "list": [
       {
-        "allValue": ".+",
+        "allValue": "sandbox|demo|prod|pre-prod|prod-v2",
         "current": {
           "selected": true,
           "text": [
-            "All"
+            "sandbox",
+            "demo",
+            "prod",
+            "pre-prod",
+            "prod-v2"
           ],
           "value": [
-            "$__all"
+            "sandbox",
+            "demo",
+            "prod",
+            "pre-prod",
+            "prod-v2"
           ]
         },
         "datasource": {
