@@ -88,7 +88,13 @@
       "pluginVersion": "10.0.0",
       "targets": [
         {
-          "columns": [],
+          "columns": [
+            {
+              "selector": "status",
+              "text": "status",
+              "type": "string"
+            }
+          ],
           "datasource": {
             "type": "yesoreyeram-infinity-datasource",
             "uid": "df6r5cefjmx34b"
@@ -154,7 +160,13 @@
       "pluginVersion": "10.0.0",
       "targets": [
         {
-          "columns": [],
+          "columns": [
+            {
+              "selector": "endpoints_total",
+              "text": "endpoints_total",
+              "type": "number"
+            }
+          ],
           "datasource": {
             "type": "yesoreyeram-infinity-datasource",
             "uid": "df6r5cefjmx34b"
@@ -220,7 +232,13 @@
       "pluginVersion": "10.0.0",
       "targets": [
         {
-          "columns": [],
+          "columns": [
+            {
+              "selector": "endpoints_healthy",
+              "text": "endpoints_healthy",
+              "type": "number"
+            }
+          ],
           "datasource": {
             "type": "yesoreyeram-infinity-datasource",
             "uid": "df6r5cefjmx34b"
@@ -286,7 +304,13 @@
       "pluginVersion": "10.0.0",
       "targets": [
         {
-          "columns": [],
+          "columns": [
+            {
+              "selector": "endpoints_warning",
+              "text": "endpoints_warning",
+              "type": "number"
+            }
+          ],
           "datasource": {
             "type": "yesoreyeram-infinity-datasource",
             "uid": "df6r5cefjmx34b"
@@ -352,7 +376,13 @@
       "pluginVersion": "10.0.0",
       "targets": [
         {
-          "columns": [],
+          "columns": [
+            {
+              "selector": "endpoints_critical",
+              "text": "endpoints_critical",
+              "type": "number"
+            }
+          ],
           "datasource": {
             "type": "yesoreyeram-infinity-datasource",
             "uid": "df6r5cefjmx34b"
@@ -418,7 +448,13 @@
       "pluginVersion": "10.0.0",
       "targets": [
         {
-          "columns": [],
+          "columns": [
+            {
+              "selector": "last_check",
+              "text": "last_check",
+              "type": "string"
+            }
+          ],
           "datasource": {
             "type": "yesoreyeram-infinity-datasource",
             "uid": "df6r5cefjmx34b"
